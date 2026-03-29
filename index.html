@@ -588,6 +588,7 @@ function xRangeForPoints(points){
   const pad=(mx-mn)*0.02||86400000;
   return{min:mn-pad,max:mx+pad};
 }
+function sp(l,v){return `<div class="sp"><div class="sp-l">${l}</div><div class="sp-v">${v}</div></div>`;}
 
 // ─────────────────────────────────────────────────────
 //  SIDEBAR
@@ -690,7 +691,7 @@ function renderDistributions(){
   const el=document.getElementById('distContent');
   const valid=ALL_M.filter(m=>fds.some(f=>f.computed[m.key]&&f.computed[m.key].length>=10));
   if(!valid.length){el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:32px;opacity:.2">📉</div><div style="font-size:15px;font-weight:800;color:var(--tx);margin-top:8px">Insufficient data</div></div>`;return;}
-  el.innerHTML=`<div class="sec">Return Distributions <span class="stag">all historical rolling returns</span></div><div class="grid-2" id="distGrid"></div>`;
+  el.innerHTML=`<div class="sec">Return Distributions <span class="stag">all historical rolling returns</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar counts returns in a range <strong style="color:var(--tx)">[lower, upper)</strong> in % (lower ≤ r &lt; upper), except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
   valid.forEach(m=>{
     const fd=fds.map(f=>({name:shortN(f.name),ci:S.selected.indexOf(f.id)%3,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
     if(!fd.length) return;
@@ -705,7 +706,11 @@ function renderDistributions(){
     requestAnimationFrame(()=>{
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
       S.charts[cid]=new Chart(ctx,{type:'bar',data:hist,options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}}},
+        plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
+          tooltip:{callbacks:{
+            title:items=>items.length&&items[0].label?`Range ${items[0].label}`:'',
+            label:c=>`${c.dataset.label}: ${c.parsed.y} rolling return${c.parsed.y===1?'':'s'}`
+          }}},
         scales:{x:{grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},maxTicksLimit:10}},
           y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'}}}},
         barPercentage:.9,categoryPercentage:.85}});
@@ -715,7 +720,12 @@ function renderDistributions(){
 
 function makeHist(fds,bins=25){
   const all=fds.flatMap(f=>f.vals);let mn=Math.min(...all),mx=Math.max(...all);if(mx===mn){mn-=1;mx+=1;}
-  const bsz=(mx-mn)/bins,labels=Array.from({length:bins},(_,i)=>(mn+i*bsz).toFixed(1)+'%');
+  const bsz=(mx-mn)/bins;
+  const labels=Array.from({length:bins},(_,i)=>{
+    const lo=mn+i*bsz,hiUp=mn+(i+1)*bsz;
+    if(i===bins-1)return `${lo.toFixed(1)} - ${mx.toFixed(1)}%`;
+    return `${lo.toFixed(1)} - ${hiUp.toFixed(1)}%`;
+  });
   return{labels,datasets:fds.map(d=>{
     const counts=Array(bins).fill(0);for(const v of d.vals){const b=Math.min(bins-1,Math.max(0,Math.floor((v-mn)/bsz)));counts[b]++;}
     return{label:d.name,data:counts,backgroundColor:COLORS_BG[d.ci],borderColor:COLORS[d.ci],borderWidth:1.5};
