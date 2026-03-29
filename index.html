@@ -579,7 +579,15 @@ function fmtDate(d){return d.toLocaleDateString('en-IN',{month:'short',year:'2-d
 function fmtFullDate(d){return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
 function latestVal(f,key){const a=f.computed[key];return a&&a.length?a[a.length-1]:null;}
 function sampleForChart(data,max=350){if(data.length<=max)return data;const s=Math.ceil(data.length/max);return data.filter((_,i)=>i%s===0||i===data.length-1);}
-function sp(l,v){return `<div class="sp"><div class="sp-l">${l}</div><div class="sp-v">${v}</div></div>`;}
+function xRangeForPoints(points){
+  if(!points||!points.length)return null;
+  let mn=Infinity,mx=-Infinity;
+  for(const t of points){if(t<mn)mn=t;if(t>mx)mx=t;}
+  if(!isFinite(mn)||!isFinite(mx))return null;
+  if(mn===mx){mn-=86400000;mx+=86400000;}
+  const pad=(mx-mn)*0.02||86400000;
+  return{min:mn-pad,max:mx+pad};
+}
 
 // ─────────────────────────────────────────────────────
 //  SIDEBAR
@@ -723,13 +731,21 @@ function renderTimeSeries(){
   document.getElementById('navGrid').innerHTML=`<div class="cc"><div class="cc-t">NAV History</div><div class="cc-s">Absolute NAV over time</div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
   requestAnimationFrame(()=>{
     kill('navChart');const ctx=document.getElementById('navChart')?.getContext('2d');if(!ctx) return;
-    S.charts['navChart']=new Chart(ctx,{type:'line',data:{datasets:fds.map((f,i)=>({
+    const navDatasets=fds.map((f,i)=>({
       label:shortN(f.name),data:sampleForChart(f.rawData,350).map(p=>({x:p.date.getTime(),y:p.nav})),
-      borderColor:COLORS[i%3],borderWidth:2,pointRadius:0,tension:.2
-    }))},options:{responsive:true,maintainAspectRatio:false,
+      borderColor:COLORS[i%3],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
+    }));
+    const navXR=xRangeForPoints(navDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
+    const navXScale={type:'linear',grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxTicksLimit:10,maxRotation:0,autoSkip:true}};
+    if(navXR){navXScale.min=navXR.min;navXScale.max=navXR.max;}
+    S.charts['navChart']=new Chart(ctx,{type:'line',data:{datasets:navDatasets},options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'nearest',axis:'x',intersect:false},
       plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
-        tooltip:{callbacks:{label:c=>`${c.dataset.label}: ₹${c.raw.y.toFixed(2)}`}}},
-      scales:{x:{type:'linear',grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxTicksLimit:10}},
+        tooltip:{callbacks:{
+          title:items=>!items.length?'':fmtFullDate(new Date(items[0].parsed.x)),
+          label:c=>{const y=c.parsed.y;return y==null||!isFinite(y)?`${c.dataset.label}: N/A`:`${c.dataset.label}: ₹${y.toFixed(2)}`;}
+        }}},
+      scales:{x:navXScale,
         y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>'₹'+v.toFixed(0)}}}}});
   });
   const tsGrid=document.getElementById('tsGrid');
@@ -738,12 +754,21 @@ function renderTimeSeries(){
     tsGrid.insertAdjacentHTML('beforeend',`<div class="cc"><div class="cc-t">${m.lbl} — Over Time</div><div class="cc-s">Rolling ${m.lbl} (Time-Aligned)</div><div class="cw tall"><canvas id="${cid}"></canvas></div></div>`);
     requestAnimationFrame(()=>{
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
-      S.charts[cid]=new Chart(ctx,{type:'line',data:{datasets:fds.filter(f=>f.computed[m.key]&&f.computed[m.key].length>=5).map((f,i)=>({
+      const rollDatasets=fds.filter(f=>f.computed[m.key]&&f.computed[m.key].length>=5).map(f=>({
         label:shortN(f.name),data:sampleForChart(f.computed[m.key],350).map(p=>({x:p.date.getTime(),y:p.value})),
-        borderColor:COLORS[S.selected.indexOf(f.id)%3],borderWidth:2,pointRadius:0,tension:.2
-      }))},options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}}},
-        scales:{x:{type:'linear',grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxTicksLimit:10}},
+        borderColor:COLORS[S.selected.indexOf(f.id)%3],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
+      }));
+      const rollXR=xRangeForPoints(rollDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
+      const rollXScale={type:'linear',grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxTicksLimit:10,maxRotation:0,autoSkip:true}};
+      if(rollXR){rollXScale.min=rollXR.min;rollXScale.max=rollXR.max;}
+      S.charts[cid]=new Chart(ctx,{type:'line',data:{datasets:rollDatasets},options:{responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'nearest',axis:'x',intersect:false},
+        plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
+          tooltip:{callbacks:{
+            title:items=>!items.length?'':fmtFullDate(new Date(items[0].parsed.x)),
+            label:c=>{const y=c.parsed.y;return y==null||!isFinite(y)?`${c.dataset.label}: N/A`:`${c.dataset.label}: ${y.toFixed(2)}%`;}
+          }}},
+        scales:{x:rollXScale,
           y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>v+'%'}}}}});
     });
   });
