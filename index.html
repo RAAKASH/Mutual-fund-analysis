@@ -168,6 +168,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   <div class="hdr-r">
     <span class="badge" id="cntBadge">0 funds loaded</span>
     <button class="upload-btn" onclick="triggerUpload()">↑ Load NAV File</button>
+    <button class="btn-ghost" onclick="openMfFavModal()" title="Add favorite fund directly from MF API">+ MF API</button>
   </div>
 </header>
 
@@ -177,7 +178,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
     <div class="fund-list" id="fundList">
       <div class="sb-empty"><div class="sb-empty-icon">📁</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV Excel files.</div></div>
     </div>
-    <div class="sb-foot" id="sbFoot">Select up to 3 funds</div>
+    <div class="sb-foot" id="sbFoot">Select any number of funds</div>
   </aside>
 
   <main class="main" id="mainArea">
@@ -193,7 +194,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
     <div class="center-state" id="noSelState" style="display:none">
       <div style="font-size:34px;opacity:.3;margin-bottom:8px">☑</div>
       <div style="font-size:16px;font-weight:700;color:var(--tx)">Select funds to analyse</div>
-      <div style="font-size:12px;color:var(--tm)">Click funds in the sidebar (up to 3)</div>
+      <div style="font-size:12px;color:var(--tm)">Click funds in the sidebar (any number)</div>
     </div>
 
     <div class="center-state" id="loadingState" style="display:none">
@@ -263,6 +264,42 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   </div>
 </div>
 
+<div class="overlay" id="mfFavModal" style="display:none">
+  <div class="modal" style="width:540px">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Add Favorite from MF API</div>
+        <div class="modal-sub">Save scheme code into a group and optionally load</div>
+      </div>
+      <button class="modal-x" onclick="closeMfFavModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">MF scheme code</div>
+      <div class="map-grid" style="grid-template-columns:1fr 1fr">
+        <div class="map-field">
+          <div class="map-label">Scheme Code</div>
+          <div class="map-desc">Example: 113296</div>
+          <input class="msel" id="mf_code" type="text" placeholder="Enter scheme code" />
+        </div>
+        <div class="map-field">
+          <div class="map-label">Group</div>
+          <div class="map-desc">Create or reuse a group name</div>
+          <input class="msel" id="mf_group" type="text" placeholder="e.g., Equity Core" />
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;align-items:center;gap:10px;color:var(--tm);font-family:'DM Mono',monospace;font-size:12px;">
+        <input type="checkbox" id="mf_loadNow" checked />
+        <label for="mf_loadNow" style="cursor:pointer">Load into analysis now</label>
+      </div>
+      <div class="warn" id="mfFavWarn">Please enter a valid scheme code.</div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-ghost" onclick="closeMfFavModal()">Cancel</button>
+      <button class="btn-ok" onclick="addMfFavouriteFromModal()">Add →</button>
+    </div>
+  </div>
+</div>
+
 <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple style="display:none" onchange="handleFiles(this.files)">
 
 <script>
@@ -286,7 +323,8 @@ const SIP_M = [
 ];
 const ALL_M = [...CAGR_M, ...SIP_M];
 
-const S = { funds:{}, selected:[], charts:{}, tab:'snapshot', pending:null };
+const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null };
+const LS_MF_FAVS = 'mf_favs_v1';
 let uid = 0, pendingFiles = [];
 
 // ─────────────────────────────────────────────────────
@@ -591,32 +629,266 @@ function xRangeForPoints(points){
 function sp(l,v){return `<div class="sp"><div class="sp-l">${l}</div><div class="sp-v">${v}</div></div>`;}
 
 // ─────────────────────────────────────────────────────
+//  MF API FAVORITES (persistent + grouped)
+// ─────────────────────────────────────────────────────
+function openMfFavModal(){
+  const m=document.getElementById('mfFavModal');
+  if(m) m.style.display='flex';
+  const w=document.getElementById('mfFavWarn');
+  if(w) w.style.display='none';
+  const codeEl=document.getElementById('mf_code');
+  const grpEl=document.getElementById('mf_group');
+  if(codeEl) codeEl.value='';
+  if(grpEl) grpEl.value='Ungrouped';
+}
+function closeMfFavModal(){
+  const m=document.getElementById('mfFavModal');
+  if(m) m.style.display='none';
+}
+
+function loadMfFavouritesFromStorage(){
+  try{
+    const raw=localStorage.getItem(LS_MF_FAVS);
+    if(!raw) return;
+    const parsed=JSON.parse(raw);
+    if(Array.isArray(parsed)) S.favs=parsed.filter(x=>x&&x.code!=null);
+  }catch(e){}
+}
+function persistMfFavourites(){
+  try{
+    localStorage.setItem(LS_MF_FAVS, JSON.stringify(S.favs||[]));
+  }catch(e){}
+}
+
+function normalizeMfCode(code){
+  const s=String(code||'').trim();
+  if(!/^\d+$/.test(s)) return null;
+  return s;
+}
+function upsertMfFavourite(code, group, name){
+  const g=String(group||'Ungrouped').trim()||'Ungrouped';
+  const n=String(name||code).trim();
+  const existing=(S.favs||[]).find(f=>f.code===code);
+  if(existing){
+    existing.group=g;
+    if(name) existing.name=n;
+    return;
+  }
+  (S.favs=S.favs||[]).push({code, group:g, name:n});
+}
+function getMfFavourite(code){
+  return (S.favs||[]).find(f=>f.code===code) || null;
+}
+
+async function resolveMfSchemeName(code){
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/${code}/latest`);
+    const j=await r.json();
+    return j?.meta?.scheme_name || code;
+  }catch(e){
+    return code;
+  }
+}
+
+async function loadMFIntoFund(code, group, {selectNow=true}={}){
+  code=normalizeMfCode(code);
+  if(!code) return;
+  const g=String(group||'Ungrouped').trim()||'Ungrouped';
+  const fid=`mf_${code}`;
+  const existing=S.funds[fid];
+  if(existing){
+    existing.group=g;
+    if(selectNow && !S.selected.includes(fid)) S.selected.push(fid);
+    renderSidebar();renderDashboard();
+    return;
+  }
+
+  showLoading('Fetching MF NAV from API…');
+  await tick();
+
+  let j=null;
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/${code}`);
+    j=await r.json();
+  }catch(e){
+    hideLoading();
+    alert('Failed to fetch MF API data for scheme code: '+code);
+    return;
+  }
+
+  const rawEntries=Array.isArray(j?.data)?j.data:[];
+  const schemeName=j?.meta?.scheme_name || code;
+  const rawData=rawEntries
+    .map(p=>({date:parseDate(p?.date), nav:parseNav(p?.nav)}))
+    .filter(p=>p.date && p.nav)
+    .sort((a,b)=>a.date-b.date);
+
+  if(rawData.length<24){
+    hideLoading();
+    alert('Need at least 24 NAV points. Found: '+rawData.length+' for '+code);
+    return;
+  }
+
+  showLoading('Computing metrics for '+shortN(schemeName,24)+'…');
+  await tick();
+  const computed=await computeMetrics(rawData);
+  hideLoading();
+
+  const ci=Object.keys(S.funds).length%3;
+  S.funds[fid]={
+    id:fid,
+    scheme_code:code,
+    group:g,
+    source:'mf',
+    name:schemeName,
+    color:COLORS[ci],
+    ci,
+    rawData,
+    computed
+  };
+
+  upsertMfFavourite(code, g, schemeName);
+  persistMfFavourites();
+
+  if(selectNow && !S.selected.includes(fid)) S.selected.push(fid);
+  renderSidebar();renderDashboard();
+}
+
+function loadMfFavourite(code){
+  const fav=getMfFavourite(code);
+  const g=fav?.group || 'Ungrouped';
+  return loadMFIntoFund(code, g, {selectNow:true});
+}
+
+async function addMfFavouriteFromModal(){
+  const code=normalizeMfCode(document.getElementById('mf_code')?.value);
+  const group=String(document.getElementById('mf_group')?.value||'Ungrouped');
+  const loadNow=!!document.getElementById('mf_loadNow')?.checked;
+  const warn=document.getElementById('mfFavWarn');
+
+  if(!code){
+    if(warn) warn.style.display='block';
+    return;
+  }
+
+  // Save immediately so it stays persistent even if load fails
+  if(loadNow){
+    upsertMfFavourite(code, group, code);
+    persistMfFavourites();
+    await loadMFIntoFund(code, group, {selectNow:true});
+  }else{
+    const name=await resolveMfSchemeName(code);
+    upsertMfFavourite(code, group, name);
+    persistMfFavourites();
+    renderSidebar();
+  }
+
+  closeMfFavModal();
+}
+
+function removeMfFavourite(e, code){
+  e.stopPropagation();
+  code=normalizeMfCode(code);
+  if(!code) return;
+  S.favs=(S.favs||[]).filter(f=>f.code!==code);
+  persistMfFavourites();
+  const fid=`mf_${code}`;
+  if(S.funds[fid]){
+    delete S.funds[fid];
+    S.selected=S.selected.filter(x=>x!==fid);
+  }
+  renderSidebar();renderDashboard();
+}
+
+// ─────────────────────────────────────────────────────
 //  SIDEBAR
 // ─────────────────────────────────────────────────────
 function renderSidebar(){
   const funds=Object.values(S.funds);
+  const favs=S.favs||[];
   document.getElementById('cntBadge').textContent=`${funds.length} fund${funds.length!==1?'s':''} loaded`;
   const list=document.getElementById('fundList');
-  if(!funds.length){list.innerHTML=`<div class="sb-empty"><div class="sb-empty-icon">📁</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV Excel files.</div></div>`;return;}
-  list.innerHTML=funds.map(f=>{
-    const si=S.selected.indexOf(f.id);
-    const y1=f.rawData[0].date.getFullYear(),y2=f.rawData[f.rawData.length-1].date.getFullYear();
-    return `<div class="fi ${si>=0?'s'+(si+1):''}" onclick="toggleFund('${f.id}')">
-      <div class="fi-dot" style="background:${f.color}"></div>
-      <div class="fi-info">
-        <div class="fi-name" title="${f.name}">${shortN(f.name,20)}</div>
-        <div class="fi-meta">${f.rawData.length} pts · ${y1}${y1!==y2?'–'+y2:''}</div>
-      </div>
-      <button class="fi-del" onclick="removeFund(event,'${f.id}')">✕</button>
+
+  if(!funds.length && !favs.length){
+    list.innerHTML=`<div class="sb-empty"><div class="sb-empty-icon">📁</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV Excel files or add MF API favourites.</div></div>`;
+    document.getElementById('sbFoot').textContent='Select funds';
+    return;
+  }
+
+  const uploadsGroup='Uploads';
+  const loadedBySchemeCode=new Set((funds||[]).map(f=>f.scheme_code).filter(Boolean));
+
+  const groupOrder=[];
+  const groupMap=new Map(); // name -> items
+  const pushGroup=(name)=>{
+    const n=String(name||'Ungrouped').trim()||'Ungrouped';
+    if(!groupMap.has(n)){groupMap.set(n,[]);groupOrder.push(n);}
+  };
+  for(const f of favs) pushGroup(f.group||'Ungrouped');
+  for(const f of funds){
+    const g=f.source==='mf'?(f.group||'Ungrouped'):uploadsGroup;
+    pushGroup(g);
+  }
+
+  // loaded items
+  for(const f of funds){
+    const g=f.source==='mf'?(f.group||'Ungrouped'):uploadsGroup;
+    const items=groupMap.get(g)||[];
+    items.push({type:'loaded', fund:f});
+    groupMap.set(g,items);
+  }
+
+  // fav placeholders not yet loaded
+  for(const fav of favs){
+    if(loadedBySchemeCode.has(fav.code)) continue;
+    const g=fav.group||'Ungrouped';
+    pushGroup(g);
+    groupMap.get(g).push({type:'fav', code:fav.code, name:fav.name||fav.code});
+  }
+
+  list.innerHTML=groupOrder.map((g,gi)=>{
+    const items=groupMap.get(g)||[];
+    if(!items.length) return '';
+    return `<div>
+      <div style="margin-top:12px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);padding:0 2px">${g}</div>
+      ${items.map(it=>{
+        if(it.type==='loaded'){
+          const f=it.fund;
+          const si=S.selected.indexOf(f.id);
+          const selCls=si>=0?'s'+(si%3+1):'';
+          const y1=f.rawData?.[0]?.date?.getFullYear?.()??0;
+          const y2=(f.rawData&&f.rawData.length)?f.rawData[f.rawData.length-1].date.getFullYear():y1;
+          return `<div class="fi ${selCls}" onclick="toggleFund('${f.id}')">
+            <div class="fi-dot" style="background:${f.color}"></div>
+            <div class="fi-info">
+              <div class="fi-name" title="${f.name}">${shortN(f.name,20)}</div>
+              <div class="fi-meta">${f.rawData.length} pts · ${y1}${y1!==y2?'–'+y2:''}</div>
+            </div>
+            <button class="fi-del" onclick="removeFund(event,'${f.id}')">✕</button>
+          </div>`;
+        }
+        // favourite placeholder (not loaded)
+        const color=COLORS[gi%3];
+        return `<div class="fi" onclick="loadMfFavourite('${it.code}')">
+          <div class="fi-dot" style="background:${color}"></div>
+          <div class="fi-info">
+            <div class="fi-name" title="${it.name}">${shortN(it.name,20)}</div>
+            <div class="fi-meta">MF fav · click to load</div>
+          </div>
+          <button class="fi-del" onclick="removeMfFavourite(event,'${it.code}')">✕</button>
+        </div>`;
+      }).join('')}
     </div>`;
   }).join('');
-  document.getElementById('sbFoot').textContent=S.selected.length===0?'Select up to 3 funds':`${S.selected.length}/3 fund${S.selected.length>1?'s':''} selected`;
+
+  const sel=S.selected.length;
+  document.getElementById('sbFoot').textContent=sel===0?'Select funds':`${sel} fund${sel!==1?'s':''} selected`;
 }
 
 function toggleFund(id){
   const i=S.selected.indexOf(id);
   if(i>=0) S.selected.splice(i,1);
-  else{if(S.selected.length>=3){alert('Max 3 funds. Deselect one first.');return;}S.selected.push(id);}
+  else{S.selected.push(id);}
   renderSidebar();renderDashboard();
 }
 function removeFund(e,id){e.stopPropagation();delete S.funds[id];S.selected=S.selected.filter(x=>x!==id);renderSidebar();renderDashboard();}
@@ -632,7 +904,7 @@ function renderDashboard(){
   if(!hasSel) return;
   document.getElementById('selBar').innerHTML=S.selected.map((id,i)=>{
     const f=S.funds[id];
-    return `<div class="sel-badge p${i+1}"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</div>`;
+    return `<div class="sel-badge p${(i%3)+1}"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</div>`;
   }).join('');
   renderCurrentPane();
 }
@@ -1053,6 +1325,7 @@ function buildSIPAuditSheet(wb, fds, sipM) {
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
 }
 
+loadMfFavouritesFromStorage();
 renderSidebar();
 </script>
 </body>
