@@ -37,10 +37,16 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .upload-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--acc);color:#000;border:none;border-radius:5px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .15s}
 .upload-btn:hover{background:#fbbf24;transform:translateY(-1px)}
 
-.app{display:flex;height:calc(100vh - 56px);overflow:hidden}
-
-.sb{width:230px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--br);display:flex;flex-direction:column;overflow:hidden}
+.app{display:flex;height:calc(100vh - 56px);overflow:hidden;position:relative}
+.sb{width:230px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--br);display:flex;flex-direction:column;overflow:hidden;transition:width .22s ease,opacity .18s ease,min-width .22s ease,border-color .2s ease}
+.app.sb-collapsed .sb{flex-shrink:1;min-width:0;width:0;max-width:0;padding:0;border:none;opacity:0;pointer-events:none;overflow:hidden}
 .sb-hdr{padding:12px 14px;border-bottom:1px solid var(--br);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td)}
+.sb-hdr-flex{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sb-icon-btn{background:transparent;border:1px solid var(--br);color:var(--tm);cursor:pointer;padding:4px 8px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;line-height:1}
+.sb-icon-btn:hover{color:var(--tx);border-color:var(--br2)}
+.sb-expand-tab{position:fixed;left:0;top:56px;z-index:99;display:none;align-items:center;justify-content:center;width:28px;height:44px;padding:0;background:var(--sf);border:1px solid var(--br);border-left:none;border-radius:0 8px 8px 0;cursor:pointer;color:var(--tm);font-size:14px;box-shadow:2px 0 10px rgba(0,0,0,.25)}
+.sb-expand-tab:hover{color:var(--acc);border-color:var(--br2)}
+.app.sb-collapsed .sb-expand-tab{display:flex}
 .fund-list{flex:1;overflow-y:auto;padding:7px}
 .fi{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:5px;cursor:pointer;transition:background .1s;border:1px solid transparent;margin-bottom:2px;user-select:none}
 .fi:hover{background:var(--sf2)}
@@ -51,6 +57,9 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .fi-info{flex:1;min-width:0}
 .fi-name{font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx)}
 .fi-meta{font-size:9px;font-family:'DM Mono',monospace;color:var(--tm);margin-top:2px}
+.fi-edit{background:none;border:none;color:var(--tm);cursor:pointer;padding:2px 4px;font-size:12px;opacity:0;transition:opacity .1s;border-radius:3px}
+.fi:hover .fi-edit{opacity:1}
+.fi-edit:hover{color:var(--acc)}
 .fi-del{background:none;border:none;color:var(--tm);cursor:pointer;padding:2px 5px;font-size:13px;opacity:0;transition:opacity .1s;border-radius:3px;font-weight:bold}
 .fi:hover .fi-del{opacity:1}
 .fi-del:hover{color:var(--neg)}
@@ -172,9 +181,13 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   </div>
 </header>
 
-<div class="app">
-  <aside class="sb">
-    <div class="sb-hdr">Loaded Funds</div>
+<div class="app" id="appRoot">
+  <button type="button" id="sbExpandBtn" class="sb-expand-tab" onclick="toggleSidebarCollapse(true)" title="Show sidebar" aria-label="Expand sidebar">▶</button>
+  <aside class="sb" id="sideBar">
+    <div class="sb-hdr sb-hdr-flex">
+      <span>Loaded Funds</span>
+      <button type="button" class="sb-icon-btn" onclick="toggleSidebarCollapse(false)" title="Hide sidebar">◀</button>
+    </div>
     <div class="fund-list" id="fundList">
       <div class="sb-empty"><div class="sb-empty-icon">📁</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV Excel files.</div></div>
     </div>
@@ -283,7 +296,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
         </div>
         <div class="map-field">
           <div class="map-label">Group</div>
-          <div class="map-desc">Create or reuse a group name</div>
+          <div class="map-desc">Optional — empty uses Ungrouped (you can change later with ✎)</div>
           <input class="msel" id="mf_group" type="text" placeholder="e.g., Equity Core" />
         </div>
       </div>
@@ -296,6 +309,32 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
     <div class="modal-ftr">
       <button class="btn-ghost" onclick="closeMfFavModal()">Cancel</button>
       <button class="btn-ok" onclick="addMfFavouriteFromModal()">Add →</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="mfGroupModal" style="display:none">
+  <div class="modal" style="width:480px">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Change MF group</div>
+        <div class="modal-sub">Move this scheme to another sidebar group</div>
+      </div>
+      <button class="modal-x" onclick="closeMfGroupModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">Scheme</div>
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--tm);margin-bottom:4px">Code: <span id="mf_edit_code"></span></div>
+      <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:14px" id="mf_edit_name"></div>
+      <div class="map-field">
+        <div class="map-label">Group</div>
+        <div class="map-desc">Leave empty to use “Ungrouped”</div>
+        <input class="msel" id="mf_edit_group" type="text" placeholder="e.g., Equity Core" />
+      </div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-ghost" onclick="closeMfGroupModal()">Cancel</button>
+      <button class="btn-ok" onclick="saveMfGroupFromModal()">Save</button>
     </div>
   </div>
 </div>
@@ -325,6 +364,7 @@ const ALL_M = [...CAGR_M, ...SIP_M];
 
 const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null };
 const LS_MF_FAVS = 'mf_favs_v1';
+const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 let uid = 0, pendingFiles = [];
 
 // ─────────────────────────────────────────────────────
@@ -639,7 +679,7 @@ function openMfFavModal(){
   const codeEl=document.getElementById('mf_code');
   const grpEl=document.getElementById('mf_group');
   if(codeEl) codeEl.value='';
-  if(grpEl) grpEl.value='Ungrouped';
+  if(grpEl) grpEl.value='';
 }
 function closeMfFavModal(){
   const m=document.getElementById('mfFavModal');
@@ -678,6 +718,67 @@ function upsertMfFavourite(code, group, name){
 }
 function getMfFavourite(code){
   return (S.favs||[]).find(f=>f.code===code) || null;
+}
+
+function applySidebarCollapsed(collapsed){
+  const root=document.getElementById('appRoot');
+  if(!root) return;
+  root.classList.toggle('sb-collapsed',!!collapsed);
+  try{ localStorage.setItem(LS_SB_COLLAPSED, collapsed?'1':'0'); }catch(e){}
+}
+function toggleSidebarCollapse(expand){
+  const root=document.getElementById('appRoot');
+  const now=root&&root.classList.contains('sb-collapsed');
+  if(expand===true) applySidebarCollapsed(false);
+  else if(expand===false) applySidebarCollapsed(true);
+  else applySidebarCollapsed(!now);
+}
+function initSidebarCollapse(){
+  try{
+    if(localStorage.getItem(LS_SB_COLLAPSED)==='1') applySidebarCollapsed(true);
+  }catch(e){}
+}
+
+function setMfFavouriteGroup(code, newGroup){
+  code=normalizeMfCode(code);
+  if(!code) return;
+  const g=String(newGroup||'').trim()||'Ungrouped';
+  const fav=getMfFavourite(code);
+  if(fav) fav.group=g;
+  else upsertMfFavourite(code, g, code);
+  const fid=`mf_${code}`;
+  if(S.funds[fid]) S.funds[fid].group=g;
+  persistMfFavourites();
+  renderSidebar();
+}
+function openMfGroupModal(code){
+  code=normalizeMfCode(code);
+  if(!code) return;
+  const fav=getMfFavourite(code);
+  const fid=`mf_${code}`;
+  const loaded=S.funds[fid];
+  const currentGroup=(loaded&&loaded.group)||(fav&&fav.group)||'Ungrouped';
+  const displayName=(loaded&&loaded.name)||(fav&&fav.name)||code;
+  const m=document.getElementById('mfGroupModal');
+  const cEl=document.getElementById('mf_edit_code');
+  const nEl=document.getElementById('mf_edit_name');
+  const gEl=document.getElementById('mf_edit_group');
+  if(cEl) cEl.textContent=code;
+  if(nEl) nEl.textContent=displayName;
+  if(gEl) gEl.value=currentGroup;
+  if(m) m.style.display='flex';
+}
+function closeMfGroupModal(){
+  const m=document.getElementById('mfGroupModal');
+  if(m) m.style.display='none';
+}
+function saveMfGroupFromModal(){
+  const code=normalizeMfCode(document.getElementById('mf_edit_code')?.textContent);
+  const raw=document.getElementById('mf_edit_group')?.value;
+  const newGroup=String(raw||'').trim()||'Ungrouped';
+  if(!code) return;
+  setMfFavouriteGroup(code, newGroup);
+  closeMfGroupModal();
 }
 
 async function resolveMfSchemeName(code){
@@ -762,7 +863,7 @@ function loadMfFavourite(code){
 
 async function addMfFavouriteFromModal(){
   const code=normalizeMfCode(document.getElementById('mf_code')?.value);
-  const group=String(document.getElementById('mf_group')?.value||'Ungrouped');
+  const group=String(document.getElementById('mf_group')?.value||'').trim()||'Ungrouped';
   const loadNow=!!document.getElementById('mf_loadNow')?.checked;
   const warn=document.getElementById('mfFavWarn');
 
@@ -858,12 +959,14 @@ function renderSidebar(){
           const selCls=si>=0?'s'+(si%3+1):'';
           const y1=f.rawData?.[0]?.date?.getFullYear?.()??0;
           const y2=(f.rawData&&f.rawData.length)?f.rawData[f.rawData.length-1].date.getFullYear():y1;
+          const mfEdit=f.scheme_code?`<button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${f.scheme_code}')" title="Change group">✎</button>`:'';
           return `<div class="fi ${selCls}" onclick="toggleFund('${f.id}')">
             <div class="fi-dot" style="background:${f.color}"></div>
             <div class="fi-info">
               <div class="fi-name" title="${f.name}">${shortN(f.name,20)}</div>
               <div class="fi-meta">${f.rawData.length} pts · ${y1}${y1!==y2?'–'+y2:''}</div>
             </div>
+            ${mfEdit}
             <button class="fi-del" onclick="removeFund(event,'${f.id}')">✕</button>
           </div>`;
         }
@@ -875,6 +978,7 @@ function renderSidebar(){
             <div class="fi-name" title="${it.name}">${shortN(it.name,20)}</div>
             <div class="fi-meta">MF fav · click to load</div>
           </div>
+          <button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${it.code}')" title="Change group">✎</button>
           <button class="fi-del" onclick="removeMfFavourite(event,'${it.code}')">✕</button>
         </div>`;
       }).join('')}
@@ -1326,6 +1430,7 @@ function buildSIPAuditSheet(wb, fds, sipM) {
 }
 
 loadMfFavouritesFromStorage();
+initSidebarCollapse();
 renderSidebar();
 </script>
 </body>
