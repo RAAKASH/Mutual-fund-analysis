@@ -138,6 +138,12 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .tab-pane{display:none}
 .tab-pane.active{display:block}
 
+.ts-slice-bar{display:flex;gap:5px;margin-bottom:16px;align-items:center}
+.ts-slice-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);margin-right:4px;font-family:'DM Mono',monospace}
+.ts-slice-btn{padding:4px 13px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--td);cursor:pointer;transition:all .15s;line-height:1.6}
+.ts-slice-btn:hover{border-color:var(--br2);color:var(--tx)}
+.ts-slice-btn.active{background:var(--acc);color:#000;border-color:var(--acc)}
+
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center}
 .modal{background:var(--sf2);border:1px solid var(--br2);border-radius:12px;width:540px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 28px 70px rgba(0,0,0,.8)}
 .modal-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--br);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
@@ -362,7 +368,16 @@ const SIP_M = [
 ];
 const ALL_M = [...CAGR_M, ...SIP_M];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null };
+const TS_SLICES = [
+  {key:'1m',  lbl:'1M',   ms: 30*24*3600*1000},
+  {key:'6m',  lbl:'6M',   ms: 182*24*3600*1000},
+  {key:'1y',  lbl:'1Y',   ms: 365.25*24*3600*1000},
+  {key:'3y',  lbl:'3Y',   ms: 3*365.25*24*3600*1000},
+  {key:'5y',  lbl:'5Y',   ms: 5*365.25*24*3600*1000},
+  {key:'full',lbl:'Full', ms: null},
+];
+
+const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full' };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 let uid = 0, pendingFiles = [];
@@ -1111,14 +1126,34 @@ function makeHist(fds,bins=25){
 // ─────────────────────────────────────────────────────
 //  TIME SERIES
 // ─────────────────────────────────────────────────────
+function getSliceMs(){
+  const s=TS_SLICES.find(x=>x.key===S.tsSlice);
+  return s?s.ms:null;
+}
+function sliceData(data){
+  const ms=getSliceMs();
+  if(!ms||!data||!data.length) return data;
+  const maxT=data[data.length-1].date.getTime();
+  const cutoff=maxT-ms;
+  const sliced=data.filter(p=>p.date.getTime()>=cutoff);
+  return sliced.length?sliced:data;
+}
+function setTsSlice(key){
+  S.tsSlice=key;
+  renderTimeSeries();
+}
 function renderTimeSeries(){
   const fds=S.selected.map(id=>S.funds[id]);
-  document.getElementById('tsContent').innerHTML=`<div class="sec">NAV History</div><div class="grid-1" id="navGrid"></div><div class="sec" style="margin-top:4px">Rolling Returns Over Time</div><div class="grid-2" id="tsGrid"></div>`;
+  const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
+  document.getElementById('tsContent').innerHTML=
+    `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}</div>`+
+    `<div class="sec">NAV History</div><div class="grid-1" id="navGrid"></div>`+
+    `<div class="sec" style="margin-top:4px">Rolling Returns Over Time</div><div class="grid-2" id="tsGrid"></div>`;
   document.getElementById('navGrid').innerHTML=`<div class="cc"><div class="cc-t">NAV History</div><div class="cc-s">Absolute NAV over time</div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
   requestAnimationFrame(()=>{
     kill('navChart');const ctx=document.getElementById('navChart')?.getContext('2d');if(!ctx) return;
     const navDatasets=fds.map((f,i)=>({
-      label:shortN(f.name),data:sampleForChart(f.rawData,350).map(p=>({x:p.date.getTime(),y:p.nav})),
+      label:shortN(f.name),data:sampleForChart(sliceData(f.rawData),350).map(p=>({x:p.date.getTime(),y:p.nav})),
       borderColor:COLORS[i%3],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
     }));
     const navXR=xRangeForPoints(navDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
@@ -1141,7 +1176,7 @@ function renderTimeSeries(){
     requestAnimationFrame(()=>{
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
       const rollDatasets=fds.filter(f=>f.computed[m.key]&&f.computed[m.key].length>=5).map(f=>({
-        label:shortN(f.name),data:sampleForChart(f.computed[m.key],350).map(p=>({x:p.date.getTime(),y:p.value})),
+        label:shortN(f.name),data:sampleForChart(sliceData(f.computed[m.key]),350).map(p=>({x:p.date.getTime(),y:p.value})),
         borderColor:COLORS[S.selected.indexOf(f.id)%3],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
       }));
       const rollXR=xRangeForPoints(rollDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
