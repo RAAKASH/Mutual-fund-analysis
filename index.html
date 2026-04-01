@@ -252,7 +252,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
           <div class="sec">CAGR — Lumpsum Returns</div>
           <div class="tiles-4" id="cagrTiles"></div>
           <div class="sec">SIP XIRR Returns<span class="stag">Monthly SIP simulated</span></div>
-          <div class="tiles-3" id="sipTiles"></div>
+          <div class="tiles-4" id="sipTiles"></div>
           <div class="grid-2">
             <div class="cc"><div class="cc-t">CAGR Comparison</div><div class="cc-s">Latest point-in-time values across periods</div><div class="cw"><canvas id="cagrChart"></canvas></div></div>
             <div class="cc"><div class="cc-t">SIP XIRR Comparison</div><div class="cc-s">Latest point-in-time values across periods</div><div class="cw"><canvas id="sipChart"></canvas></div></div>
@@ -381,6 +381,7 @@ const SIP_M = [
   {key:'sip1y', lbl:'1Y SIP XIRR', per:'1Y',  mo:12},
   {key:'sip3y', lbl:'3Y SIP XIRR', per:'3Y',  mo:36},
   {key:'sip5y', lbl:'5Y SIP XIRR', per:'5Y',  mo:60},
+  {key:'sip10y',lbl:'10Y SIP XIRR',per:'10Y', mo:120},
 ];
 const ALL_M = [...CAGR_M, ...SIP_M];
 
