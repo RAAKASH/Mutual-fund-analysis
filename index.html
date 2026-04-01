@@ -138,17 +138,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .tab-pane{display:none}
 .tab-pane.active{display:block}
 
-.nav-stats{margin-bottom:12px;padding-bottom:11px;border-bottom:1px solid var(--br);display:flex;flex-direction:column;gap:8px}
-.ns-fund{display:flex;flex-direction:column;gap:5px}
-.ns-fname{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;color:var(--tx)}
-.ns-rows{display:flex;flex-wrap:wrap;gap:0 22px;row-gap:7px}
-.ns-period{display:flex;flex-direction:column;gap:3px}
-.ns-plbl{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
-.ns-metrics{display:flex;gap:10px;flex-wrap:wrap}
-.ns-m{display:flex;flex-direction:column;gap:1px}
-.ns-ml{font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
-.ns-mv{font-size:12px;font-weight:700;font-family:'DM Mono',monospace}
-.ns-mv.pos{color:var(--pos)}.ns-mv.neg{color:var(--neg)}.ns-mv.na{color:var(--td)}
+.nav-stats{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--br)}
 .ts-slice-bar{display:flex;gap:5px;margin-bottom:16px;align-items:center}
 .ts-slice-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);margin-right:4px;font-family:'DM Mono',monospace}
 .ts-slice-btn{padding:4px 13px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--td);cursor:pointer;transition:all .15s;line-height:1.6}
@@ -1149,60 +1139,81 @@ function sliceData(data){
   const sliced=data.filter(p=>p.date.getTime()>=cutoff);
   return sliced.length?sliced:data;
 }
-function setTsSlice(key){
-  S.tsSlice=key;
-  renderTimeSeries();
+function setTsSlice(key){ S.tsSlice=key; renderTimeSeries(); }
+
+// Absolute return over the current slice window
+function computeSliceAbs(f){
+  const sd=sliceData(f.rawData);
+  if(sd.length<2) return null;
+  const ret=(sd[sd.length-1].nav/sd[0].nav-1)*100;
+  return isFinite(ret)?ret:null;
 }
 
-// Compute simple absolute return over a trailing window (ms)
-function absReturnOver(f, ms) {
-  const d = f.rawData;
-  if (!d.length) return null;
-  const latest = d[d.length-1];
-  const cutoff = latest.date.getTime() - ms;
-  const bi = bsearch(d, cutoff);
-  if (bi < 0) return null;
-  const past = d[bi];
-  if ((latest.date - past.date) < 5*86400000) return null; // need at least 5 days
-  return (latest.nav / past.nav - 1) * 100;
+// CAGR annualised over the current slice window
+function computeSliceCAGR(f){
+  const sd=sliceData(f.rawData);
+  if(sd.length<2) return null;
+  const yrs=(sd[sd.length-1].date-sd[0].date)/MS_YEAR;
+  if(yrs<0.08) return null;
+  const v=(Math.pow(sd[sd.length-1].nav/sd[0].nav,1/yrs)-1)*100;
+  return isFinite(v)?+v.toFixed(3):null;
 }
 
-function nsVal(label, val, isAbs) {
-  // val is a number or null; isAbs means no % suffix needed (it's already %)
-  const na = val == null || !isFinite(val);
-  const cls = na ? 'na' : val >= 0 ? 'pos' : 'neg';
-  const str = na ? 'N/A' : (val >= 0 ? '+' : '') + val.toFixed(2) + '%';
-  return `<div class="ns-m"><div class="ns-ml">${label}</div><div class="ns-mv ${cls}">${str}</div></div>`;
+// SIP XIRR computed on-the-fly for any window
+function computeSliceXIRR(f){
+  const sd=sliceData(f.rawData);
+  if(sd.length<2) return null;
+  const endDate=sd[sd.length-1].date;
+  const startMs=sd[0].date.getTime();
+  const monthsInWindow=Math.round((endDate.getTime()-startMs)/(30.44*24*3600*1000));
+  if(monthsInWindow<2) return null;
+  const cfs=[],dts=[];
+  let totalUnits=0;
+  for(let m=monthsInWindow;m>=1;m--){
+    const target=new Date(endDate);
+    target.setMonth(target.getMonth()-m);
+    const tMs=target.getTime();
+    if(tMs<startMs-35*86400000) continue;
+    const idx=bsearchSIP(f.rawData,tMs);
+    if(idx<0) continue;
+    const pt=f.rawData[idx];
+    const u=1000/pt.nav; totalUnits+=u;
+    cfs.push(-1000); dts.push(pt.date);
+  }
+  if(cfs.length<2||totalUnits===0) return null;
+  cfs.push(totalUnits*sd[sd.length-1].nav); dts.push(endDate);
+  try{
+    const r=xirr(cfs,dts);
+    return (r!==null&&isFinite(r)&&r>-1)?+(r*100).toFixed(3):null;
+  }catch(e){return null;}
 }
 
-// Slice key → metric config
-const SLICE_METRIC_CFG = {
-  '1m':  { ms:30*24*3600*1000,      cagrKey:null,     sipKey:null    },
-  '6m':  { ms:182*24*3600*1000,     cagrKey:null,     sipKey:'sip1y' },
-  '1y':  { ms:365.25*24*3600*1000,  cagrKey:'cagr1y', sipKey:'sip1y' },
-  '3y':  { ms:3*365.25*24*3600*1000,cagrKey:'cagr3y', sipKey:'sip3y' },
-  '5y':  { ms:5*365.25*24*3600*1000,cagrKey:'cagr5y', sipKey:'sip5y' },
-  'full':{ ms:null,                 cagrKey:'cagr10y',sipKey:'sip5y' },
+// Use precomputed where available, fall back to on-the-fly
+const PRECOMP_MAP = {
+  '1y':{ cagr:'cagr1y', xirr:'sip1y' },
+  '3y':{ cagr:'cagr3y', xirr:'sip3y' },
+  '5y':{ cagr:'cagr5y', xirr:'sip5y' },
 };
 
-function buildNavStats(fds) {
-  const cfg = SLICE_METRIC_CFG[S.tsSlice];
-  if (!cfg) return '';
+function buildNavStats(fds){
+  const pre=PRECOMP_MAP[S.tsSlice]||{};
+  // 1m: skip XIRR (only 1 installment possible, not meaningful)
+  const showXirr=S.tsSlice!=='1m';
 
-  return fds.map(f => {
-    const abs   = cfg.ms ? absReturnOver(f, cfg.ms)
-                         : (() => { const d=f.rawData; return d.length>1?(d[d.length-1].nav/d[0].nav-1)*100:null; })();
-    const cagrV = cfg.cagrKey ? latestVal(f, cfg.cagrKey)?.value ?? null : null;
-    const xirV  = cfg.sipKey  ? latestVal(f, cfg.sipKey)?.value  ?? null : null;
+  const fmt=(v,lbl)=>{
+    const na=v==null||!isFinite(v);
+    const col=na?'var(--td)':v>=0?'var(--pos)':'var(--neg)';
+    const str=na?'N/A':(v>=0?'+':'')+v.toFixed(2)+'%';
+    return sp(lbl,`<span style="color:${col}">${str}</span>`);
+  };
 
-    let metrics = nsVal('Abs Return', abs);
-    if (cfg.cagrKey) metrics += nsVal('CAGR', cagrV);
-    if (cfg.sipKey)  metrics += nsVal('SIP XIRR', xirV);
-
-    return `<div class="ns-fund">
-      <div class="ns-fname"><span style="width:8px;height:8px;border-radius:50%;background:${f.color};display:inline-block;flex-shrink:0"></span>${shortN(f.name,50)}</div>
-      <div class="ns-metrics">${metrics}</div>
-    </div>`;
+  return fds.map(f=>{
+    const absV  = computeSliceAbs(f);
+    const cagrV = pre.cagr ? latestVal(f,pre.cagr)?.value??null : computeSliceCAGR(f);
+    const xirrV = showXirr ? (pre.xirr ? latestVal(f,pre.xirr)?.value??null : computeSliceXIRR(f)) : null;
+    let row=fmt(absV,'Abs Return')+fmt(cagrV,'CAGR');
+    if(showXirr) row+=fmt(xirrV,'SIP XIRR');
+    return `<div class="dsf"><div class="dsf-name" style="color:${f.color}">● ${shortN(f.name,50)}</div><div class="dsrow">${row}</div></div>`;
   }).join('');
 }
 
@@ -1215,9 +1226,11 @@ function renderTimeSeries(){
     `<div class="grid-1" id="navGrid"></div>`+
     `<div class="sec" style="margin-top:4px">Rolling Returns Over Time</div><div class="grid-2" id="tsGrid"></div>`;
 
-  // ── NAV chart + inline stats ──
-  document.getElementById('navGrid').innerHTML=`<div class="cc"><div class="cc-t">NAV History</div><div class="nav-stats" id="navStats"></div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
-  document.getElementById('navStats').innerHTML = buildNavStats(fds);
+  // ── NAV card: stats (using existing dstats style) above the chart ──
+  document.getElementById('navGrid').innerHTML=
+    `<div class="cc"><div class="cc-t">NAV History</div><div class="dstats" id="navStats" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--br)"></div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
+  document.getElementById('navStats').innerHTML=buildNavStats(fds);
+
   requestAnimationFrame(()=>{
     kill('navChart');const ctx=document.getElementById('navChart')?.getContext('2d');if(!ctx) return;
     const navDatasets=fds.map((f,i)=>({
