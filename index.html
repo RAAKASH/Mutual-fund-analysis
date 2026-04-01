@@ -138,6 +138,17 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .tab-pane{display:none}
 .tab-pane.active{display:block}
 
+.nav-stats{margin-bottom:12px;padding-bottom:11px;border-bottom:1px solid var(--br);display:flex;flex-direction:column;gap:8px}
+.ns-fund{display:flex;flex-direction:column;gap:5px}
+.ns-fname{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;color:var(--tx)}
+.ns-rows{display:flex;flex-wrap:wrap;gap:0 22px;row-gap:7px}
+.ns-period{display:flex;flex-direction:column;gap:3px}
+.ns-plbl{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
+.ns-metrics{display:flex;gap:10px;flex-wrap:wrap}
+.ns-m{display:flex;flex-direction:column;gap:1px}
+.ns-ml{font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
+.ns-mv{font-size:12px;font-weight:700;font-family:'DM Mono',monospace}
+.ns-mv.pos{color:var(--pos)}.ns-mv.neg{color:var(--neg)}.ns-mv.na{color:var(--td)}
 .ts-slice-bar{display:flex;gap:5px;margin-bottom:16px;align-items:center}
 .ts-slice-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);margin-right:4px;font-family:'DM Mono',monospace}
 .ts-slice-btn{padding:4px 13px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--td);cursor:pointer;transition:all .15s;line-height:1.6}
@@ -1056,7 +1067,7 @@ function tilHtml(m,fds){
     const vObj=latestVal(f,m.key);
     if(vObj&&vObj.startDate) perStr=`${fmtFullDate(vObj.startDate)} → ${fmtFullDate(vObj.endDate)}`;
     const cls=vObj==null?'na':vObj.value>=0?'pos':'neg';
-    return `<div class="tile-row"><div class="td-dot" style="background:${f.color}"></div><div class="tn" title="${f.name}">${shortN(f.name,15)}</div><div class="tv ${cls}">${vObj==null?'N/A':vObj.value.toFixed(1)+'%'}</div></div>`;
+    return `<div class="tile-row"><div class="td-dot" style="background:${f.color}"></div><div class="tn" title="${f.name}">${shortN(f.name,22)}</div><div class="tv ${cls}">${vObj==null?'N/A':vObj.value.toFixed(1)+'%'}</div></div>`;
   }).join('');
   return `<div class="tile"><div class="tile-lbl">${m.lbl}</div><div class="tile-per">${perStr}</div><div class="tile-rows">${rows}</div></div>`;
 }
@@ -1065,7 +1076,7 @@ function barChart(cid,labels,fds,keys){
   kill(cid);
   const ctx=document.getElementById(cid)?.getContext('2d'); if(!ctx) return;
   S.charts[cid]=new Chart(ctx,{type:'bar',data:{labels,datasets:fds.map((f,i)=>({
-    label:shortN(f.name),data:keys.map(k=>latestVal(f,k)?.value),
+    label:shortN(f.name,50),data:keys.map(k=>latestVal(f,k)?.value),
     backgroundColor:COLORS_BG[i%3],borderColor:COLORS[i%3],borderWidth:2,borderRadius:4,
   }))},options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
@@ -1084,7 +1095,7 @@ function renderDistributions(){
   if(!valid.length){el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:32px;opacity:.2">📉</div><div style="font-size:15px;font-weight:800;color:var(--tx);margin-top:8px">Insufficient data</div></div>`;return;}
   el.innerHTML=`<div class="sec">Return Distributions <span class="stag">all historical rolling returns</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar counts returns in a range <strong style="color:var(--tx)">[lower, upper)</strong> in % (lower ≤ r &lt; upper), except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
   valid.forEach(m=>{
-    const fd=fds.map(f=>({name:shortN(f.name),ci:S.selected.indexOf(f.id)%3,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
+    const fd=fds.map(f=>({name:shortN(f.name,50),ci:S.selected.indexOf(f.id)%3,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
     if(!fd.length) return;
     const hist=makeHist(fd,25),cid=`d_${m.key}`;
     const statsHtml=fd.map(d=>{
@@ -1142,18 +1153,75 @@ function setTsSlice(key){
   S.tsSlice=key;
   renderTimeSeries();
 }
+
+// Compute simple absolute return over a trailing window (ms)
+function absReturnOver(f, ms) {
+  const d = f.rawData;
+  if (!d.length) return null;
+  const latest = d[d.length-1];
+  const cutoff = latest.date.getTime() - ms;
+  const bi = bsearch(d, cutoff);
+  if (bi < 0) return null;
+  const past = d[bi];
+  if ((latest.date - past.date) < 5*86400000) return null; // need at least 5 days
+  return (latest.nav / past.nav - 1) * 100;
+}
+
+function nsVal(label, val, isAbs) {
+  // val is a number or null; isAbs means no % suffix needed (it's already %)
+  const na = val == null || !isFinite(val);
+  const cls = na ? 'na' : val >= 0 ? 'pos' : 'neg';
+  const str = na ? 'N/A' : (val >= 0 ? '+' : '') + val.toFixed(2) + '%';
+  return `<div class="ns-m"><div class="ns-ml">${label}</div><div class="ns-mv ${cls}">${str}</div></div>`;
+}
+
+// Slice key → metric config
+const SLICE_METRIC_CFG = {
+  '1m':  { ms:30*24*3600*1000,      cagrKey:null,     sipKey:null    },
+  '6m':  { ms:182*24*3600*1000,     cagrKey:null,     sipKey:'sip1y' },
+  '1y':  { ms:365.25*24*3600*1000,  cagrKey:'cagr1y', sipKey:'sip1y' },
+  '3y':  { ms:3*365.25*24*3600*1000,cagrKey:'cagr3y', sipKey:'sip3y' },
+  '5y':  { ms:5*365.25*24*3600*1000,cagrKey:'cagr5y', sipKey:'sip5y' },
+  'full':{ ms:null,                 cagrKey:'cagr10y',sipKey:'sip5y' },
+};
+
+function buildNavStats(fds) {
+  const cfg = SLICE_METRIC_CFG[S.tsSlice];
+  if (!cfg) return '';
+
+  return fds.map(f => {
+    const abs   = cfg.ms ? absReturnOver(f, cfg.ms)
+                         : (() => { const d=f.rawData; return d.length>1?(d[d.length-1].nav/d[0].nav-1)*100:null; })();
+    const cagrV = cfg.cagrKey ? latestVal(f, cfg.cagrKey)?.value ?? null : null;
+    const xirV  = cfg.sipKey  ? latestVal(f, cfg.sipKey)?.value  ?? null : null;
+
+    let metrics = nsVal('Abs Return', abs);
+    if (cfg.cagrKey) metrics += nsVal('CAGR', cagrV);
+    if (cfg.sipKey)  metrics += nsVal('SIP XIRR', xirV);
+
+    return `<div class="ns-fund">
+      <div class="ns-fname"><span style="width:8px;height:8px;border-radius:50%;background:${f.color};display:inline-block;flex-shrink:0"></span>${shortN(f.name,50)}</div>
+      <div class="ns-metrics">${metrics}</div>
+    </div>`;
+  }).join('');
+}
+
 function renderTimeSeries(){
   const fds=S.selected.map(id=>S.funds[id]);
   const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
   document.getElementById('tsContent').innerHTML=
     `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}</div>`+
-    `<div class="sec">NAV History</div><div class="grid-1" id="navGrid"></div>`+
+    `<div class="sec">NAV History</div>`+
+    `<div class="grid-1" id="navGrid"></div>`+
     `<div class="sec" style="margin-top:4px">Rolling Returns Over Time</div><div class="grid-2" id="tsGrid"></div>`;
-  document.getElementById('navGrid').innerHTML=`<div class="cc"><div class="cc-t">NAV History</div><div class="cc-s">Absolute NAV over time</div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
+
+  // ── NAV chart + inline stats ──
+  document.getElementById('navGrid').innerHTML=`<div class="cc"><div class="cc-t">NAV History</div><div class="nav-stats" id="navStats"></div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
+  document.getElementById('navStats').innerHTML = buildNavStats(fds);
   requestAnimationFrame(()=>{
     kill('navChart');const ctx=document.getElementById('navChart')?.getContext('2d');if(!ctx) return;
     const navDatasets=fds.map((f,i)=>({
-      label:shortN(f.name),data:sampleForChart(sliceData(f.rawData),350).map(p=>({x:p.date.getTime(),y:p.nav})),
+      label:shortN(f.name,50),data:sampleForChart(sliceData(f.rawData),350).map(p=>({x:p.date.getTime(),y:p.nav})),
       borderColor:COLORS[i%3],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
     }));
     const navXR=xRangeForPoints(navDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
@@ -1169,6 +1237,8 @@ function renderTimeSeries(){
       scales:{x:navXScale,
         y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>'₹'+v.toFixed(0)}}}}});
   });
+
+  // ── Rolling Returns ──
   const tsGrid=document.getElementById('tsGrid');
   ALL_M.filter(m=>fds.some(f=>f.computed[m.key]&&f.computed[m.key].length>=5)).forEach(m=>{
     const cid=`ts_${m.key}`;
@@ -1176,7 +1246,7 @@ function renderTimeSeries(){
     requestAnimationFrame(()=>{
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
       const rollDatasets=fds.filter(f=>f.computed[m.key]&&f.computed[m.key].length>=5).map(f=>({
-        label:shortN(f.name),data:sampleForChart(sliceData(f.computed[m.key]),350).map(p=>({x:p.date.getTime(),y:p.value})),
+        label:shortN(f.name,50),data:sampleForChart(sliceData(f.computed[m.key]),350).map(p=>({x:p.date.getTime(),y:p.value})),
         borderColor:COLORS[S.selected.indexOf(f.id)%3],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
       }));
       const rollXR=xRangeForPoints(rollDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
