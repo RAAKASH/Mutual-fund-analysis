@@ -94,7 +94,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-msg{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;color:var(--tx)}
 
-.tabs-bar{display:flex;align-items:center;padding:0 22px;border-bottom:1px solid var(--br);background:var(--sf);flex-shrink:0}
+.tabs-bar{display:flex;align-items:center;padding:0 22px;border-bottom:1px solid var(--br);background:var(--sf);flex-shrink:0;position:sticky;top:0;z-index:40}
 .tab{padding:13px 16px;font-size:13px;font-weight:700;color:var(--td);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
 .tab:hover{color:var(--tx)}
 .tab.active{color:var(--acc);border-bottom-color:var(--acc)}
@@ -104,9 +104,13 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .export-btn:hover{background:rgba(52,211,153,.22);border-color:rgba(52,211,153,.6)}
 .export-btn:disabled{opacity:.4;cursor:not-allowed}
 
-.content{padding:20px 22px;flex:1}
-.sel-bar{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
-.sel-badge{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid}
+.content{padding:0 22px 20px;flex:1}
+.sel-bar{display:flex;gap:7px;margin:0 -22px 18px;padding:10px 22px;flex-wrap:wrap;align-items:center;position:sticky;top:44px;z-index:30;background:var(--sf2);border-bottom:1px solid var(--br)}
+.sel-bar::before{content:'Chart Legend';font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#f8d27a;font-family:'DM Mono',monospace;margin-right:6px}
+.sel-badge{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid;cursor:pointer;transition:transform .15s,border-color .15s,filter .15s}
+.sel-badge:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.sel-badge:active{transform:translateY(0)}
+.sel-badge.is-muted{opacity:.45;filter:saturate(.6);border-style:dashed}
 .sel-badge.p1{color:#ffd070;background:var(--c1a);border-color:var(--c1b)}
 .sel-badge.p2{color:#93c5fd;background:var(--c2a);border-color:var(--c2b)}
 .sel-badge.p3{color:#6ee7b7;background:var(--c3a);border-color:var(--c3b)}
@@ -192,6 +196,40 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .btn-ghost{padding:8px 14px;background:transparent;color:var(--tx);border:1px solid var(--br2);border-radius:5px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
 .btn-ghost:hover{background:var(--sf3);border-color:var(--tm)}
 
+/* ── Snapshot sortable table ── */
+.snap-wrap{overflow-x:auto;border:1px solid var(--br);border-radius:var(--r);background:var(--sf)}
+.snap-tbl{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace}
+.snap-tbl thead tr{border-bottom:2px solid var(--br2)}
+.snap-tbl th{padding:11px 14px;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--td);white-space:nowrap;cursor:pointer;user-select:none;text-align:center;position:relative;transition:color .15s;background:var(--sf2)}
+.snap-tbl th:first-child{text-align:left;min-width:180px}
+.snap-tbl th:hover{color:var(--tx)}
+.snap-tbl th.sort-asc,.snap-tbl th.sort-desc{color:var(--acc)}
+.snap-tbl th .sort-arrow{display:inline-block;margin-left:5px;opacity:.35;font-size:9px;line-height:1}
+.snap-tbl th.sort-asc .sort-arrow,.snap-tbl th.sort-desc .sort-arrow{opacity:1}
+.snap-tbl td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--br);text-align:center;vertical-align:middle;white-space:nowrap}
+.snap-tbl td:first-child{text-align:left;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--tx);white-space:normal;word-break:break-word;max-width:220px}
+.snap-tbl tbody tr:last-child td{border-bottom:none}
+.snap-tbl tbody tr:hover td{background:rgba(255,255,255,.03)}
+.snap-tbl tbody tr.is-muted td{opacity:.48}
+.snap-cell{display:flex;flex-direction:column;align-items:center;gap:4px}
+.snap-val{font-weight:600}
+.snap-val.pos{color:var(--pos)}
+.snap-val.neg{color:var(--neg)}
+.snap-val.na{color:var(--td);font-size:11px}
+.snap-rank{display:inline-flex;align-items:center;justify-content:center;min-width:38px;padding:2px 8px;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;font-family:'DM Mono',monospace;background:var(--sf3);border:1px solid var(--br);color:var(--tm)}
+.snap-rank.r1{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.35);color:#fcd34d}
+.snap-rank.r2{background:rgba(148,163,184,.12);border-color:rgba(148,163,184,.35);color:#cbd5e1}
+.snap-rank.na{opacity:.55}
+.snap-fund-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;flex-shrink:0;vertical-align:middle}
+.snap-period{display:block;font-size:9px;font-weight:500;color:var(--td);margin-top:2px;font-family:'DM Mono',monospace}
+.snap-sort-hint{font-size:10px;font-weight:600;font-family:'DM Mono',monospace;color:var(--td);margin-bottom:10px}
+.snap-group-hdr{padding:6px 14px;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);background:var(--sf3);border-bottom:1px solid var(--br)}
+
+@media(max-width:600px){
+  .snap-tbl th,.snap-tbl td{padding:8px 10px;font-size:11px}
+  .snap-tbl td:first-child{max-width:130px}
+}
+
 @media(max-width:860px){.tiles-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
 
 @media(max-width:600px){
@@ -201,8 +239,8 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   .upload-btn{padding:7px 11px;font-size:12px}
   .btn-ghost{padding:7px 10px;font-size:12px}
 
-  .content{padding:12px 10px}
-  .sel-bar{gap:5px;margin-bottom:12px}
+  .content{padding:0 10px 12px}
+  .sel-bar{gap:5px;margin:0 -10px 12px;padding:8px 10px;top:40px}
   .sel-badge{padding:4px 9px;font-size:11px}
 
   .tiles-4,.tiles-3{grid-template-columns:1fr}
@@ -299,14 +337,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
       <div class="content">
         <div class="sel-bar" id="selBar"></div>
         <div class="tab-pane active" id="pane-snapshot">
-          <div class="sec">CAGR — Lumpsum Returns</div>
-          <div class="tiles-4" id="cagrTiles"></div>
-          <div class="sec">SIP XIRR Returns<span class="stag">Monthly SIP simulated</span></div>
-          <div class="tiles-4" id="sipTiles"></div>
-          <div class="grid-2">
-            <div class="cc"><div class="cc-t">CAGR Comparison</div><div class="cc-s">Latest point-in-time values across periods</div><div class="cw"><canvas id="cagrChart"></canvas></div></div>
-            <div class="cc"><div class="cc-t">SIP XIRR Comparison</div><div class="cc-s">Latest point-in-time values across periods</div><div class="cw"><canvas id="sipChart"></canvas></div></div>
-          </div>
+          <div id="snapshotContent"></div>
         </div>
         <div class="tab-pane" id="pane-distributions"><div id="distContent"></div></div>
         <div class="tab-pane" id="pane-timeseries"><div id="tsContent"></div></div>
@@ -465,7 +496,7 @@ const TS_SLICES = [
   {key:'full',lbl:'Full', ms: null},
 ];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full', groupCollapsed:{} };
+const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{} };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
@@ -1188,6 +1219,14 @@ function toggleFund(id){
   else{S.selected.push(id);}
   renderSidebar();renderDashboard();
 }
+function toggleLegendFund(id){
+  S.hiddenFunds=S.hiddenFunds||{};
+  S.hiddenFunds[id]=!S.hiddenFunds[id];
+  renderDashboard();
+}
+function getVisibleFunds(){
+  return S.selected.map(id=>S.funds[id]).filter(f=>f && !S.hiddenFunds?.[f.id]);
+}
 function removeFund(e,id){e.stopPropagation();delete S.funds[id];S.selected=S.selected.filter(x=>x!==id);renderSidebar();renderDashboard();}
 
 function renderSidebar(){
@@ -1287,7 +1326,9 @@ function renderDashboard(){
   if(!hasSel) return;
   document.getElementById('selBar').innerHTML=S.selected.map((id,i)=>{
     const f=S.funds[id];
-    return `<div class="sel-badge p${(i%COLORS.length)+1}"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</div>`;
+    const muted=S.hiddenFunds?.[f.id]?' is-muted':'';
+    const label=S.hiddenFunds?.[f.id]?'Show':'Hide';
+    return `<button type="button" class="sel-badge p${(i%COLORS.length)+1}${muted}" onclick="toggleLegendFund('${f.id}')" title="${label} ${f.name} in charts"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</button>`;
   }).join('');
   renderCurrentPane();
 }
@@ -1305,51 +1346,162 @@ function switchTab(t){
 }
 
 // ─────────────────────────────────────────────────────
-//  SNAPSHOT
+//  SNAPSHOT — sortable table
 // ─────────────────────────────────────────────────────
-function renderSnapshot(){
-  const fds=S.selected.map(id=>S.funds[id]);
-  document.getElementById('cagrTiles').innerHTML=CAGR_M.map(m=>tilHtml(m,fds)).join('');
-  document.getElementById('sipTiles').innerHTML=SIP_M.map(m=>tilHtml(m,fds)).join('');
-  barChart('cagrChart',CAGR_M.map(m=>m.per),fds,CAGR_M.map(m=>m.key));
-  barChart('sipChart',SIP_M.map(m=>m.per),fds,SIP_M.map(m=>m.key));
+const SNAP_SORT = { col: 'fund', dir: 1 }; // dir: 1=asc, -1=desc
+
+const SNAP_COLS = [
+  { key:'fund',    label:'Fund',        group:null,   fmt:null },
+  { key:'cagr1y',  label:'1Y CAGR',     group:'CAGR', fmt:'pct' },
+  { key:'cagr3y',  label:'3Y CAGR',     group:'CAGR', fmt:'pct' },
+  { key:'cagr5y',  label:'5Y CAGR',     group:'CAGR', fmt:'pct' },
+  { key:'cagr10y', label:'10Y CAGR',    group:'CAGR', fmt:'pct' },
+  { key:'sip1y',   label:'1Y SIP XIRR', group:'SIP XIRR', fmt:'pct' },
+  { key:'sip3y',   label:'3Y SIP XIRR', group:'SIP XIRR', fmt:'pct' },
+  { key:'sip5y',   label:'5Y SIP XIRR', group:'SIP XIRR', fmt:'pct' },
+  { key:'sip10y',  label:'10Y SIP XIRR',group:'SIP XIRR', fmt:'pct' },
+];
+
+function snapSortBy(key){
+  if(SNAP_SORT.col===key) SNAP_SORT.dir*=-1;
+  else { SNAP_SORT.col=key; SNAP_SORT.dir=key==='fund'?1:-1; }
+  renderSnapshot();
 }
 
-function tilHtml(m,fds){
-  let perStr='Latest Period';
-  const rows=fds.map(f=>{
-    const vObj=latestVal(f,m.key);
-    if(vObj&&vObj.startDate) perStr=`${fmtFullDate(vObj.startDate)} → ${fmtFullDate(vObj.endDate)}`;
-    const cls=vObj==null?'na':vObj.value>=0?'pos':'neg';
-    return `<div class="tile-row"><div class="td-dot" style="background:${f.color}"></div><div class="tn" title="${f.name}">${shortN(f.name,48)}</div><div class="tv ${cls}">${vObj==null?'N/A':vObj.value.toFixed(1)+'%'}</div></div>`;
-  }).join('');
-  return `<div class="tile"><div class="tile-lbl">${m.lbl}</div><div class="tile-per">${perStr}</div><div class="tile-rows">${rows}</div></div>`;
-}
-
-function barChart(cid,labels,fds,keys){
+function renderSnapshotBarChart(cid, labels, fds, keys){
   kill(cid);
   const ctx=document.getElementById(cid)?.getContext('2d'); if(!ctx) return;
   S.charts[cid]=new Chart(ctx,{type:'bar',data:{labels,datasets:fds.map((f,i)=>({
-    label:shortN(f.name,50),data:keys.map(k=>latestVal(f,k)?.value),
-    backgroundColor:COLORS_BG[i%COLORS.length],borderColor:COLORS[i%COLORS.length],borderWidth:2,borderRadius:4,
+    label:shortN(f.name,50),
+    data:keys.map(k=>latestVal(f,k)?.value),
+    backgroundColor:COLORS_BG[f.ci%COLORS.length],
+    borderColor:COLORS[f.ci%COLORS.length],
+    borderWidth:2,
+    borderRadius:4,
   }))},options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
+    plugins:{legend:{display:false},
       tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw!=null?c.raw.toFixed(2)+'%':'N/A'}`}}},
     scales:{x:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'}}},
       y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>v+'%'}}}}});
+}
+
+function renderSnapshot(){
+  const fds=S.selected.map(id=>S.funds[id]);
+  const visibleFds=getVisibleFunds();
+  const el=document.getElementById('snapshotContent');
+
+  if(!visibleFds.length){
+    el.innerHTML=`<div class="cc"><div class="cc-t">Snapshot Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;
+    return;
+  }
+
+  const rows=visibleFds.map(f=>{
+    const row={fund:f,_name:f.name.toLowerCase()};
+    for(const c of SNAP_COLS){
+      if(c.key==='fund') continue;
+      const v=latestVal(f,c.key);
+      row[c.key]=v?v.value:null;
+    }
+    return row;
+  });
+
+  const rankMap={};
+  for(const c of SNAP_COLS){
+    if(c.key==='fund') continue;
+    const ranked=rows.filter(r=>r[c.key]!=null).sort((a,b)=>b[c.key]-a[c.key]);
+    ranked.forEach((row,idx)=>{
+      if(!rankMap[row.fund.id]) rankMap[row.fund.id]={};
+      rankMap[row.fund.id][c.key]=idx+1;
+    });
+  }
+
+  rows.sort((a,b)=>{
+    if(SNAP_SORT.col==='fund') return SNAP_SORT.dir*a._name.localeCompare(b._name);
+    const av=a[SNAP_SORT.col], bv=b[SNAP_SORT.col];
+    if(av==null&&bv==null) return 0;
+    if(av==null) return 1;
+    if(bv==null) return -1;
+    return SNAP_SORT.dir*(av-bv);
+  });
+
+  const arrow=(key)=>{
+    if(SNAP_SORT.col!==key) return `<span class="sort-arrow">&#8645;</span>`;
+    return `<span class="sort-arrow">${SNAP_SORT.dir===1?'&#9650;':'&#9660;'}</span>`;
+  };
+  const thCls=(key)=>SNAP_SORT.col===key?(SNAP_SORT.dir===1?'sort-asc':'sort-desc'):'';
+
+  const metricCols=SNAP_COLS.filter(c=>c.key!=='fund');
+  let lastG=null, gSpan=0;
+  const groupHeaders=[];
+  for(const c of metricCols){
+    if(c.group!==lastG){
+      if(lastG!==null) groupHeaders.push({label:lastG,span:gSpan});
+      lastG=c.group; gSpan=1;
+    } else gSpan++;
+  }
+  if(lastG!==null) groupHeaders.push({label:lastG,span:gSpan});
+
+  const groupRow=`<tr>
+    <th style="border-bottom:1px solid var(--br);background:var(--sf3)"></th>
+    ${groupHeaders.map(g=>`<th colspan="${g.span}" style="text-align:center;border-bottom:1px solid var(--br);border-left:1px solid var(--br);background:var(--sf3);letter-spacing:1.5px">${g.label}</th>`).join('')}
+  </tr>`;
+
+  const colHdrRow=`<tr>
+    ${SNAP_COLS.map((c,i)=>`<th class="${thCls(c.key)}" onclick="snapSortBy('${c.key}')" ${i>0&&(i===1||SNAP_COLS[i-1].group!==c.group)?'style="border-left:1px solid var(--br)"':''}>
+      ${c.label}${arrow(c.key)}
+    </th>`).join('')}
+  </tr>`;
+
+  const bodyRows=rows.map(row=>{
+    const f=row.fund;
+    const latestDate=f.rawData?.length?fmtFullDate(f.rawData[f.rawData.length-1].date):'';
+    const cells=SNAP_COLS.map((c,i)=>{
+      if(c.key==='fund'){
+        return `<td>
+          <span class="snap-fund-dot" style="background:${f.color}"></span>${f.name}
+          <span class="snap-period">${f.rawData?.length||0} pts &middot; latest ${latestDate}</span>
+        </td>`;
+      }
+      const v=row[c.key];
+      const rank=rankMap[f.id]?.[c.key]??null;
+      const cls=v==null?'na':v>=0?'pos':'neg';
+      const txt=v==null?'&mdash;':(v>=0?'+':'')+v.toFixed(2)+'%';
+      const border=i>0&&(i===1||SNAP_COLS[i-1].group!==c.group)?'border-left:1px solid var(--br);':'';
+      const rankCls=rank==null?'na':rank<=3?`r${rank}`:'';
+      const rankTxt=rank==null?'N/A':`#${rank}`;
+      return `<td style="${border}"><div class="snap-cell"><span class="snap-val ${cls}">${txt}</span><span class="snap-rank ${rankCls}">${rankTxt}</span></div></td>`;
+    }).join('');
+    return `<tr${S.hiddenFunds?.[f.id]?' class="is-muted"':''}>${cells}</tr>`;
+  }).join('');
+
+  el.innerHTML=`
+    <div class="snap-sort-hint">Click any column header to sort ↑↓</div>
+    <div class="snap-wrap">
+      <table class="snap-tbl">
+        <thead>${groupRow}${colHdrRow}</thead>
+        <tbody>${bodyRows}</tbody>
+      </table>
+    </div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="cc"><div class="cc-t">CAGR Comparison</div><div class="cc-s">Latest point-in-time values across periods</div><div class="cw"><canvas id="snapCagrChart"></canvas></div></div>
+      <div class="cc"><div class="cc-t">SIP XIRR Comparison</div><div class="cc-s">Latest point-in-time values across periods</div><div class="cw"><canvas id="snapSipChart"></canvas></div></div>
+    </div>`;
+  renderSnapshotBarChart('snapCagrChart', ['1Y','3Y','5Y','10Y'], visibleFds, ['cagr1y','cagr3y','cagr5y','cagr10y']);
+  renderSnapshotBarChart('snapSipChart', ['1Y','3Y','5Y','10Y'], visibleFds, ['sip1y','sip3y','sip5y','sip10y']);
 }
 
 // ─────────────────────────────────────────────────────
 //  DISTRIBUTIONS
 // ─────────────────────────────────────────────────────
 function renderDistributions(){
-  const fds=S.selected.map(id=>S.funds[id]);
+  const fds=getVisibleFunds();
   const el=document.getElementById('distContent');
+  if(!fds.length){el.innerHTML=`<div class="cc"><div class="cc-t">Distributions Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;return;}
   const valid=ALL_M.filter(m=>fds.some(f=>f.computed[m.key]&&f.computed[m.key].length>=10));
   if(!valid.length){el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:32px;opacity:.2">📉</div><div style="font-size:15px;font-weight:800;color:var(--tx);margin-top:8px">Insufficient data</div></div>`;return;}
   el.innerHTML=`<div class="sec">Return Distributions <span class="stag">all historical rolling returns</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar counts returns in a range <strong style="color:var(--tx)">[lower, upper)</strong> in % (lower ≤ r &lt; upper), except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
   valid.forEach(m=>{
-    const fd=fds.map(f=>({name:shortN(f.name,50),ci:S.selected.indexOf(f.id)%COLORS.length,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
+    const fd=fds.map(f=>({name:shortN(f.name,50),ci:f.ci%COLORS.length,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
     if(!fd.length) return;
     const hist=makeHist(fd,25),cid=`d_${m.key}`;
     const statsHtml=fd.map(d=>{
@@ -1362,7 +1514,7 @@ function renderDistributions(){
     requestAnimationFrame(()=>{
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
       S.charts[cid]=new Chart(ctx,{type:'bar',data:hist,options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
+        plugins:{legend:{display:false},
           tooltip:{callbacks:{
             title:items=>items.length&&items[0].label?`Range ${items[0].label}`:'',
             label:c=>`${c.dataset.label}: ${c.parsed.y} rolling return${c.parsed.y===1?'':'s'}`
@@ -1376,8 +1528,7 @@ function renderDistributions(){
 
 function getDistributionRows(metricKey){
   const rows=[];
-  for(const id of S.selected){
-    const f=S.funds[id];
+  for(const f of getVisibleFunds()){
     const pts=f?.computed?.[metricKey]||[];
     for(const p of pts){
       rows.push({
@@ -1519,8 +1670,12 @@ function buildNavStats(fds){
 }
 
 function renderTimeSeries(){
-  const fds=S.selected.map(id=>S.funds[id]);
+  const fds=getVisibleFunds();
   const isMobile=window.innerWidth<=600;
+  if(!fds.length){
+    document.getElementById('tsContent').innerHTML=`<div class="cc"><div class="cc-t">Time Series Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;
+    return;
+  }
   const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
   document.getElementById('tsContent').innerHTML=
     `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}</div>`+
@@ -1535,16 +1690,16 @@ function renderTimeSeries(){
 
   requestAnimationFrame(()=>{
     kill('navChart');const ctx=document.getElementById('navChart')?.getContext('2d');if(!ctx) return;
-    const navDatasets=fds.map((f,i)=>({
+    const navDatasets=fds.map((f)=>({
       label:shortN(f.name,50),data:sampleForChart(sliceData(f.rawData),350).map(p=>({x:p.date.getTime(),y:p.nav})),
-      borderColor:COLORS[i%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
+      borderColor:COLORS[f.ci%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
     }));
     const navXR=xRangeForPoints(navDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
     const navXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
     if(navXR){navXScale.min=navXR.min;navXScale.max=navXR.max;}
     S.charts['navChart']=new Chart(ctx,{type:'line',data:{datasets:navDatasets},options:{responsive:true,maintainAspectRatio:false,
       interaction:{mode:'nearest',axis:'x',intersect:false},
-      plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
+      plugins:{legend:{display:false},
         tooltip:{callbacks:{
           title:items=>!items.length?'':fmtFullDate(new Date(items[0].parsed.x)),
           label:c=>{const y=c.parsed.y;return y==null||!isFinite(y)?`${c.dataset.label}: N/A`:`${c.dataset.label}: ₹${y.toFixed(2)}`;}
@@ -1562,14 +1717,14 @@ function renderTimeSeries(){
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
       const rollDatasets=fds.filter(f=>f.computed[m.key]&&f.computed[m.key].length>=5).map(f=>({
         label:shortN(f.name,50),data:sampleForChart(sliceData(f.computed[m.key]),350).map(p=>({x:p.date.getTime(),y:p.value})),
-        borderColor:COLORS[S.selected.indexOf(f.id)%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
+        borderColor:COLORS[f.ci%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
       }));
       const rollXR=xRangeForPoints(rollDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
       const rollXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
       if(rollXR){rollXScale.min=rollXR.min;rollXScale.max=rollXR.max;}
       S.charts[cid]=new Chart(ctx,{type:'line',data:{datasets:rollDatasets},options:{responsive:true,maintainAspectRatio:false,
         interaction:{mode:'nearest',axis:'x',intersect:false},
-        plugins:{legend:{labels:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},boxWidth:10}},
+        plugins:{legend:{display:false},
           tooltip:{callbacks:{
             title:items=>!items.length?'':fmtFullDate(new Date(items[0].parsed.x)),
             label:c=>{const y=c.parsed.y;return y==null||!isFinite(y)?`${c.dataset.label}: N/A`:`${c.dataset.label}: ${y.toFixed(2)}%`;}
