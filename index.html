@@ -125,10 +125,10 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .tile-lbl{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--tm);margin-bottom:4px}
 .tile-per{font-size:9px;font-weight:600;font-family:'DM Mono',monospace;color:var(--td);margin-bottom:11px;text-transform:uppercase}
 .tile-rows{display:flex;flex-direction:column;gap:8px}
-.tile-row{display:flex;align-items:center;gap:7px}
-.td-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.tn{font-size:12px;font-weight:600;color:var(--tx);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.tv{font-family:'DM Mono',monospace;font-size:16px;font-weight:600;flex-shrink:0}
+.tile-row{display:flex;align-items:flex-start;gap:7px}
+.td-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.tn{font-size:12px;font-weight:600;color:var(--tx);flex:1;overflow-wrap:break-word;word-break:break-word;min-width:0;line-height:1.4}
+.tv{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;flex-shrink:0;padding-top:1px}
 .tv.pos{color:var(--pos)}
 .tv.neg{color:var(--neg)}
 .tv.na{color:var(--td);font-size:12px}
@@ -193,6 +193,49 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .btn-ghost:hover{background:var(--sf3);border-color:var(--tm)}
 
 @media(max-width:860px){.tiles-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
+
+@media(max-width:600px){
+  .logo-tag{display:none}
+  .badge{display:none}
+  .hdr{padding:0 12px;gap:8px}
+  .upload-btn{padding:7px 11px;font-size:12px}
+  .btn-ghost{padding:7px 10px;font-size:12px}
+
+  .content{padding:12px 10px}
+  .sel-bar{gap:5px;margin-bottom:12px}
+  .sel-badge{padding:4px 9px;font-size:11px}
+
+  .tiles-4,.tiles-3{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .tile{padding:12px}
+
+  .tabs-bar{padding:0 10px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .tab{padding:11px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+  .export-btn{padding:5px 10px;font-size:11px;white-space:nowrap;flex-shrink:0}
+
+  .ts-slice-bar{flex-wrap:wrap;gap:4px;margin-bottom:12px}
+  .ts-slice-btn{padding:4px 10px;font-size:10px}
+
+  .modal{width:calc(100vw - 20px)!important;max-height:88vh}
+  .modal-hdr{padding:14px 14px 10px}
+  .modal-body{padding:12px 14px}
+  .modal-ftr{padding:10px 14px}
+  .map-grid{grid-template-columns:1fr!important}
+
+  .cc{padding:12px}
+  .cc-t{font-size:13px}
+  .cc-s{font-size:10px;margin-bottom:10px}
+  .cw{height:180px}
+  .cw.tall{height:210px}
+  .cw.nav-h{height:160px}
+
+  .dstats{row-gap:7px}
+  .dsf{margin-right:12px}
+  .dsrow{gap:8px}
+  .sp-v{font-size:12px}
+
+  .sec{font-size:9px}
+}
 </style>
 </head>
 <body>
@@ -206,6 +249,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
     <span class="badge" id="cntBadge">0 funds loaded</span>
     <button class="upload-btn" onclick="triggerUpload()">↑ Load NAV File</button>
     <button class="btn-ghost" onclick="openMfFavModal()" title="Add favorite fund directly from MF API">+ MF API</button>
+    <button class="btn-ghost" id="navDlBtn" onclick="downloadNavData()" title="Download raw NAV data for all loaded funds" style="display:none">↓ NAV Data</button>
   </div>
 </header>
 
@@ -742,6 +786,45 @@ function xRangeForPoints(points){
   const pad=(mx-mn)*0.02||86400000;
   return{min:mn-pad,max:mx+pad};
 }
+
+// Generate clean calendar-aligned tick positions for the time-series X axis.
+// Returns [{value: timestampMs}, ...] snapped to month/quarter/year starts.
+function genUniformDateTicks(minMs, maxMs){
+  const rangeYrs=(maxMs-minMs)/MS_YEAR;
+  let stepMonths;
+  if(rangeYrs>=15)      stepMonths=24;
+  else if(rangeYrs>=8)  stepMonths=12;
+  else if(rangeYrs>=4)  stepMonths=6;
+  else if(rangeYrs>=2)  stepMonths=3;
+  else if(rangeYrs>=0.75) stepMonths=2;
+  else if(rangeYrs>=0.2)  stepMonths=1;
+  else {
+    // sub-monthly: weekly ticks
+    const tks=[];
+    const s=new Date(minMs);
+    // snap to nearest Sunday
+    const anchor=new Date(s.getFullYear(),s.getMonth(),s.getDate());
+    anchor.setDate(anchor.getDate()-anchor.getDay());
+    if(anchor.getTime()<minMs) anchor.setDate(anchor.getDate()+7);
+    const cur=new Date(anchor);
+    while(cur.getTime()<=maxMs){tks.push({value:cur.getTime()});cur.setDate(cur.getDate()+7);}
+    return tks.length?tks:[{value:minMs},{value:maxMs}];
+  }
+  // Snap starting month to an aligned boundary (e.g. stepMonths=6 → Jan or Jul)
+  const s=new Date(minMs);
+  let yr=s.getFullYear(), mo=s.getMonth();
+  mo=Math.ceil(mo/stepMonths)*stepMonths;
+  if(mo>=12){yr++;mo-=12;}
+  const cur=new Date(yr,mo,1);
+  // If the snapped start is still before data min, advance one step
+  if(cur.getTime()<minMs) cur.setMonth(cur.getMonth()+stepMonths);
+  const tks=[];
+  while(cur.getTime()<=maxMs){
+    tks.push({value:cur.getTime()});
+    cur.setMonth(cur.getMonth()+stepMonths);
+  }
+  return tks.length?tks:[{value:minMs},{value:maxMs}];
+}
 function sp(l,v){return `<div class="sp"><div class="sp-l">${l}</div><div class="sp-v">${v}</div></div>`;}
 function getMetricDef(key){return ALL_M.find(m=>m.key===key)||null;}
 function updateExportButton(){
@@ -836,6 +919,8 @@ function toggleSidebarCollapse(expand){
 }
 function initSidebarCollapse(){
   try{
+    // Always collapse on mobile regardless of saved state
+    if(window.innerWidth<=600){ applySidebarCollapsed(true); return; }
     if(localStorage.getItem(LS_SB_COLLAPSED)==='1') applySidebarCollapsed(true);
   }catch(e){}
 }
@@ -1109,6 +1194,8 @@ function renderSidebar(){
   const funds=Object.values(S.funds);
   const favs=S.favs||[];
   document.getElementById('cntBadge').textContent=`${funds.length} fund${funds.length!==1?'s':''} loaded`;
+  const navDlBtn=document.getElementById('navDlBtn');
+  if(navDlBtn) navDlBtn.style.display=funds.length?'':'none';
   const list=document.getElementById('fundList');
 
   if(!funds.length && !favs.length){
@@ -1234,7 +1321,7 @@ function tilHtml(m,fds){
     const vObj=latestVal(f,m.key);
     if(vObj&&vObj.startDate) perStr=`${fmtFullDate(vObj.startDate)} → ${fmtFullDate(vObj.endDate)}`;
     const cls=vObj==null?'na':vObj.value>=0?'pos':'neg';
-    return `<div class="tile-row"><div class="td-dot" style="background:${f.color}"></div><div class="tn" title="${f.name}">${shortN(f.name,22)}</div><div class="tv ${cls}">${vObj==null?'N/A':vObj.value.toFixed(1)+'%'}</div></div>`;
+    return `<div class="tile-row"><div class="td-dot" style="background:${f.color}"></div><div class="tn" title="${f.name}">${shortN(f.name,48)}</div><div class="tv ${cls}">${vObj==null?'N/A':vObj.value.toFixed(1)+'%'}</div></div>`;
   }).join('');
   return `<div class="tile"><div class="tile-lbl">${m.lbl}</div><div class="tile-per">${perStr}</div><div class="tile-rows">${rows}</div></div>`;
 }
@@ -1433,6 +1520,7 @@ function buildNavStats(fds){
 
 function renderTimeSeries(){
   const fds=S.selected.map(id=>S.funds[id]);
+  const isMobile=window.innerWidth<=600;
   const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
   document.getElementById('tsContent').innerHTML=
     `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}</div>`+
@@ -1452,7 +1540,7 @@ function renderTimeSeries(){
       borderColor:COLORS[i%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
     }));
     const navXR=xRangeForPoints(navDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
-    const navXScale={type:'linear',grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxTicksLimit:10,maxRotation:0,autoSkip:true}};
+    const navXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
     if(navXR){navXScale.min=navXR.min;navXScale.max=navXR.max;}
     S.charts['navChart']=new Chart(ctx,{type:'line',data:{datasets:navDatasets},options:{responsive:true,maintainAspectRatio:false,
       interaction:{mode:'nearest',axis:'x',intersect:false},
@@ -1477,7 +1565,7 @@ function renderTimeSeries(){
         borderColor:COLORS[S.selected.indexOf(f.id)%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
       }));
       const rollXR=xRangeForPoints(rollDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
-      const rollXScale={type:'linear',grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxTicksLimit:10,maxRotation:0,autoSkip:true}};
+      const rollXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
       if(rollXR){rollXScale.min=rollXR.min;rollXScale.max=rollXR.max;}
       S.charts[cid]=new Chart(ctx,{type:'line',data:{datasets:rollDatasets},options:{responsive:true,maintainAspectRatio:false,
         interaction:{mode:'nearest',axis:'x',intersect:false},
@@ -1561,6 +1649,62 @@ function exportToExcel() {
     btn.disabled = false;
     updateExportButton();
   }, 50);
+}
+
+function downloadNavData() {
+  const fds = Object.values(S.funds);
+  if (!fds.length) { alert('No funds loaded.'); return; }
+
+  const btn = document.getElementById('navDlBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳…'; }
+
+  setTimeout(() => {
+    try {
+      const wb = XLSX.utils.book_new();
+
+      // Cover sheet
+      const coverRows = [
+        ['MF Analytica — NAV Data Export'],
+        ['Generated:', { t:'n', v:toExcelDate(new Date()), z:'DD-MMM-YYYY HH:MM' }],
+        [],
+        ['Fund', 'Source', 'Data Points', 'From', 'To'],
+      ];
+      for (const f of fds) {
+        const first = f.rawData[0], last = f.rawData[f.rawData.length - 1];
+        coverRows.push([
+          f.name,
+          f.source === 'mf' ? `MF API (${f.scheme_code})` : 'Upload',
+          f.rawData.length,
+          dateCell(first.date),
+          dateCell(last.date),
+        ]);
+      }
+      const coverWs = aoaToWs(coverRows);
+      coverWs['!cols'] = [{wch:52},{wch:22},{wch:12},{wch:14},{wch:14}];
+      XLSX.utils.book_append_sheet(wb, coverWs, 'Index');
+
+      // One sheet per fund
+      for (const f of fds) {
+        const rows = [
+          [f.name],
+          [f.source === 'mf' ? `MF API — Scheme ${f.scheme_code}` : 'Uploaded file'],
+          [],
+          ['Date', 'NAV (₹)'],
+          ...f.rawData.map(p => [dateCell(p.date), numCell(p.nav, 4)]),
+        ];
+        const ws = aoaToWs(rows);
+        ws['!cols'] = [{wch:16},{wch:14}];
+        // Excel sheet names: max 31 chars, no special chars
+        const sheetName = f.name.replace(/[:\\\/\?\*\[\]]/g,'').slice(0,31);
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      }
+
+      const ts = new Date().toISOString().slice(0,10);
+      XLSX.writeFile(wb, `NAV_Data_${ts}.xlsx`);
+    } catch(e) { alert('Export error: ' + e.message); }
+
+    if (btn) { btn.disabled = false; btn.textContent = '↓ NAV Data'; }
+  }, 30);
 }
 
 function exportDistributionsExcel(fds){
