@@ -160,11 +160,18 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .tab-pane.active{display:block}
 
 .nav-stats{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--br)}
-.ts-slice-bar{display:flex;gap:5px;margin-bottom:16px;align-items:center}
+.ts-slice-bar{display:flex;gap:5px;margin-bottom:16px;align-items:center;flex-wrap:wrap}
 .ts-slice-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);margin-right:4px;font-family:'DM Mono',monospace}
 .ts-slice-btn{padding:4px 13px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--td);cursor:pointer;transition:all .15s;line-height:1.6}
 .ts-slice-btn:hover{border-color:var(--br2);color:var(--tx)}
 .ts-slice-btn.active{background:var(--acc);color:#000;border-color:var(--acc)}
+.nav-mode-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 12px;background:var(--sf2);border:1px solid var(--br);border-radius:10px}
+.nav-mode-group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.nav-mode-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace;margin-right:2px}
+.nav-mode-btn{padding:5px 12px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--tm);cursor:pointer;transition:all .15s;line-height:1.5}
+.nav-mode-btn:hover{border-color:var(--br2);color:var(--tx)}
+.nav-mode-btn.active{background:var(--sf3);color:var(--tx);border-color:var(--acc);box-shadow:inset 0 0 0 1px rgba(251,191,36,.2)}
+.nav-hover-note{font-size:10px;font-family:'DM Mono',monospace;color:var(--td)}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center}
 .modal{background:var(--sf2);border:1px solid var(--br2);border-radius:12px;width:540px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 28px 70px rgba(0,0,0,.8)}
@@ -253,6 +260,9 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 
   .ts-slice-bar{flex-wrap:wrap;gap:4px;margin-bottom:12px}
   .ts-slice-btn{padding:4px 10px;font-size:10px}
+  .nav-mode-bar{gap:10px;padding:10px 12px}
+  .nav-mode-btn{padding:4px 10px;font-size:10px}
+  .nav-hover-note{width:100%}
 
   .modal{width:calc(100vw - 20px)!important;max-height:88vh}
   .modal-hdr{padding:14px 14px 10px}
@@ -493,10 +503,11 @@ const TS_SLICES = [
   {key:'1y',  lbl:'1Y',   ms: 365.25*24*3600*1000},
   {key:'3y',  lbl:'3Y',   ms: 3*365.25*24*3600*1000},
   {key:'5y',  lbl:'5Y',   ms: 5*365.25*24*3600*1000},
+  {key:'10y', lbl:'10Y',  ms: 10*365.25*24*3600*1000},
   {key:'full',lbl:'Full', ms: null},
 ];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{} };
+const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute' } };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
@@ -858,6 +869,28 @@ function genUniformDateTicks(minMs, maxMs){
 }
 function sp(l,v){return `<div class="sp"><div class="sp-l">${l}</div><div class="sp-v">${v}</div></div>`;}
 function getMetricDef(key){return ALL_M.find(m=>m.key===key)||null;}
+
+const hoverGuidePlugin = {
+  id:'hoverGuidePlugin',
+  afterDatasetsDraw(chart){
+    if(chart.canvas?.id!=='navChart') return;
+    const active=chart.tooltip?.getActiveElements?.()||[];
+    if(!active.length) return;
+    const {ctx, chartArea:{top,bottom}} = chart;
+    const x = active[0].element.x;
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x, top);
+    ctx.lineTo(x, bottom);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+    ctx.strokeStyle = 'rgba(251,191,36,.85)';
+    ctx.stroke();
+    ctx.restore();
+  }
+};
+Chart.register(hoverGuidePlugin);
+
 function updateExportButton(){
   const btn=document.getElementById('exportBtn');
   if(!btn) return;
@@ -1586,6 +1619,7 @@ function getSliceMs(){
   const s=TS_SLICES.find(x=>x.key===S.tsSlice);
   return s?s.ms:null;
 }
+function setNavMode(mode){ S.navView.mode=mode; renderTimeSeries(); }
 function sliceData(data){
   const ms=getSliceMs();
   if(!ms||!data||!data.length) return data;
@@ -1647,24 +1681,91 @@ const PRECOMP_MAP = {
   '5y':{ cagr:'cagr5y', xirr:'sip5y' },
 };
 
+function computeNavPerformanceSummary(sd){
+  if(!sd||sd.length<2) return { change:null, changePct:null };
+  const start=sd[0], end=sd[sd.length-1];
+  const change=end.nav-start.nav;
+  const changePct=start.nav?((end.nav/start.nav)-1)*100:null;
+  return { change, changePct, startDate:start.date, endDate:end.date };
+}
+
+function buildNavToolbar(fds){
+  const modeBtns=[
+    {key:'absolute',lbl:'Absolute'},
+    {key:'relative',lbl:'Relative'}
+  ].map(m=>`<button class="nav-mode-btn${S.navView.mode===m.key?' active':''}" onclick="setNavMode('${m.key}')">${m.lbl}</button>`).join('');
+  return `<div class="nav-mode-bar"><div class="nav-mode-group"><span class="nav-mode-label">View</span>${modeBtns}</div><div class="nav-hover-note">${fds.length} fund${fds.length!==1?'s':''} &middot; hover to track a vertical guide</div></div>`;
+}
+
+function buildNavDatasets(fds){
+  const slicedSets=fds.map(f=>({ f, data:sliceData(f.rawData) })).filter(x=>x.data&&x.data.length>=2);
+  return slicedSets.map(({f,data})=>{
+    const first=data[0]?.nav||null;
+    const pts=data.map((p,idx)=>{
+      let y=null;
+      if(S.navView.mode==='relative'){
+        if(idx===0) y=0;
+        else y=first?((p.nav/first)-1)*100:null;
+      }else{
+        y=p.nav;
+      }
+      return {x:p.date.getTime(),y};
+    }).filter(pt=>pt.y!=null&&isFinite(pt.y));
+    return {
+      label:shortN(f.name,50),
+      data:sampleForChart(pts,500),
+      borderColor:COLORS[f.ci%COLORS.length],
+      backgroundColor:COLORS_BG[f.ci%COLORS.length],
+      borderWidth:2,
+      pointRadius:0,
+      pointHitRadius:20,
+      pointHoverRadius:5,
+      tension:.18
+    };
+  }).filter(ds=>ds.data.length>=2);
+}
+
+function navYAxisConfig(){
+  return {
+    grid:{color:'#1a2840'},
+    ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>{
+      if(S.navView.mode==='relative') return `${v.toFixed(0)}%`;
+      return `₹${v.toFixed(0)}`;
+    }}
+  };
+}
+
+function navTooltipLabel(c){
+  const y=c.parsed.y;
+  if(y==null||!isFinite(y)) return `${c.dataset.label}: N/A`;
+  if(S.navView.mode==='relative') return `${c.dataset.label}: ${y.toFixed(2)}%`;
+  return `${c.dataset.label}: ₹${y.toFixed(2)}`;
+}
+
 function buildNavStats(fds){
   const pre=PRECOMP_MAP[S.tsSlice]||{};
-  // 1m: skip XIRR (only 1 installment possible, not meaningful)
   const showXirr=S.tsSlice!=='1m';
+  const rangeLabel=(TS_SLICES.find(r=>r.key===S.tsSlice)?.lbl)||'Full';
 
-  const fmt=(v,lbl)=>{
+  const fmtPct=(v,lbl)=>{
     const na=v==null||!isFinite(v);
     const col=na?'var(--td)':v>=0?'var(--pos)':'var(--neg)';
     const str=na?'N/A':(v>=0?'+':'')+v.toFixed(2)+'%';
     return sp(lbl,`<span style="color:${col}">${str}</span>`);
   };
+  const fmtAmt=(v,lbl)=>{
+    const na=v==null||!isFinite(v);
+    const col=na?'var(--td)':v>=0?'var(--pos)':'var(--neg)';
+    const str=na?'N/A':`${v>=0?'+':'-'}₹${Math.abs(v).toFixed(2)}`;
+    return sp(lbl,`<span style="color:${col}">${str}</span>`);
+  };
 
   return fds.map(f=>{
-    const absV  = computeSliceAbs(f);
     const cagrV = pre.cagr ? latestVal(f,pre.cagr)?.value??null : computeSliceCAGR(f);
     const xirrV = showXirr ? (pre.xirr ? latestVal(f,pre.xirr)?.value??null : computeSliceXIRR(f)) : null;
-    let row=fmt(absV,'Abs Return')+fmt(cagrV,'CAGR');
-    if(showXirr) row+=fmt(xirrV,'SIP XIRR');
+    const navSummary=computeNavPerformanceSummary(sliceData(f.rawData));
+    let row=fmtAmt(navSummary.change,`${rangeLabel} NAV Δ`)+fmtPct(navSummary.changePct,`${rangeLabel} Return`)+fmtPct(cagrV,'CAGR');
+    if(showXirr) row+=fmtPct(xirrV,'SIP XIRR');
     return `<div class="dsf"><div class="dsf-name" style="color:${f.color}">● ${shortN(f.name,50)}</div><div class="dsrow">${row}</div></div>`;
   }).join('');
 }
@@ -1683,17 +1784,17 @@ function renderTimeSeries(){
     `<div class="grid-1" id="navGrid"></div>`+
     `<div class="sec" style="margin-top:4px">Rolling Returns Over Time</div><div class="grid-2" id="tsGrid"></div>`;
 
-  // ── NAV card: stats (using existing dstats style) above the chart ──
   document.getElementById('navGrid').innerHTML=
-    `<div class="cc"><div class="cc-t">NAV History</div><div class="dstats" id="navStats" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--br)"></div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
+    `<div class="cc"><div class="cc-t">NAV History</div><div class="cc-s">Interactive NAV analysis with alternate windows and comparison modes</div>${buildNavToolbar(fds)}<div class="dstats" id="navStats" style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--br)"></div><div class="cw nav-h"><canvas id="navChart"></canvas></div></div>`;
   document.getElementById('navStats').innerHTML=buildNavStats(fds);
 
   requestAnimationFrame(()=>{
     kill('navChart');const ctx=document.getElementById('navChart')?.getContext('2d');if(!ctx) return;
-    const navDatasets=fds.map((f)=>({
-      label:shortN(f.name,50),data:sampleForChart(sliceData(f.rawData),350).map(p=>({x:p.date.getTime(),y:p.nav})),
-      borderColor:COLORS[f.ci%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
-    }));
+    const navDatasets=buildNavDatasets(fds);
+    if(!navDatasets.length){
+      document.getElementById('navGrid').innerHTML=`<div class="cc"><div class="cc-t">NAV History</div><div class="cc-s">No NAV data is available for the selected analysis window.</div></div>`;
+      return;
+    }
     const navXR=xRangeForPoints(navDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
     const navXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
     if(navXR){navXScale.min=navXR.min;navXScale.max=navXR.max;}
@@ -1702,10 +1803,10 @@ function renderTimeSeries(){
       plugins:{legend:{display:false},
         tooltip:{callbacks:{
           title:items=>!items.length?'':fmtFullDate(new Date(items[0].parsed.x)),
-          label:c=>{const y=c.parsed.y;return y==null||!isFinite(y)?`${c.dataset.label}: N/A`:`${c.dataset.label}: ₹${y.toFixed(2)}`;}
+          label:c=>navTooltipLabel(c)
         }}},
       scales:{x:navXScale,
-        y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>'₹'+v.toFixed(0)}}}}});
+        y:navYAxisConfig()}}});
   });
 
   // ── Rolling Returns ──
