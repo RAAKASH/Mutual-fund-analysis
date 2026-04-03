@@ -21,6 +21,9 @@
   --c3:#34d399;--c3a:rgba(52,211,153,.15);--c3b:rgba(52,211,153,.40);
   --c4:#f472b6;--c4a:rgba(244,114,182,.15);--c4b:rgba(244,114,182,.40);
   --c5:#a78bfa;--c5a:rgba(167,139,250,.15);--c5b:rgba(167,139,250,.40);
+  --c6:#fb7185;--c6a:rgba(251,113,133,.15);--c6b:rgba(251,113,133,.40);
+  --c7:#22d3ee;--c7a:rgba(34,211,238,.15);--c7b:rgba(34,211,238,.40);
+  --c8:#84cc16;--c8a:rgba(132,204,22,.15);--c8b:rgba(132,204,22,.40);
   --acc:#fbbf24;--r:8px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -40,7 +43,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .upload-btn:hover{background:#fbbf24;transform:translateY(-1px)}
 
 .app{display:flex;height:calc(100vh - 56px);overflow:hidden;position:relative}
-.sb{width:230px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--br);display:flex;flex-direction:column;overflow:hidden;transition:width .22s ease,opacity .18s ease,min-width .22s ease,border-color .2s ease}
+.sb{width:290px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--br);display:flex;flex-direction:column;overflow:hidden;transition:width .22s ease,opacity .18s ease,min-width .22s ease,border-color .2s ease}
 .app.sb-collapsed .sb{flex-shrink:1;min-width:0;width:0;max-width:0;padding:0;border:none;opacity:0;pointer-events:none;overflow:hidden}
 .sb-hdr{padding:12px 14px;border-bottom:1px solid var(--br);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td)}
 .sb-hdr-flex{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -52,20 +55,32 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .fund-list{flex:1;overflow-y:auto;padding:7px}
 .fund-group{margin-top:10px}
 .fund-group:first-child{margin-top:0}
-.fg-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 4px;background:transparent;border:none;cursor:pointer;color:var(--td);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;text-align:left}
+.fund-group.is-drop{outline:1px dashed rgba(251,191,36,.55);outline-offset:4px}
+.fg-hdr{display:flex;align-items:center;gap:6px}
+.fg-toggle{flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:6px 4px;background:transparent;border:none;cursor:pointer;color:var(--td);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;text-align:left}
 .fg-toggle:hover{color:var(--tx)}
-.fg-title{display:flex;align-items:center;gap:8px;min-width:0}
+.fg-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.fg-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fg-chevron{font-size:11px;line-height:1;transition:transform .15s ease}
 .fg-toggle.is-collapsed .fg-chevron{transform:rotate(-90deg)}
+.fg-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-left:auto;white-space:nowrap}
+.fg-load-btn{background:transparent;border:1px solid var(--br);color:var(--tm);cursor:pointer;padding:3px 7px;border-radius:999px;font-size:8px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.3px}
+.fg-load-btn:hover{border-color:var(--acc);color:#f8d27a}
+.fg-rename-btn{background:transparent;border:1px solid var(--br);color:var(--tm);cursor:pointer;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;line-height:1}
+.fg-rename-btn:hover{border-color:var(--acc);color:#f8d27a}
 .fg-count{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.5px;color:var(--tm);padding:2px 6px;border:1px solid var(--br);border-radius:999px;flex-shrink:0}
 .fg-items{margin-top:2px}
-.fi{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:5px;cursor:pointer;transition:background .1s;border:1px solid transparent;margin-bottom:2px;user-select:none}
+.fi{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:5px;cursor:pointer;transition:background .1s,border-color .12s,opacity .12s;border:1px solid transparent;margin-bottom:2px;user-select:none}
 .fi:hover{background:var(--sf2)}
 .fi.s1{background:var(--c1a);border-color:var(--c1b)}
 .fi.s2{background:var(--c2a);border-color:var(--c2b)}
 .fi.s3{background:var(--c3a);border-color:var(--c3b)}
 .fi.s4{background:var(--c4a);border-color:var(--c4b)}
 .fi.s5{background:var(--c5a);border-color:var(--c5b)}
+.fi.s6{background:var(--c6a);border-color:var(--c6b)}
+.fi.s7{background:var(--c7a);border-color:var(--c7b)}
+.fi.s8{background:var(--c8a);border-color:var(--c8b)}
+.fi.is-dragging{opacity:.55;border-color:var(--acc)}
 .fi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .fi-info{flex:1;min-width:0}
 .fi-name{font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx)}
@@ -116,6 +131,9 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .sel-badge.p3{color:#6ee7b7;background:var(--c3a);border-color:var(--c3b)}
 .sel-badge.p4{color:#f9a8d4;background:var(--c4a);border-color:var(--c4b)}
 .sel-badge.p5{color:#c4b5fd;background:var(--c5a);border-color:var(--c5b)}
+.sel-badge.p6{color:#fda4af;background:var(--c6a);border-color:var(--c6b)}
+.sel-badge.p7{color:#67e8f9;background:var(--c7a);border-color:var(--c7b)}
+.sel-badge.p8{color:#bef264;background:var(--c8a);border-color:var(--c8b)}
 .b-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
 
 .sec{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:10px;display:flex;align-items:center;gap:10px}
@@ -165,12 +183,21 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .ts-slice-btn{padding:4px 13px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--td);cursor:pointer;transition:all .15s;line-height:1.6}
 .ts-slice-btn:hover{border-color:var(--br2);color:var(--tx)}
 .ts-slice-btn.active{background:var(--acc);color:#000;border-color:var(--acc)}
+.ts-range-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto;justify-content:flex-end}
+.ts-cal-label{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
 .nav-mode-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 12px;background:var(--sf2);border:1px solid var(--br);border-radius:10px}
 .nav-mode-group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .nav-mode-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace;margin-right:2px}
 .nav-mode-btn{padding:5px 12px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--tm);cursor:pointer;transition:all .15s;line-height:1.5}
 .nav-mode-btn:hover{border-color:var(--br2);color:var(--tx)}
 .nav-mode-btn.active{background:var(--sf3);color:var(--tx);border-color:var(--acc);box-shadow:inset 0 0 0 1px rgba(251,191,36,.2)}
+.nav-range-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.nav-date{padding:5px 10px;background:var(--sf3);border:1px solid var(--br);border-radius:8px;color:var(--tx);font-size:11px;font-weight:600;font-family:'DM Mono',monospace;min-width:138px}
+.nav-date:focus{outline:none;border-color:var(--acc)}
+.nav-date::-webkit-calendar-picker-indicator{filter:hue-rotate(335deg) saturate(3.4) brightness(1.35);opacity:1;cursor:pointer}
+.nav-date-btn{padding:5px 10px;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:8px;background:transparent;color:var(--tm);cursor:pointer;transition:all .15s}
+.nav-date-btn:hover{border-color:var(--br2);color:var(--tx)}
+.nav-date-btn.is-on{background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.45);color:#f8d27a}
 .nav-hover-note{font-size:10px;font-family:'DM Mono',monospace;color:var(--td)}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center}
@@ -192,10 +219,22 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .detail-tbl td{padding:7px 10px;border-bottom:1px solid var(--br);color:var(--tm);white-space:nowrap}
 .map-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .map-field{display:flex;flex-direction:column;gap:5px}
+.map-field .msel{height:38px}
 .map-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--td)}
 .map-desc{font-size:11px;font-weight:500;color:var(--tm)}
 .msel{width:100%;padding:8px 10px;background:var(--sf3);border:1px solid var(--br);border-radius:5px;color:var(--tx);font-size:12px;font-weight:600;font-family:'DM Mono',monospace;cursor:pointer;outline:none;transition:border-color .15s;appearance:none}
 .msel:focus{border-color:var(--acc)}
+.mf-search-bar{display:flex;gap:8px;align-items:stretch}
+.mf-search-btn{padding:0 14px;background:var(--sf3);border:1px solid var(--br);border-radius:5px;color:var(--tx);font-size:11px;font-weight:800;font-family:'DM Mono',monospace;cursor:pointer;white-space:nowrap}
+.mf-search-btn:hover{border-color:var(--acc);color:#f8d27a}
+.mf-search-results{margin-top:10px;border:1px solid var(--br);border-radius:6px;max-height:180px;overflow:auto;background:var(--sf)}
+.mf-search-empty{padding:12px 14px;color:var(--td);font-size:11px;font-family:'DM Mono',monospace}
+.mf-search-item{width:100%;display:flex;justify-content:space-between;gap:10px;padding:10px 12px;background:transparent;border:none;border-bottom:1px solid var(--br);color:var(--tx);text-align:left;cursor:pointer}
+.mf-search-item:last-child{border-bottom:none}
+.mf-search-item:hover{background:var(--sf2)}
+.mf-search-name{font-size:12px;font-weight:700;line-height:1.45}
+.mf-search-code{font-size:10px;color:var(--acc);font-family:'DM Mono',monospace;flex-shrink:0}
+.mf-picked{margin-top:10px;padding:8px 10px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.28);border-radius:6px;font-size:11px;color:#bfdbfe}
 .auto-tag{display:inline-block;padding:2px 7px;background:rgba(74,222,128,.15);color:var(--pos);border-radius:8px;font-size:10px;font-weight:700;font-family:'DM Mono',monospace;margin-left:5px}
 .warn{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:5px;padding:10px 14px;font-size:12px;font-weight:600;color:var(--neg);margin-top:12px;font-family:'DM Mono',monospace;display:none}
 .btn-ok{padding:8px 22px;background:var(--acc);color:#000;border:none;border-radius:5px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
@@ -262,6 +301,8 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   .ts-slice-btn{padding:4px 10px;font-size:10px}
   .nav-mode-bar{gap:10px;padding:10px 12px}
   .nav-mode-btn{padding:4px 10px;font-size:10px}
+  .nav-date{min-width:124px;padding:4px 8px;font-size:10px}
+  .nav-date-btn{padding:4px 8px;font-size:9px}
   .nav-hover-note{width:100%}
 
   .modal{width:calc(100vw - 20px)!important;max-height:88vh}
@@ -395,21 +436,31 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
     <div class="modal-hdr">
       <div>
         <div class="modal-title">Add Favorite from MF API</div>
-        <div class="modal-sub">Save scheme code into a group and optionally load</div>
+        <div class="modal-sub">Search by fund name or enter a scheme code directly</div>
       </div>
       <button class="modal-x" onclick="closeMfFavModal()">×</button>
     </div>
     <div class="modal-body">
-      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">MF scheme code</div>
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">Search fund name</div>
+      <div class="map-field">
+        <div class="map-desc">Example: HDFC Top 100 or Parag Parikh Flexi Cap</div>
+        <div class="mf-search-bar">
+          <input class="msel" id="mf_name_search" type="text" placeholder="Search mutual fund by name" />
+          <button class="mf-search-btn" type="button" onclick="searchMfByName()">Search</button>
+        </div>
+        <div class="mf-search-results" id="mf_search_results" style="display:none"></div>
+        <div class="mf-picked" id="mf_picked" style="display:none"></div>
+      </div>
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin:14px 0 8px">MF scheme code</div>
       <div class="map-grid" style="grid-template-columns:1fr 1fr">
         <div class="map-field">
           <div class="map-label">Scheme Code</div>
-          <div class="map-desc">Example: 113296</div>
+          <div class="map-desc">Auto-fills when you select a search result</div>
           <input class="msel" id="mf_code" type="text" placeholder="Enter scheme code" />
         </div>
         <div class="map-field">
           <div class="map-label">Group</div>
-          <div class="map-desc">Optional — empty uses Ungrouped (you can change later with ✎)</div>
+          <div class="map-desc">Optional — empty auto-fills from MF API category</div>
           <input class="msel" id="mf_group" type="text" placeholder="e.g., Equity Core" />
         </div>
       </div>
@@ -417,7 +468,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
         <input type="checkbox" id="mf_loadNow" checked />
         <label for="mf_loadNow" style="cursor:pointer">Load into analysis now</label>
       </div>
-      <div class="warn" id="mfFavWarn">Please enter a valid scheme code.</div>
+      <div class="warn" id="mfFavWarn">Please enter a valid scheme code or pick a search result.</div>
     </div>
     <div class="modal-ftr">
       <button class="btn-ghost" onclick="closeMfFavModal()">Cancel</button>
@@ -478,8 +529,8 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 // ─────────────────────────────────────────────────────
 //  CONSTANTS
 // ─────────────────────────────────────────────────────
-const COLORS    = ['#f59e0b','#60a5fa','#34d399','#f472b6','#a78bfa'];
-const COLORS_BG = ['rgba(245,158,11,.4)','rgba(96,165,250,.4)','rgba(52,211,153,.4)','rgba(244,114,182,.4)','rgba(167,139,250,.4)'];
+const COLORS    = ['#f59e0b','#60a5fa','#34d399','#f472b6','#a78bfa','#fb7185','#22d3ee','#84cc16'];
+const COLORS_BG = ['rgba(245,158,11,.4)','rgba(96,165,250,.4)','rgba(52,211,153,.4)','rgba(244,114,182,.4)','rgba(167,139,250,.4)','rgba(251,113,133,.4)','rgba(34,211,238,.4)','rgba(132,204,22,.4)'];
 const MS_YEAR   = 365.25 * 24 * 3600 * 1000;
 const MAX_SIP_DATE_GAP_MS = 35 * 24 * 3600 * 1000;
 
@@ -507,7 +558,7 @@ const TS_SLICES = [
   {key:'full',lbl:'Full', ms: null},
 ];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute' } };
+const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' } };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
@@ -641,7 +692,7 @@ async function applyMapping() {
   showLoading('Computing metrics for '+shortN(fileName.replace(/\.(xlsx|xls|csv)$/i,''),22)+'…');
   await tick();
   const computed=await computeMetrics(rawData);
-  S.funds[id]={id,fileName,name:fileName.replace(/\.(xlsx|xls|csv)$/i,''),color:COLORS[ci],ci,rawData,computed};
+  S.funds[id]={id,fileName,name:fileName.replace(/\.(xlsx|xls|csv)$/i,''),color:COLORS[ci],ci,group:'Uploads',rawData,computed};
   hideLoading();
   if(S.selected.length<3) S.selected.push(id);
   renderSidebar();
@@ -911,14 +962,59 @@ function openMfFavModal(){
   if(m) m.style.display='flex';
   const w=document.getElementById('mfFavWarn');
   if(w) w.style.display='none';
+  const searchEl=document.getElementById('mf_name_search');
   const codeEl=document.getElementById('mf_code');
   const grpEl=document.getElementById('mf_group');
+  const resultsEl=document.getElementById('mf_search_results');
+  const pickedEl=document.getElementById('mf_picked');
+  if(searchEl) searchEl.value='';
   if(codeEl) codeEl.value='';
   if(grpEl) grpEl.value='';
+  if(resultsEl){ resultsEl.style.display='none'; resultsEl.innerHTML=''; }
+  if(pickedEl){ pickedEl.style.display='none'; pickedEl.innerHTML=''; }
 }
 function closeMfFavModal(){
   const m=document.getElementById('mfFavModal');
   if(m) m.style.display='none';
+}
+async function searchMfByName(){
+  const q=String(document.getElementById('mf_name_search')?.value||'').trim();
+  const resultsEl=document.getElementById('mf_search_results');
+  const warn=document.getElementById('mfFavWarn');
+  if(warn) warn.style.display='none';
+  if(!resultsEl) return;
+  if(q.length<2){
+    resultsEl.style.display='block';
+    resultsEl.innerHTML=`<div class="mf-search-empty">Type at least 2 letters to search.</div>`;
+    return;
+  }
+  resultsEl.style.display='block';
+  resultsEl.innerHTML=`<div class="mf-search-empty">Searching…</div>`;
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/search?q=${encodeURIComponent(q)}`);
+    const rows=await r.json();
+    const items=Array.isArray(rows)?rows.slice(0,30):[];
+    if(!items.length){
+      resultsEl.innerHTML=`<div class="mf-search-empty">No matching funds found.</div>`;
+      return;
+    }
+    resultsEl.innerHTML=items.map(it=>`<button type="button" class="mf-search-item" onclick="pickMfSearchResult('${it.schemeCode}','${String(it.schemeName||'').replace(/'/g,"&#39;")}')"><span class="mf-search-name">${it.schemeName||it.schemeCode}</span><span class="mf-search-code">${it.schemeCode}</span></button>`).join('');
+  }catch(e){
+    resultsEl.innerHTML=`<div class="mf-search-empty">Search failed. Try again.</div>`;
+  }
+}
+function pickMfSearchResult(code, name){
+  const codeEl=document.getElementById('mf_code');
+  const pickedEl=document.getElementById('mf_picked');
+  const resultsEl=document.getElementById('mf_search_results');
+  const warn=document.getElementById('mfFavWarn');
+  if(codeEl) codeEl.value=code;
+  if(pickedEl){
+    pickedEl.style.display='block';
+    pickedEl.innerHTML=`Selected: <strong>${name}</strong> <span style="font-family:'DM Mono',monospace;color:#f8d27a">(${code})</span>`;
+  }
+  if(resultsEl) resultsEl.style.display='none';
+  if(warn) warn.style.display='none';
 }
 
 function loadMfFavouritesFromStorage(){
@@ -952,6 +1048,12 @@ function normalizeMfCode(code){
   const s=String(code||'').trim();
   if(!/^\d+$/.test(s)) return null;
   return s;
+}
+function normalizeMfGroupLabel(group){
+  const raw=String(group||'').trim();
+  if(!raw) return 'Ungrouped';
+  const parts=raw.split(' - ').map(x=>x.trim()).filter(Boolean);
+  return parts.length>1 ? parts[parts.length-1] : raw;
 }
 function upsertMfFavourite(code, group, name){
   const g=String(group||'Ungrouped').trim()||'Ungrouped';
@@ -1008,6 +1110,89 @@ function setMfFavouriteGroup(code, newGroup){
   persistMfFavourites();
   renderSidebar();
 }
+function setFundGroup(id, newGroup){
+  const g=String(newGroup||'').trim()||'Ungrouped';
+  const f=S.funds[id];
+  if(!f) return;
+  f.group=g;
+  if(f.scheme_code){
+    upsertMfFavourite(normalizeMfCode(f.scheme_code), g, f.name);
+    persistMfFavourites();
+  }
+  renderSidebar();
+  renderDashboard();
+}
+function renameFundGroup(oldGroup){
+  const from=String(oldGroup||'Ungrouped').trim()||'Ungrouped';
+  const raw=prompt('Rename group', from);
+  if(raw==null) return;
+  const to=String(raw||'').trim()||'Ungrouped';
+  if(to===from) return;
+  Object.values(S.funds).forEach(f=>{
+    const g=String(f.group||(f.source==='mf'?'Ungrouped':'Uploads')).trim()||'Ungrouped';
+    if(g===from) f.group=to;
+  });
+  (S.favs||[]).forEach(f=>{
+    const g=String(f.group||'Ungrouped').trim()||'Ungrouped';
+    if(g===from) f.group=to;
+  });
+  if(S.groupCollapsed?.[from]!=null){
+    S.groupCollapsed[to]=S.groupCollapsed[from];
+    delete S.groupCollapsed[from];
+    persistGroupCollapseState();
+  }
+  persistMfFavourites();
+  renderSidebar();
+  renderDashboard();
+}
+async function loadFundGroup(groupName){
+  const g=String(groupName||'Ungrouped').trim()||'Ungrouped';
+  const loaded=Object.values(S.funds).filter(f=>(String(f.group||'Ungrouped').trim()||'Ungrouped')===g);
+  loaded.forEach(f=>{ if(!S.selected.includes(f.id)) S.selected.push(f.id); });
+  const loadedCodes=new Set(loaded.map(f=>String(f.scheme_code||'')).filter(Boolean));
+  const favs=(S.favs||[]).filter(f=>(String(f.group||'Ungrouped').trim()||'Ungrouped')===g && !loadedCodes.has(String(f.code)));
+  for(const fav of favs) await loadMFIntoFund(fav.code, g, {selectNow:true});
+  renderSidebar();
+  renderDashboard();
+}
+let DRAG_CTX = null;
+function sidebarDragStart(type, id, ev){
+  DRAG_CTX={type,id};
+  if(ev?.dataTransfer){
+    ev.dataTransfer.setData('text/plain', `${type}:${id}`);
+    ev.dataTransfer.effectAllowed='move';
+  }
+}
+function sidebarDragEnd(){
+  DRAG_CTX=null;
+  document.querySelectorAll('.fund-group').forEach(el=>el.classList.remove('is-drop'));
+  document.querySelectorAll('.fi').forEach(el=>el.classList.remove('is-dragging'));
+}
+function sidebarDragMark(id, on){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle('is-drop', !!on);
+}
+function sidebarAllowGroupDrop(groupName, ev){
+  ev.preventDefault();
+  if(ev?.dataTransfer) ev.dataTransfer.dropEffect='move';
+  sidebarDragMark(`group_${String(groupName||'Ungrouped').replace(/[^a-z0-9_-]/gi,'_')}`, true);
+}
+function sidebarLeaveGroupDrop(groupName){
+  sidebarDragMark(`group_${String(groupName||'Ungrouped').replace(/[^a-z0-9_-]/gi,'_')}`, false);
+}
+function sidebarItemDragClass(el,on){
+  if(el) el.classList.toggle('is-dragging', !!on);
+}
+function sidebarDropToGroup(groupName, ev){
+  ev.preventDefault();
+  const g=String(groupName||'Ungrouped').trim()||'Ungrouped';
+  sidebarLeaveGroupDrop(g);
+  const drag=DRAG_CTX;
+  sidebarDragEnd();
+  if(!drag) return;
+  if(drag.type==='loaded') setFundGroup(drag.id, g);
+  else if(drag.type==='fav') setMfFavouriteGroup(drag.id, g);
+}
 function openMfGroupModal(code){
   code=normalizeMfCode(code);
   if(!code) return;
@@ -1047,15 +1232,30 @@ async function resolveMfSchemeName(code){
     return code;
   }
 }
+async function resolveMfMeta(code){
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/${code}/latest`);
+    const j=await r.json();
+    return {
+      schemeName:j?.meta?.scheme_name || code,
+      schemeCategory:normalizeMfGroupLabel(j?.meta?.scheme_category || '')
+    };
+  }catch(e){
+    return {
+      schemeName:code,
+      schemeCategory:'Ungrouped'
+    };
+  }
+}
 
 async function loadMFIntoFund(code, group, {selectNow=true}={}){
   code=normalizeMfCode(code);
   if(!code) return;
-  const g=String(group||'Ungrouped').trim()||'Ungrouped';
+  let g=String(group||'').trim();
   const fid=`mf_${code}`;
   const existing=S.funds[fid];
   if(existing){
-    existing.group=g;
+    existing.group=g||existing.group||'Ungrouped';
     if(selectNow && !S.selected.includes(fid)) S.selected.push(fid);
     renderSidebar();renderDashboard();
     return;
@@ -1076,6 +1276,7 @@ async function loadMFIntoFund(code, group, {selectNow=true}={}){
 
   const rawEntries=Array.isArray(j?.data)?j.data:[];
   const schemeName=j?.meta?.scheme_name || code;
+  if(!g) g=normalizeMfGroupLabel(j?.meta?.scheme_category || '') || 'Ungrouped';
   const rawData=rawEntries
     .map(p=>({date:parseDate(p?.date), nav:parseNav(p?.nav)}))
     .filter(p=>p.date && p.nav)
@@ -1120,7 +1321,7 @@ function loadMfFavourite(code){
 
 async function addMfFavouriteFromModal(){
   const code=normalizeMfCode(document.getElementById('mf_code')?.value);
-  const group=String(document.getElementById('mf_group')?.value||'').trim()||'Ungrouped';
+  let group=String(document.getElementById('mf_group')?.value||'').trim();
   const loadNow=!!document.getElementById('mf_loadNow')?.checked;
   const warn=document.getElementById('mfFavWarn');
 
@@ -1131,11 +1332,17 @@ async function addMfFavouriteFromModal(){
 
   // Save immediately so it stays persistent even if load fails
   if(loadNow){
+    if(!group){
+      const meta=await resolveMfMeta(code);
+      group=meta.schemeCategory||'Ungrouped';
+    }
     upsertMfFavourite(code, group, code);
     persistMfFavourites();
     await loadMFIntoFund(code, group, {selectNow:true});
   }else{
-    const name=await resolveMfSchemeName(code);
+    const meta=await resolveMfMeta(code);
+    const name=meta.schemeName;
+    if(!group) group=meta.schemeCategory||'Ungrouped';
     upsertMfFavourite(code, group, name);
     persistMfFavourites();
     renderSidebar();
@@ -1287,11 +1494,11 @@ function renderSidebar(){
 
   for(const f of favs) pushGroup(f.group||'Ungrouped');
   for(const f of funds){
-    const g=f.source==='mf'?(f.group||'Ungrouped'):uploadsGroup;
+    const g=f.group||(f.source==='mf'?'Ungrouped':uploadsGroup);
     pushGroup(g);
   }
   for(const f of funds){
-    const g=f.source==='mf'?(f.group||'Ungrouped'):uploadsGroup;
+    const g=f.group||(f.source==='mf'?'Ungrouped':uploadsGroup);
     groupMap.get(g).push({type:'loaded', fund:f});
   }
   for(const fav of favs){
@@ -1305,11 +1512,14 @@ function renderSidebar(){
     const items=groupMap.get(g)||[];
     if(!items.length) return '';
     const isCollapsed=!!(S.groupCollapsed&&S.groupCollapsed[g]);
-    return `<div class="fund-group">
-      <button type="button" class="fg-toggle${isCollapsed?' is-collapsed':''}" onclick='toggleFundGroup(${JSON.stringify(g)})'>
-        <span class="fg-title"><span class="fg-chevron">&#9660;</span><span>${g}</span></span>
-        <span class="fg-count">${items.length}</span>
-      </button>
+    const gid=`group_${String(g).replace(/[^a-z0-9_-]/gi,'_')}`;
+    return `<div class="fund-group" id="${gid}" ondragover='sidebarAllowGroupDrop(${JSON.stringify(g)}, event)' ondragleave='sidebarLeaveGroupDrop(${JSON.stringify(g)})' ondrop='sidebarDropToGroup(${JSON.stringify(g)}, event)'>
+      <div class="fg-hdr">
+        <button type="button" class="fg-toggle${isCollapsed?' is-collapsed':''}" onclick='toggleFundGroup(${JSON.stringify(g)})'>
+          <span class="fg-title"><span class="fg-chevron">&#9660;</span><span class="fg-name" title="${g}">${g}</span></span>
+        </button>
+        <span class="fg-actions"><button type="button" class="fg-load-btn" onclick='loadFundGroup(${JSON.stringify(g)})'>Load All</button><button type="button" class="fg-rename-btn" onclick='renameFundGroup(${JSON.stringify(g)})' title="Rename group">&#9998;</button><span class="fg-count">${items.length}</span></span>
+      </div>
       <div class="fg-items" style="display:${isCollapsed?'none':'block'}">
         ${items.map(it=>{
           if(it.type==='loaded'){
@@ -1319,7 +1529,7 @@ function renderSidebar(){
             const y1=f.rawData?.[0]?.date?.getFullYear?.()??0;
             const y2=(f.rawData&&f.rawData.length)?f.rawData[f.rawData.length-1].date.getFullYear():y1;
             const mfEdit=f.scheme_code?`<button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${f.scheme_code}')" title="Change group">&#9998;</button>`:'';
-            return `<div class="fi ${selCls}" onclick="toggleFund('${f.id}')">
+            return `<div class="fi ${selCls}" draggable="true" ondragstart="sidebarDragStart('loaded','${f.id}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="toggleFund('${f.id}')">
               <div class="fi-dot" style="background:${f.color}"></div>
               <div class="fi-info">
                 <div class="fi-name" title="${f.name}">${shortN(f.name,24)}</div>
@@ -1330,7 +1540,7 @@ function renderSidebar(){
             </div>`;
           }
           const color=COLORS[gi%COLORS.length];
-          return `<div class="fi" onclick="loadMfFavourite('${it.code}')">
+          return `<div class="fi" draggable="true" ondragstart="sidebarDragStart('fav','${it.code}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="loadMfFavourite('${it.code}')">
             <div class="fi-dot" style="background:${color}"></div>
             <div class="fi-info">
               <div class="fi-name" title="${it.name}">${shortN(it.name,24)}</div>
@@ -1619,16 +1829,80 @@ function getSliceMs(){
   const s=TS_SLICES.find(x=>x.key===S.tsSlice);
   return s?s.ms:null;
 }
-function setNavMode(mode){ S.navView.mode=mode; renderTimeSeries(); }
-function sliceData(data){
+function fmtInputDate(d){
+  if(!d||isNaN(d)) return '';
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function getPresetDateBounds(){
+  const vis=getVisibleFunds();
+  const allPts=vis.flatMap(f=>f?.rawData||[]);
+  if(!allPts.length) return {from:'',to:''};
+  let minT=Infinity,maxT=-Infinity;
+  for(const p of allPts){
+    const t=p.date.getTime();
+    if(t<minT) minT=t;
+    if(t>maxT) maxT=t;
+  }
+  const to=new Date(maxT);
   const ms=getSliceMs();
-  if(!ms||!data||!data.length) return data;
+  let from=ms?new Date(maxT-ms):new Date(minT);
+  if(from.getTime()<minT) from=new Date(minT);
+  return {from:fmtInputDate(from),to:fmtInputDate(to)};
+}
+function syncNavCustomInputsToPreset(){
+  const b=getPresetDateBounds();
+  S.navView.from=b.from;
+  S.navView.to=b.to;
+}
+function setNavMode(mode){ S.navView.mode=mode; renderTimeSeries(); }
+function setNavDate(which,val){
+  S.navView[which]=val;
+  if(which==='from' && S.navView.to && val && val>S.navView.to) S.navView.to=val;
+  if(which==='to' && S.navView.from && val && val<S.navView.from) S.navView.from=val;
+}
+function applyNavCustomRange(){
+  const from=S.navView.from?new Date(S.navView.from):null;
+  const to=S.navView.to?new Date(S.navView.to):null;
+  if(from&&isNaN(from)) return;
+  if(to&&isNaN(to)) return;
+  if(from&&to&&from.getTime()>to.getTime()) return;
+  S.navView.useCustom=!!(S.navView.from||S.navView.to);
+  renderTimeSeries();
+}
+function resetNavCustomRange(){
+  S.navView.useCustom=false;
+  syncNavCustomInputsToPreset();
+  renderTimeSeries();
+}
+function sliceData(data){
+  if(!data||!data.length) return data;
+  if(S.navView.useCustom){
+    const fromMs=S.navView.from?new Date(S.navView.from).getTime():null;
+    const toMs=S.navView.to?new Date(S.navView.to).getTime():null;
+    const sliced=data.filter(p=>{
+      const t=p.date.getTime();
+      if(fromMs!=null&&t<fromMs) return false;
+      if(toMs!=null&&t>toMs) return false;
+      return true;
+    });
+    if(sliced.length>=2) return sliced;
+  }
+  const ms=getSliceMs();
+  if(!ms) return data;
   const maxT=data[data.length-1].date.getTime();
   const cutoff=maxT-ms;
   const sliced=data.filter(p=>p.date.getTime()>=cutoff);
   return sliced.length?sliced:data;
 }
-function setTsSlice(key){ S.tsSlice=key; renderTimeSeries(); }
+function setTsSlice(key){
+  S.tsSlice=key;
+  S.navView.useCustom=false;
+  syncNavCustomInputsToPreset();
+  renderTimeSeries();
+}
 
 // Absolute return over the current slice window
 function computeSliceAbs(f){
@@ -1745,7 +2019,7 @@ function navTooltipLabel(c){
 function buildNavStats(fds){
   const pre=PRECOMP_MAP[S.tsSlice]||{};
   const showXirr=S.tsSlice!=='1m';
-  const rangeLabel=(TS_SLICES.find(r=>r.key===S.tsSlice)?.lbl)||'Full';
+  const rangeLabel=S.navView.useCustom?'Custom':((TS_SLICES.find(r=>r.key===S.tsSlice)?.lbl)||'Full');
 
   const fmtPct=(v,lbl)=>{
     const na=v==null||!isFinite(v);
@@ -1777,9 +2051,11 @@ function renderTimeSeries(){
     document.getElementById('tsContent').innerHTML=`<div class="cc"><div class="cc-t">Time Series Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;
     return;
   }
+  if(!S.navView.useCustom) syncNavCustomInputsToPreset();
   const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
+  const rangeTools=`<div class="ts-range-tools"><span class="ts-cal-label">Custom</span><input class="nav-date" type="date" value="${S.navView.from||''}" max="${S.navView.to||''}" onchange="setNavDate('from',this.value)"><input class="nav-date" type="date" value="${S.navView.to||''}" min="${S.navView.from||''}" onchange="setNavDate('to',this.value)"><button class="nav-date-btn" onclick="applyNavCustomRange()">Apply</button><button class="nav-date-btn${S.navView.useCustom?' is-on':''}" onclick="resetNavCustomRange()">Reset</button></div>`;
   document.getElementById('tsContent').innerHTML=
-    `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}</div>`+
+    `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}${rangeTools}</div>`+
     `<div class="sec">NAV History</div>`+
     `<div class="grid-1" id="navGrid"></div>`+
     `<div class="sec" style="margin-top:4px">Rolling Returns Over Time</div><div class="grid-2" id="tsGrid"></div>`;
