@@ -821,12 +821,11 @@ async function computeMetrics(rawData){
     }
   }
 
-  // ── SIP XIRR (rolling, monthly endpoints)
-  const monthly=sampleMonthly(rawData);
+  // ── SIP XIRR (rolling, every NAV point)
   for(const {key,mo} of SIP_M){
     computed[key]=[];
-    for(let i=0;i<monthly.length;i++){
-      const endDate=monthly[i].date;
+    for(let i=0;i<rawData.length;i++){
+      const endDate=rawData[i].date;
       const cfs=[],dts=[],navs=[],unitArr=[];
       let totalUnits=0, ok=true;
       for(let m=mo-1;m>=0;m--){
@@ -838,7 +837,7 @@ async function computeMetrics(rawData){
         cfs.push(-1000); dts.push(pt.date); navs.push(pt.nav); unitArr.push(u);
       }
       if(!ok) continue;
-      const finalValue=totalUnits*monthly[i].nav;
+      const finalValue=totalUnits*rawData[i].nav;
       cfs.push(finalValue); dts.push(endDate);
       try{
         const r=xirr(cfs,dts);
@@ -848,7 +847,7 @@ async function computeMetrics(rawData){
             startDate:dts[0], endDate,
             // store full cash flow detail for the last (latest) point
             _cfs:cfs, _dts:dts, _navs:navs, _units:unitArr,
-            _totalUnits:totalUnits, _finalNav:monthly[i].nav, _finalValue:finalValue
+            _totalUnits:totalUnits, _finalNav:rawData[i].nav, _finalValue:finalValue
           });
         }
       }catch(e){}
@@ -939,6 +938,60 @@ const hoverGuidePlugin = {
     ctx.strokeStyle = 'rgba(251,191,36,.85)';
     ctx.stroke();
     ctx.restore();
+  },
+  afterDraw(chart){
+    if(chart.canvas?.id!=='navChart') return;
+    const drag=chart.$dragRange;
+    if(!drag||!drag.active) return;
+    const area=chart.chartArea;
+    if(!area) return;
+    const left=Math.max(area.left,Math.min(drag.startX,drag.endX));
+    const right=Math.min(area.right,Math.max(drag.startX,drag.endX));
+    if(right-left<2) return;
+    const {ctx}=chart;
+    ctx.save();
+    ctx.fillStyle='rgba(251,191,36,.14)';
+    ctx.strokeStyle='rgba(251,191,36,.7)';
+    ctx.lineWidth=1;
+    ctx.fillRect(left,area.top,right-left,area.bottom-area.top);
+    ctx.strokeRect(left,area.top,right-left,area.bottom-area.top);
+    ctx.restore();
+  },
+  beforeEvent(chart, args){
+    if(chart.canvas?.id!=='navChart') return;
+    const area=chart.chartArea;
+    const xScale=chart.scales?.x;
+    if(!area||!xScale) return;
+    const e=args.event;
+    const inArea=e.x>=area.left&&e.x<=area.right&&e.y>=area.top&&e.y<=area.bottom;
+    if(e.type==='mousedown' && inArea){
+      chart.$dragRange={active:true,startX:e.x,endX:e.x};
+      args.changed=true;
+      return;
+    }
+    const drag=chart.$dragRange;
+    if(!drag||!drag.active) return;
+    if(e.type==='mousemove'){
+      drag.endX=Math.max(area.left,Math.min(area.right,e.x));
+      args.changed=true;
+      return;
+    }
+    if(e.type==='mouseup' || e.type==='mouseout'){
+      drag.endX=Math.max(area.left,Math.min(area.right,e.x));
+      const left=Math.max(area.left,Math.min(drag.startX,drag.endX));
+      const right=Math.min(area.right,Math.max(drag.startX,drag.endX));
+      const dragged=(right-left)>=10;
+      chart.$dragRange=null;
+      args.changed=true;
+      if(!dragged || e.type==='mouseout') return;
+      const startMs=xScale.getValueForPixel(left);
+      const endMs=xScale.getValueForPixel(right);
+      if(!isFinite(startMs)||!isFinite(endMs)||endMs<=startMs) return;
+      S.navView.from=fmtInputDate(new Date(startMs));
+      S.navView.to=fmtInputDate(new Date(endMs));
+      S.navView.useCustom=true;
+      renderTimeSeries();
+    }
   }
 };
 Chart.register(hoverGuidePlugin);
@@ -1998,6 +2051,7 @@ const PRECOMP_MAP = {
   '1y':{ cagr:'cagr1y', xirr:'sip1y' },
   '3y':{ cagr:'cagr3y', xirr:'sip3y' },
   '5y':{ cagr:'cagr5y', xirr:'sip5y' },
+  '10y':{ cagr:'cagr10y', xirr:'sip10y' },
 };
 
 function computeNavPerformanceSummary(sd){
@@ -2013,7 +2067,7 @@ function buildNavToolbar(fds){
     {key:'absolute',lbl:'Absolute'},
     {key:'relative',lbl:'Relative'}
   ].map(m=>`<button class="nav-mode-btn${S.navView.mode===m.key?' active':''}" onclick="setNavMode('${m.key}')">${m.lbl}</button>`).join('');
-  return `<div class="nav-mode-bar"><div class="nav-mode-group"><span class="nav-mode-label">View</span>${modeBtns}</div><div class="nav-hover-note">${fds.length} fund${fds.length!==1?'s':''} &middot; hover to track a vertical guide</div></div>`;
+  return `<div class="nav-mode-bar"><div class="nav-mode-group"><span class="nav-mode-label">View</span>${modeBtns}</div><div class="nav-hover-note">${fds.length} fund${fds.length!==1?'s':''} &middot; hover for guide &middot; press, drag, and release on chart to set range</div></div>`;
 }
 
 function buildNavDatasets(fds){
@@ -2062,7 +2116,7 @@ function navTooltipLabel(c){
 }
 
 function buildNavStats(fds){
-  const pre=PRECOMP_MAP[S.tsSlice]||{};
+  const pre=S.navView.useCustom ? {} : (PRECOMP_MAP[S.tsSlice]||{});
   const showXirr=S.tsSlice!=='1m';
   const rangeLabel=S.navView.useCustom?'Custom':((TS_SLICES.find(r=>r.key===S.tsSlice)?.lbl)||'Full');
 
@@ -2120,6 +2174,7 @@ function renderTimeSeries(){
     const navXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
     if(navXR){navXScale.min=navXR.min;navXScale.max=navXR.max;}
     S.charts['navChart']=new Chart(ctx,{type:'line',data:{datasets:navDatasets},options:{responsive:true,maintainAspectRatio:false,
+      events:['mousemove','mouseout','click','touchstart','touchmove','mousedown','mouseup'],
       interaction:{mode:'nearest',axis:'x',intersect:false},
       plugins:{legend:{display:false},
         tooltip:{callbacks:{
