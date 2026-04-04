@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -126,14 +126,14 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .sel-badge:hover{transform:translateY(-1px);filter:brightness(1.06)}
 .sel-badge:active{transform:translateY(0)}
 .sel-badge.is-muted{opacity:.45;filter:saturate(.6);border-style:dashed}
-.sel-badge.p1{color:#ffd070;background:var(--c1a);border-color:var(--c1b)}
-.sel-badge.p2{color:#93c5fd;background:var(--c2a);border-color:var(--c2b)}
-.sel-badge.p3{color:#6ee7b7;background:var(--c3a);border-color:var(--c3b)}
-.sel-badge.p4{color:#f9a8d4;background:var(--c4a);border-color:var(--c4b)}
-.sel-badge.p5{color:#c4b5fd;background:var(--c5a);border-color:var(--c5b)}
-.sel-badge.p6{color:#fda4af;background:var(--c6a);border-color:var(--c6b)}
-.sel-badge.p7{color:#67e8f9;background:var(--c7a);border-color:var(--c7b)}
-.sel-badge.p8{color:#bef264;background:var(--c8a);border-color:var(--c8b)}
+.sel-badge.p1{color:var(--c1);background:var(--c1a);border-color:var(--c1b)}
+.sel-badge.p2{color:var(--c2);background:var(--c2a);border-color:var(--c2b)}
+.sel-badge.p3{color:var(--c3);background:var(--c3a);border-color:var(--c3b)}
+.sel-badge.p4{color:var(--c4);background:var(--c4a);border-color:var(--c4b)}
+.sel-badge.p5{color:var(--c5);background:var(--c5a);border-color:var(--c5b)}
+.sel-badge.p6{color:var(--c6);background:var(--c6a);border-color:var(--c6b)}
+.sel-badge.p7{color:var(--c7);background:var(--c7a);border-color:var(--c7b)}
+.sel-badge.p8{color:var(--c8);background:var(--c8a);border-color:var(--c8b)}
 .b-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
 
 .sec{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:10px;display:flex;align-items:center;gap:10px}
@@ -461,7 +461,8 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
         <div class="map-field">
           <div class="map-label">Group</div>
           <div class="map-desc">Optional — empty auto-fills from MF API category</div>
-          <input class="msel" id="mf_group" type="text" placeholder="e.g., Equity Core" />
+          <input class="msel" id="mf_group" type="text" list="mf_group_list" placeholder="Choose existing or type a new group" />
+          <datalist id="mf_group_list"></datalist>
         </div>
       </div>
       <div style="margin-top:12px;display:flex;align-items:center;gap:10px;color:var(--tm);font-family:'DM Mono',monospace;font-size:12px;">
@@ -967,6 +968,7 @@ function openMfFavModal(){
   const grpEl=document.getElementById('mf_group');
   const resultsEl=document.getElementById('mf_search_results');
   const pickedEl=document.getElementById('mf_picked');
+  fillMfGroupOptions();
   if(searchEl) searchEl.value='';
   if(codeEl) codeEl.value='';
   if(grpEl) grpEl.value='';
@@ -1054,6 +1056,24 @@ function normalizeMfGroupLabel(group){
   if(!raw) return 'Ungrouped';
   const parts=raw.split(' - ').map(x=>x.trim()).filter(Boolean);
   return parts.length>1 ? parts[parts.length-1] : raw;
+}
+function getExistingGroupNames(){
+  const names=new Set();
+  (S.favs||[]).forEach(f=>{
+    const g=String(f?.group||'Ungrouped').trim()||'Ungrouped';
+    names.add(g);
+  });
+  Object.values(S.funds||{}).forEach(f=>{
+    const fallback=f?.source==='mf' ? 'Ungrouped' : 'Uploads';
+    const g=String(f?.group||fallback).trim()||fallback;
+    names.add(g);
+  });
+  return Array.from(names).sort((a,b)=>a.localeCompare(b));
+}
+function fillMfGroupOptions(){
+  const dl=document.getElementById('mf_group_list');
+  if(!dl) return;
+  dl.innerHTML=getExistingGroupNames().map(g=>`<option value="${esc(g)}"></option>`).join('');
 }
 function upsertMfFavourite(code, group, name){
   const g=String(group||'Ungrouped').trim()||'Ungrouped';
@@ -1154,6 +1174,26 @@ async function loadFundGroup(groupName){
   for(const fav of favs) await loadMFIntoFund(fav.code, g, {selectNow:true});
   renderSidebar();
   renderDashboard();
+}
+function unloadFundGroup(groupName){
+  const g=String(groupName||'Ungrouped').trim()||'Ungrouped';
+  const ids=Object.values(S.funds)
+    .filter(f=>(String(f.group||(f.source==='mf'?'Ungrouped':'Uploads')).trim()||'Ungrouped')===g)
+    .map(f=>f.id);
+  ids.forEach(id=>delete S.funds[id]);
+  S.selected=S.selected.filter(id=>!ids.includes(id));
+  ids.forEach(id=>{ if(S.hiddenFunds) delete S.hiddenFunds[id]; });
+  renderSidebar();
+  renderDashboard();
+}
+async function toggleFundGroupLoad(groupName){
+  const g=String(groupName||'Ungrouped').trim()||'Ungrouped';
+  const loaded=Object.values(S.funds).filter(f=>(String(f.group||(f.source==='mf'?'Ungrouped':'Uploads')).trim()||'Ungrouped')===g);
+  const favs=(S.favs||[]).filter(f=>(String(f.group||'Ungrouped').trim()||'Ungrouped')===g);
+  const loadedCodes=new Set(loaded.map(f=>String(f.scheme_code||'')).filter(Boolean));
+  const hasUnloadedFavs=favs.some(f=>!loadedCodes.has(String(f.code)));
+  if(hasUnloadedFavs) return loadFundGroup(g);
+  return unloadFundGroup(g);
 }
 let DRAG_CTX = null;
 function sidebarDragStart(type, id, ev){
@@ -1513,12 +1553,15 @@ function renderSidebar(){
     if(!items.length) return '';
     const isCollapsed=!!(S.groupCollapsed&&S.groupCollapsed[g]);
     const gid=`group_${String(g).replace(/[^a-z0-9_-]/gi,'_')}`;
+    const loadedCount=items.filter(x=>x.type==='loaded').length;
+    const favCount=items.filter(x=>x.type==='fav').length;
+    const groupToggleLabel=favCount>0?'Load All':'Unload All';
     return `<div class="fund-group" id="${gid}" ondragover='sidebarAllowGroupDrop(${JSON.stringify(g)}, event)' ondragleave='sidebarLeaveGroupDrop(${JSON.stringify(g)})' ondrop='sidebarDropToGroup(${JSON.stringify(g)}, event)'>
       <div class="fg-hdr">
         <button type="button" class="fg-toggle${isCollapsed?' is-collapsed':''}" onclick='toggleFundGroup(${JSON.stringify(g)})'>
           <span class="fg-title"><span class="fg-chevron">&#9660;</span><span class="fg-name" title="${g}">${g}</span></span>
         </button>
-        <span class="fg-actions"><button type="button" class="fg-load-btn" onclick='loadFundGroup(${JSON.stringify(g)})'>Load All</button><button type="button" class="fg-rename-btn" onclick='renameFundGroup(${JSON.stringify(g)})' title="Rename group">&#9998;</button><span class="fg-count">${items.length}</span></span>
+        <span class="fg-actions"><button type="button" class="fg-load-btn" onclick='toggleFundGroupLoad(${JSON.stringify(g)})'>${groupToggleLabel}</button><button type="button" class="fg-rename-btn" onclick='renameFundGroup(${JSON.stringify(g)})' title="Rename group">&#9998;</button><span class="fg-count">${items.length}</span></span>
       </div>
       <div class="fg-items" style="display:${isCollapsed?'none':'block'}">
         ${items.map(it=>{
@@ -1567,11 +1610,11 @@ function renderDashboard(){
   document.getElementById('noSelState').style.display=hasFunds&&!hasSel?'flex':'none';
   document.getElementById('dashboard').style.display=hasSel?'flex':'none';
   if(!hasSel) return;
-  document.getElementById('selBar').innerHTML=S.selected.map((id,i)=>{
+  document.getElementById('selBar').innerHTML=S.selected.map((id)=>{
     const f=S.funds[id];
     const muted=S.hiddenFunds?.[f.id]?' is-muted':'';
     const label=S.hiddenFunds?.[f.id]?'Show':'Hide';
-    return `<button type="button" class="sel-badge p${(i%COLORS.length)+1}${muted}" onclick="toggleLegendFund('${f.id}')" title="${label} ${f.name} in charts"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</button>`;
+    return `<button type="button" class="sel-badge p${(f.ci%COLORS.length)+1}${muted}" onclick="toggleLegendFund('${f.id}')" title="${label} ${f.name} in charts"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</button>`;
   }).join('');
   renderCurrentPane();
 }
@@ -1742,7 +1785,7 @@ function renderDistributions(){
   if(!fds.length){el.innerHTML=`<div class="cc"><div class="cc-t">Distributions Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;return;}
   const valid=ALL_M.filter(m=>fds.some(f=>f.computed[m.key]&&f.computed[m.key].length>=10));
   if(!valid.length){el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:32px;opacity:.2">📉</div><div style="font-size:15px;font-weight:800;color:var(--tx);margin-top:8px">Insufficient data</div></div>`;return;}
-  el.innerHTML=`<div class="sec">Return Distributions <span class="stag">all historical rolling returns</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar counts returns in a range <strong style="color:var(--tx)">[lower, upper)</strong> in % (lower ≤ r &lt; upper), except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
+  el.innerHTML=`<div class="sec">Return Distributions <span class="stag">all historical rolling returns</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar now shows the <strong style="color:var(--tx)">percentage of observations</strong> that fall in a return range <strong style="color:var(--tx)">[lower, upper)</strong>, except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
   valid.forEach(m=>{
     const fd=fds.map(f=>({name:shortN(f.name,50),ci:f.ci%COLORS.length,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
     if(!fd.length) return;
@@ -1753,17 +1796,17 @@ function renderDistributions(){
         ppos=(d.vals.filter(v=>v>0).length/d.vals.length*100);
       return `<div class="dsf"><div class="dsf-name" style="color:${COLORS[d.ci]}">${d.name}</div><div class="dsrow">${sp('Min',sv[0].toFixed(1)+'%')}${sp('Max',sv[sv.length-1].toFixed(1)+'%')}${sp('Avg',mean.toFixed(1)+'%')}${sp('Med',med.toFixed(1)+'%')}${sp('Std',std.toFixed(1)+'%')}${sp('>0%',ppos.toFixed(0)+'%')}${sp('n',d.vals.length)}</div></div>`;
     }).join('');
-    document.getElementById('distGrid').insertAdjacentHTML('beforeend',`<div class="cc clickable" onclick="openDistributionDetail('${m.key}')"><div class="cc-t">${m.lbl} Distribution</div><div class="cc-s">Frequency of historical rolling values · click to inspect rows</div><div class="cw"><canvas id="${cid}"></canvas></div><div class="dstats">${statsHtml}</div></div>`);
+    document.getElementById('distGrid').insertAdjacentHTML('beforeend',`<div class="cc clickable" onclick="openDistributionDetail('${m.key}')"><div class="cc-t">${m.lbl} Distribution</div><div class="cc-s">Share of historical rolling values by return bucket · click to inspect rows</div><div class="cw"><canvas id="${cid}"></canvas></div><div class="dstats">${statsHtml}</div></div>`);
     requestAnimationFrame(()=>{
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
       S.charts[cid]=new Chart(ctx,{type:'bar',data:hist,options:{responsive:true,maintainAspectRatio:false,
         plugins:{legend:{display:false},
           tooltip:{callbacks:{
             title:items=>items.length&&items[0].label?`Range ${items[0].label}`:'',
-            label:c=>`${c.dataset.label}: ${c.parsed.y} rolling return${c.parsed.y===1?'':'s'}`
+            label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(2)}% of rolling returns`
           }}},
         scales:{x:{grid:{display:false},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},maxTicksLimit:10}},
-          y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'}}}},
+          y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>v+'%'}}},
         barPercentage:.9,categoryPercentage:.85}});
     });
   });
@@ -1818,7 +1861,9 @@ function makeHist(fds,bins=25){
   });
   return{labels,datasets:fds.map(d=>{
     const counts=Array(bins).fill(0);for(const v of d.vals){const b=Math.min(bins-1,Math.max(0,Math.floor((v-mn)/bsz)));counts[b]++;}
-    return{label:d.name,data:counts,backgroundColor:COLORS_BG[d.ci],borderColor:COLORS[d.ci],borderWidth:1.5};
+    const total=d.vals.length||1;
+    const pct=counts.map(v=>+(v*100/total).toFixed(2));
+    return{label:d.name,data:pct,backgroundColor:COLORS_BG[d.ci],borderColor:COLORS[d.ci],borderWidth:1.5};
   })};
 }
 
@@ -2193,6 +2238,7 @@ function downloadNavData() {
   setTimeout(() => {
     try {
       const wb = XLSX.utils.book_new();
+      const usedSheetNames = new Set();
 
       // Cover sheet
       const coverRows = [
@@ -2213,7 +2259,7 @@ function downloadNavData() {
       }
       const coverWs = aoaToWs(coverRows);
       coverWs['!cols'] = [{wch:52},{wch:22},{wch:12},{wch:14},{wch:14}];
-      XLSX.utils.book_append_sheet(wb, coverWs, 'Index');
+      XLSX.utils.book_append_sheet(wb, coverWs, uniqueSheetName('Index', usedSheetNames));
 
       // One sheet per fund
       for (const f of fds) {
@@ -2226,8 +2272,10 @@ function downloadNavData() {
         ];
         const ws = aoaToWs(rows);
         ws['!cols'] = [{wch:16},{wch:14}];
-        // Excel sheet names: max 31 chars, no special chars
-        const sheetName = f.name.replace(/[:\\\/\?\*\[\]]/g,'').slice(0,31);
+        const baseSheetName = f.source === 'mf'
+          ? `MF_${String(f.scheme_code||'Unknown')}`
+          : f.name;
+        const sheetName = uniqueSheetName(baseSheetName, usedSheetNames);
         XLSX.utils.book_append_sheet(wb, ws, sheetName);
       }
 
@@ -2273,6 +2321,23 @@ function exportDistributionsExcel(fds){
 
 function safeSheetName(name){
   return String(name).replace(/[\\\/\?\*\[\]\:]/g,'').slice(0,31) || 'Sheet';
+}
+function uniqueSheetName(baseName, usedNames){
+  let name=safeSheetName(baseName);
+  if(!usedNames.has(name)){
+    usedNames.add(name);
+    return name;
+  }
+  let i=2;
+  while(true){
+    const suffix=`_${i}`;
+    const candidate=safeSheetName(String(baseName).slice(0,31-suffix.length)+suffix);
+    if(!usedNames.has(candidate)){
+      usedNames.add(candidate);
+      return candidate;
+    }
+    i++;
+  }
 }
 
 // ── SHEET 1: Summary ─────────────────────────────────
