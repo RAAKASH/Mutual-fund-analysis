@@ -270,10 +270,32 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .snap-period{display:block;font-size:9px;font-weight:500;color:var(--td);margin-top:2px;font-family:'DM Mono',monospace}
 .snap-sort-hint{font-size:10px;font-weight:600;font-family:'DM Mono',monospace;color:var(--td);margin-bottom:10px}
 .snap-group-hdr{padding:6px 14px;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);background:var(--sf3);border-bottom:1px solid var(--br)}
+.holdings-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.holdings-meta{font-size:11px;color:var(--tm);font-family:'DM Mono',monospace}
+.proj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.proj-card{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:14px 16px}
+.proj-card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.proj-card-t{font-size:13px;font-weight:800;color:var(--tx)}
+.proj-card-s{font-size:10px;color:var(--tm);font-family:'DM Mono',monospace}
+.proj-rows{display:flex;flex-direction:column;gap:8px}
+.proj-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.proj-row-l{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--td)}
+.proj-row-v{font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:var(--tx)}
+.proj-row-v.pos{color:var(--pos)}
+.proj-row-v.neg{color:var(--neg)}
+.proj-detail{overflow:auto;border:1px solid var(--br);border-radius:var(--r);background:var(--sf)}
+.proj-tbl{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace}
+.proj-tbl th,.proj-tbl td{padding:10px 12px;border-bottom:1px solid var(--br);font-size:12px;text-align:left;white-space:nowrap}
+.proj-tbl th{background:var(--sf2);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--td)}
+.proj-tbl td{color:var(--tm)}
+.proj-tbl tr:last-child td{border-bottom:none}
+.proj-match-ok{color:var(--pos);font-weight:700}
+.proj-match-miss{color:var(--neg);font-weight:700}
 
 @media(max-width:600px){
   .snap-tbl th,.snap-tbl td{padding:8px 10px;font-size:11px}
   .snap-tbl td:first-child{max-width:130px}
+  .proj-grid{grid-template-columns:1fr}
 }
 
 @media(max-width:860px){.tiles-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
@@ -337,6 +359,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   <div class="hdr-r">
     <span class="badge" id="cntBadge">0 funds loaded</span>
     <button class="upload-btn" onclick="triggerUpload()">↑ Load NAV File</button>
+    <button class="btn-ghost" onclick="triggerHoldingsUpload()" title="Load current holdings workbook">↑ Load Holdings</button>
     <button class="btn-ghost" onclick="openMfFavModal()" title="Add favorite fund directly from MF API">+ MF API</button>
     <button class="btn-ghost" id="navDlBtn" onclick="downloadNavData()" title="Download raw NAV data for all loaded funds" style="display:none">↓ NAV Data</button>
   </div>
@@ -381,6 +404,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
         <div class="tab active" data-tab="snapshot" onclick="switchTab('snapshot')">Snapshot</div>
         <div class="tab" data-tab="distributions" onclick="switchTab('distributions')">Distributions</div>
         <div class="tab" data-tab="timeseries" onclick="switchTab('timeseries')">Time Series</div>
+        <div class="tab" data-tab="portfolio" onclick="switchTab('portfolio')" id="portfolioTab" style="display:none">Portfolio</div>
         <button class="export-btn" id="exportBtn" onclick="exportToExcel()" title="Download validation workbook">
           ⬇ Export Validation Excel
         </button>
@@ -392,6 +416,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
         </div>
         <div class="tab-pane" id="pane-distributions"><div id="distContent"></div></div>
         <div class="tab-pane" id="pane-timeseries"><div id="tsContent"></div></div>
+        <div class="tab-pane" id="pane-portfolio"><div id="portfolioContent"></div></div>
       </div>
     </div>
   </main>
@@ -478,6 +503,50 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   </div>
 </div>
 
+<div class="overlay" id="holdingsModal" style="display:none">
+  <div class="modal" style="width:760px">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Map Holdings Workbook</div>
+        <div class="modal-sub" id="holdingsSub">Import your current portfolio and project scenario ranges</div>
+      </div>
+      <button class="modal-x" onclick="closeHoldingsModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">Data Preview (first 5 rows)</div>
+      <div class="prev-wrap"><table class="prev-tbl" id="holdingsPrevTbl"></table></div>
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:10px">Column Mapping</div>
+      <div class="map-grid">
+        <div class="map-field">
+          <div class="map-label">Scheme Name <span id="holdingsNameAutoTag"></span></div>
+          <div class="map-desc">Fund or scheme name from your portfolio statement</div>
+          <select class="msel" id="holdings_name"></select>
+        </div>
+        <div class="map-field">
+          <div class="map-label">Units <span id="holdingsUnitsAutoTag"></span></div>
+          <div class="map-desc">Optional — used if current value is missing</div>
+          <select class="msel" id="holdings_units"></select>
+        </div>
+        <div class="map-field">
+          <div class="map-label">Invested Value <span id="holdingsInvestedAutoTag"></span></div>
+          <div class="map-desc">Optional — shown for context in the summary table</div>
+          <select class="msel" id="holdings_invested"></select>
+        </div>
+        <div class="map-field">
+          <div class="map-label">Current Value <span id="holdingsCurrentAutoTag"></span></div>
+          <div class="map-desc">Preferred base value for forward scenario projection</div>
+          <select class="msel" id="holdings_current"></select>
+        </div>
+      </div>
+      <div class="warn" id="holdingsWarn">Please select at least Scheme Name and either Current Value or Units.</div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-ghost" onclick="closeHoldingsModal()">Cancel</button>
+      <button class="btn-ok" onclick="applyHoldingsMapping()">Build Portfolio Outlook →</button>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="mfGroupModal" style="display:none">
   <div class="modal" style="width:480px">
     <div class="modal-hdr">
@@ -525,6 +594,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 </div>
 
 <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple style="display:none" onchange="handleFiles(this.files)">
+<input type="file" id="holdingsFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleHoldingsFiles(this.files)">
 
 <script>
 // ─────────────────────────────────────────────────────
@@ -559,7 +629,7 @@ const TS_SLICES = [
   {key:'full',lbl:'Full', ms: null},
 ];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' } };
+const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, holdingsPending:null, holdings:null, holdingsRawRows:null, holdingsOverrides:{}, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' } };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
@@ -614,6 +684,30 @@ function autoDetect(headers, rows) {
   }
   return {dI,nI};
 }
+function autoDetectHoldings(headers){
+  const h=headers.map(x=>(x||'').toString().toLowerCase().trim());
+  const find=(patterns, exclude=[])=>h.findIndex((v,i)=>!exclude.includes(i) && patterns.some(p=>p.test(v)));
+  const investedI=find([/invested/,/cost/,/purchase/,/book\s*value/]);
+  let currentI=find([/current/,/market\s*value/,/present/,/valuation/],[investedI]);
+  if(currentI<0) currentI=find([/\bvalue\b/],[investedI]);
+  return {
+    nameI:find([/\bscheme\b/,/\bfund\b/,/\bname\b/]),
+    unitsI:find([/\bunit\b/,/\bunits\b/,/qty|quantity/]),
+    investedI,
+    currentI
+  };
+}
+function normalizeHoldingsName(name){
+  return String(name||'').toLowerCase()
+    .replace(/[-/&(),.]/g,' ')
+    .replace(/\b(direct|regular|growth|plan|option|fund|scheme)\b/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function triggerHoldingsUpload(){
+  const input=document.getElementById('holdingsFileInput');
+  if(input){ input.value=''; input.click(); }
+}
 
 // ─────────────────────────────────────────────────────
 //  FILE HANDLING
@@ -640,6 +734,17 @@ function parseFile(file) {
 }
 
 function handleFiles(files) { pendingFiles = Array.from(files); nextFile(); }
+async function handleHoldingsFiles(files){
+  const file=files&&files[0];
+  if(!file) return;
+  try{
+    const p=await parseFile(file);
+    S.holdingsPending=p;
+    showHoldingsModal(p);
+  }catch(e){
+    alert('Error: '+e.message);
+  }
+}
 async function nextFile() {
   if (!pendingFiles.length) return;
   const file = pendingFiles.shift();
@@ -699,6 +804,162 @@ async function applyMapping() {
   renderSidebar();
   renderDashboard();
   nextFile();
+}
+
+function showHoldingsModal({headers,rows,sheetName,fileName}){
+  const auto=autoDetectHoldings(headers);
+  document.getElementById('holdingsSub').textContent=`Sheet: ${sheetName} · ${rows.length} rows · ${headers.filter(Boolean).length} cols`;
+  document.getElementById('holdingsWarn').style.display='none';
+  const visIdx=headers.map((_,i)=>headers[i]?i:-1).filter(i=>i>=0);
+  const visH=visIdx.map(i=>headers[i]);
+  document.getElementById('holdingsPrevTbl').innerHTML=`<thead><tr>${visH.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,5).map(r=>`<tr>${visIdx.map(i=>`<td>${r[i]??''}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  const opts=headers.map((h,i)=>h?`<option value="${i}">${h}</option>`:'').join('');
+  ['name','units','invested','current'].forEach(key=>{
+    const el=document.getElementById(`holdings_${key}`);
+    if(el) el.innerHTML=`<option value="">— select —</option>${opts}`;
+  });
+  const autoMap={name:auto.nameI,units:auto.unitsI,invested:auto.investedI,current:auto.currentI};
+  Object.entries(autoMap).forEach(([key,val])=>{
+    const tag=document.getElementById(`holdings${key.charAt(0).toUpperCase()+key.slice(1)}AutoTag`);
+    const el=document.getElementById(`holdings_${key}`);
+    if(el && val>=0){ el.value=String(val); if(tag) tag.innerHTML='<span class="auto-tag">auto</span>'; }
+    else if(tag) tag.innerHTML='';
+  });
+  document.getElementById('holdingsModal').style.display='flex';
+}
+function closeHoldingsModal(){
+  const m=document.getElementById('holdingsModal');
+  if(m) m.style.display='none';
+  S.holdingsPending=null;
+}
+function medianOfSorted(arr){
+  if(!arr.length) return null;
+  const mid=Math.floor(arr.length/2);
+  return arr.length%2 ? arr[mid] : (arr[mid-1]+arr[mid])/2;
+}
+function fmtAmtShort(v){
+  if(v==null||!isFinite(v)) return 'N/A';
+  return `₹${Number(v).toLocaleString('en-IN',{maximumFractionDigits:0})}`;
+}
+function matchHoldingToFund(name, impliedNav){
+  const target=normalizeHoldingsName(name);
+  if(!target) return null;
+  const funds=Object.values(S.funds);
+  let best=null;
+  for(const f of funds){
+    const norm=normalizeHoldingsName(f.name);
+    if(!norm) continue;
+    let score=0;
+    // ── Name scoring ──
+    if(norm===target) score=100;
+    else if(norm.includes(target)||target.includes(norm)) score=80;
+    else{
+      const tw=target.split(' ').filter(Boolean);
+      const nw=norm.split(' ').filter(Boolean);
+      const overlap=tw.filter(w=>nw.includes(w)).length;
+      // Weight by fraction of target words matched (avoids matching on generic words)
+      score = overlap>=2 ? overlap + (overlap/tw.length)*10 : overlap;
+    }
+    // ── NAV proximity scoring (strong signal) ──
+    if(impliedNav && impliedNav>0){
+      const latestNav=f.rawData?.length ? f.rawData[f.rawData.length-1].nav : null;
+      if(latestNav){
+        const pctDiff=Math.abs(impliedNav-latestNav)/latestNav;
+        // <1% diff → +50pts, <3% → +30, <10% → +10, else slight penalty
+        if(pctDiff<0.01)      score+=50;
+        else if(pctDiff<0.03) score+=30;
+        else if(pctDiff<0.10) score+=10;
+        else if(pctDiff>0.50) score-=5;
+      }
+    }
+    if(!best||score>best.score) best={fund:f,score};
+  }
+  // Threshold: need at least a meaningful score
+  return best && best.score>=2 ? best.fund : null;
+}
+function buildHoldingsScenario(rows){
+  const horizons=[
+    {yrs:1,key:'cagr1y',label:'1Y'},
+    {yrs:3,key:'cagr3y',label:'3Y'},
+    {yrs:5,key:'cagr5y',label:'5Y'},
+    {yrs:10,key:'cagr10y',label:'10Y'},
+  ];
+  const matched=[], unmatched=[];
+  for(const row of rows){
+    // Compute implied NAV from units + current value for smarter matching
+    const impliedNav=(row.units&&row.units>0&&row.currentValue&&row.currentValue>0)
+      ? row.currentValue/row.units : null;
+    const fund=row._overrideFund || matchHoldingToFund(row.schemeName, impliedNav);
+    if(!fund){ unmatched.push({...row,reason:'No matching loaded fund'}); continue; }
+    const latestNav=fund.rawData?.length?fund.rawData[fund.rawData.length-1].nav:null;
+    const currentValue=row.currentValue??((row.units&&latestNav)?row.units*latestNav:null);
+    if(currentValue==null||!isFinite(currentValue)||currentValue<=0){ unmatched.push({...row,matchedFund:fund.name,reason:'Missing current value'}); continue; }
+    // NAV proximity confidence
+    const navPct = (impliedNav && latestNav) ? Math.abs(impliedNav-latestNav)/latestNav : null;
+    const isOverridden = !!row._overrideFund;
+    matched.push({...row,matchedFund:fund.name,fund,currentValue,latestNav,impliedNav,navPct,isOverridden});
+  }
+  const horizonsOut=horizons.map(h=>{
+    let worst=0, base=0, best=0, covered=0;
+    let sumWorstCagr=0, sumBaseCagr=0, sumBestCagr=0;
+    const fundBreakdown=[];
+    for(const r of matched){
+      const vals=(r.fund.computed?.[h.key]||[]).map(p=>p.value).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+      if(!vals.length){ fundBreakdown.push({name:r.matchedFund,holding:r.schemeName,current:r.currentValue,worst:null,base:null,best:null,worstCagr:null,baseCagr:null,bestCagr:null}); continue; }
+      covered++;
+      const lo=vals[0], med=medianOfSorted(vals), hi=vals[vals.length-1];
+      const wv=r.currentValue*Math.pow(1+lo/100,h.yrs);
+      const bav=r.currentValue*Math.pow(1+med/100,h.yrs);
+      const bev=r.currentValue*Math.pow(1+hi/100,h.yrs);
+      worst+=wv; base+=bav; best+=bev;
+      sumWorstCagr+=lo; sumBaseCagr+=med; sumBestCagr+=hi;
+      fundBreakdown.push({name:r.matchedFund,holding:r.schemeName,current:r.currentValue,worst:wv,base:bav,best:bev,worstCagr:lo,baseCagr:med,bestCagr:hi});
+    }
+    return {label:h.label,yrs:h.yrs,worst,base,best,covered,fundBreakdown,
+      avgWorstCagr:covered?sumWorstCagr/covered:null,
+      avgBaseCagr:covered?sumBaseCagr/covered:null,
+      avgBestCagr:covered?sumBestCagr/covered:null
+    };
+  });
+  return {
+    asOf:new Date(),
+    matched,
+    unmatched,
+    investedTotal:matched.reduce((s,r)=>s+(r.investedValue||0),0),
+    currentTotal:matched.reduce((s,r)=>s+r.currentValue,0),
+    horizons:horizonsOut
+  };
+}
+async function applyHoldingsMapping(){
+  const nameV=document.getElementById('holdings_name')?.value;
+  const unitsV=document.getElementById('holdings_units')?.value;
+  const investedV=document.getElementById('holdings_invested')?.value;
+  const currentV=document.getElementById('holdings_current')?.value;
+  const warn=document.getElementById('holdingsWarn');
+  if(nameV==='' || (unitsV==='' && currentV==='')){
+    if(warn) warn.style.display='block';
+    return;
+  }
+  const pending=S.holdingsPending;
+  if(!pending) return;
+  if(warn) warn.style.display='none';
+  const rows=pending.rows.map(r=>({
+    schemeName:String(r[+nameV]||'').trim(),
+    units:unitsV===''?null:parseNav(r[+unitsV]),
+    investedValue:investedV===''?null:parseNav(r[+investedV]),
+    currentValue:currentV===''?null:parseNav(r[+currentV])
+  })).filter(r=>r.schemeName);
+  S.holdingsRawRows=rows; // Store for re-building after overrides
+  closeHoldingsModal();
+  showLoading('Building portfolio scenario outlook…');
+  await tick();
+  S.holdings=buildHoldingsScenario(rows);
+  hideLoading();
+  // Show portfolio tab and switch to it
+  const ptab=document.getElementById('portfolioTab');
+  if(ptab) ptab.style.display='';
+  S.tab='portfolio';
+  renderDashboard();
 }
 
 // ─────────────────────────────────────────────────────
@@ -920,6 +1181,7 @@ function genUniformDateTicks(minMs, maxMs){
 }
 function sp(l,v){return `<div class="sp"><div class="sp-l">${l}</div><div class="sp-v">${v}</div></div>`;}
 function getMetricDef(key){return ALL_M.find(m=>m.key===key)||null;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 const hoverGuidePlugin = {
   id:'hoverGuidePlugin',
@@ -1662,7 +1924,13 @@ function renderDashboard(){
   document.getElementById('emptyState').style.display=hasFunds?'none':'flex';
   document.getElementById('noSelState').style.display=hasFunds&&!hasSel?'flex':'none';
   document.getElementById('dashboard').style.display=hasSel?'flex':'none';
+  // Portfolio tab visibility
+  const ptab=document.getElementById('portfolioTab');
+  if(ptab) ptab.style.display=S.holdings?'':'none';
   if(!hasSel) return;
+  // Sync active tab states
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===S.tab));
+  document.querySelectorAll('.tab-pane').forEach(el=>el.classList.toggle('active',el.id==='pane-'+S.tab));
   document.getElementById('selBar').innerHTML=S.selected.map((id)=>{
     const f=S.funds[id];
     const muted=S.hiddenFunds?.[f.id]?' is-muted':'';
@@ -1675,12 +1943,16 @@ function renderCurrentPane(){
   updateExportButton();
   if(S.tab==='snapshot') renderSnapshot();
   else if(S.tab==='distributions') renderDistributions();
+  else if(S.tab==='portfolio') renderPortfolioTab();
   else renderTimeSeries();
 }
 function switchTab(t){
   S.tab=t;
   document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===t));
   document.querySelectorAll('.tab-pane').forEach(el=>el.classList.toggle('active',el.id==='pane-'+t));
+  // Ensure portfolio tab button is visible if holdings exist
+  const ptab=document.getElementById('portfolioTab');
+  if(ptab && S.holdings) ptab.style.display='';
   renderCurrentPane();
 }
 
@@ -1723,6 +1995,132 @@ function renderSnapshotBarChart(cid, labels, fds, keys){
     scales:{x:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'}}},
       y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>v+'%'}}}}});
 }
+// ── Fund match override system ──
+function applyFundMatchOverride(schemeName, fundId){
+  if(!S.holdingsRawRows) return;
+  S.holdingsOverrides=S.holdingsOverrides||{};
+  if(fundId==='__none__') delete S.holdingsOverrides[schemeName];
+  else S.holdingsOverrides[schemeName]=fundId;
+  // Rebuild scenario with overrides applied
+  const rows=(S.holdingsRawRows||[]).map(r=>{
+    const override=S.holdingsOverrides?.[r.schemeName];
+    return override ? {...r, _overrideFund: S.funds[override]||null} : r;
+  });
+  S.holdings=buildHoldingsScenario(rows);
+  renderPortfolioTab();
+}
+
+function renderPortfolioTab(){
+  const el=document.getElementById('portfolioContent');
+  if(!el) return;
+  const h=S.holdings;
+  if(!h){
+    el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:34px;opacity:.3">📁</div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-top:8px">No holdings loaded</div><div style="font-size:12px;color:var(--tm);margin-top:5px">Use "↑ Load Holdings" in the header to import your portfolio statement</div></div>`;
+    return;
+  }
+
+  const meta=`${h.matched.length} matched holding${h.matched.length!==1?'s':''} · ${h.unmatched.length} unmatched · imported ${fmtFullDate(h.asOf)}`;
+  const fmtCagr=v=>v==null?'—':(v>=0?'+':'')+v.toFixed(1)+'%';
+
+  // Scenario summary cards
+  const cards=h.horizons.map(x=>{
+    const status=x.covered?`${x.covered}/${h.matched.length} funds covered`:`No usable history`;
+    const cls=v=>v>0&&v>=h.currentTotal?'pos':'neg';
+    return `<div class="proj-card">
+      <div class="proj-card-h"><div class="proj-card-t">${x.label} Outlook</div><div class="proj-card-s">${status}</div></div>
+      <div class="proj-rows">
+        <div class="proj-row"><span class="proj-row-l" style="color:#f87171">Worst</span><span class="proj-row-v neg">${fmtAmtShort(x.worst)}</span></div>
+        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">avg CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--neg)">${fmtCagr(x.avgWorstCagr)}</span></div>
+        <div class="proj-row" style="border-top:1px solid var(--br);margin-top:4px;padding-top:6px"><span class="proj-row-l" style="color:#94a3b8">Median</span><span class="proj-row-v">${fmtAmtShort(x.base)}</span></div>
+        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">avg CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--tm)">${fmtCagr(x.avgBaseCagr)}</span></div>
+        <div class="proj-row" style="border-top:1px solid var(--br);margin-top:4px;padding-top:6px"><span class="proj-row-l" style="color:#4ade80">Best</span><span class="proj-row-v pos">${fmtAmtShort(x.best)}</span></div>
+        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">avg CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--pos)">${fmtCagr(x.avgBestCagr)}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Build matched rows with inline fund selector and per-horizon values
+  const matchedRows=h.matched.map(r=>{
+    const overrideKey=r.schemeName;
+    const currentOverride=(S.holdingsOverrides||{})[overrideKey];
+    const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
+      ${Object.values(S.funds).map(f=>`<option value="${f.id}"${(currentOverride?currentOverride===f.id:f.id===r.fund.id)?'selected':''}>${esc(f.name)}</option>`).join('')}
+    </select>`;
+    const horizonCells=h.horizons.map(hz=>{
+      const bd=hz.fundBreakdown.find(b=>b.holding===r.schemeName);
+      if(!bd||bd.worst==null) return `<td style="text-align:center;color:var(--td);font-size:11px">—</td>`;
+      return `<td style="text-align:center">
+        <div style="font-size:10px;color:var(--neg);font-family:'DM Mono',monospace">${fmtAmtShort(bd.worst)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.worstCagr)}</span></div>
+        <div style="font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;margin-top:2px">${fmtAmtShort(bd.base)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.baseCagr)}</span></div>
+        <div style="font-size:10px;color:var(--pos);font-family:'DM Mono',monospace;margin-top:2px">${fmtAmtShort(bd.best)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.bestCagr)}</span></div>
+      </td>`;
+    }).join('');
+    const navBadge = r.isOverridden
+      ? `<div style="font-size:9px;color:#f8d27a;font-family:'DM Mono',monospace;margin-top:2px">⚡ overridden</div>`
+      : r.navPct != null
+        ? r.navPct < 0.01
+          ? `<div style="font-size:9px;color:var(--pos);font-family:'DM Mono',monospace;margin-top:2px">✓ NAV match &lt;1%</div>`
+          : r.navPct < 0.05
+            ? `<div style="font-size:9px;color:#f8d27a;font-family:'DM Mono',monospace;margin-top:2px">~ NAV diff ${(r.navPct*100).toFixed(1)}%</div>`
+            : `<div style="font-size:9px;color:var(--neg);font-family:'DM Mono',monospace;margin-top:2px">⚠ NAV diff ${(r.navPct*100).toFixed(0)}% — verify</div>`
+        : `<div style="font-size:9px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">name-only match</div>`;
+    return `<tr>
+      <td style="max-width:180px;word-break:break-word;white-space:normal">
+        ${esc(r.schemeName)}
+        ${r.impliedNav ? `<div style="font-size:9px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">implied NAV ₹${r.impliedNav.toFixed(2)}</div>` : ''}
+      </td>
+      <td>${fundSel}${navBadge}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
+      ${horizonCells}
+    </tr>`;
+  }).join('');
+
+  const unmatchedRows=h.unmatched.map(r=>{
+    const overrideKey=r.schemeName;
+    const currentOverride=(S.holdingsOverrides||{})[overrideKey];
+    const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
+      <option value="__none__">— Not matched —</option>
+      ${Object.values(S.funds).map(f=>`<option value="${f.id}"${currentOverride===f.id?'selected':''}>${esc(f.name)}</option>`).join('')}
+    </select>`;
+    return `<tr style="opacity:.65">
+      <td style="max-width:180px;word-break:break-word;white-space:normal;color:var(--neg)">${esc(r.schemeName)}</td>
+      <td>${fundSel}<div style="font-size:9px;color:var(--neg);font-family:'DM Mono',monospace;margin-top:3px">${esc(r.reason)}</div></td>
+      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
+      ${h.horizons.map(()=>`<td style="text-align:center;color:var(--td);font-size:11px">—</td>`).join('')}
+    </tr>`;
+  }).join('');
+
+  const horizonHeaderCells=h.horizons.map(hz=>`<th style="text-align:center;border-left:1px solid var(--br)">
+    <div>${hz.label} Horizon</div>
+    <div style="font-size:9px;font-weight:400;color:var(--td);margin-top:2px">Worst / Median / Best</div>
+  </th>`).join('');
+
+  el.innerHTML=`
+    <div class="sec" style="margin-top:6px">Portfolio Outlook <span class="stag">worst · median · best from CAGR distributions</span></div>
+    <div class="holdings-head">
+      <div class="holdings-meta">${meta}</div>
+      <div class="holdings-meta">Current matched value <strong style="color:var(--tx)">${fmtAmtShort(h.currentTotal)}</strong> · Invested <strong style="color:var(--tx)">${fmtAmtShort(h.investedTotal)}</strong></div>
+    </div>
+    <div class="proj-grid">${cards}</div>
+    <div class="sec" style="margin-top:4px">Fund-level Breakdown <span class="stag">edit matched fund · projected value per scenario</span></div>
+    <div style="font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;margin-bottom:10px">Use the dropdowns to correct any mismatched funds. Changes rebuild the outlook instantly.</div>
+    <div class="proj-detail">
+      <table class="proj-tbl" style="min-width:900px">
+        <thead>
+          <tr>
+            <th style="min-width:160px">Holding Name</th>
+            <th style="min-width:180px">Matched Fund <span style="font-weight:400;opacity:.6">(editable)</span></th>
+            <th style="text-align:right;min-width:100px">Current Value</th>
+            ${horizonHeaderCells}
+          </tr>
+        </thead>
+        <tbody>${matchedRows}${unmatchedRows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderHoldingsProjection(){ return ''; } // Moved to Portfolio tab
 
 function renderSnapshot(){
   const fds=S.selected.map(id=>S.funds[id]);
