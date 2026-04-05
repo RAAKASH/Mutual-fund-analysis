@@ -404,7 +404,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
         <div class="tab active" data-tab="snapshot" onclick="switchTab('snapshot')">Snapshot</div>
         <div class="tab" data-tab="distributions" onclick="switchTab('distributions')">Distributions</div>
         <div class="tab" data-tab="timeseries" onclick="switchTab('timeseries')">Time Series</div>
-        <div class="tab" data-tab="portfolio" onclick="switchTab('portfolio')" id="portfolioTab" style="display:none">Portfolio</div>
+        <div class="tab" data-tab="portfolio" onclick="switchTab('portfolio')" id="portfolioTab" style="display:none">📊 Portfolio</div>
         <button class="export-btn" id="exportBtn" onclick="exportToExcel()" title="Download validation workbook">
           ⬇ Export Validation Excel
         </button>
@@ -595,6 +595,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 
 <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple style="display:none" onchange="handleFiles(this.files)">
 <input type="file" id="holdingsFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleHoldingsFiles(this.files)">
+<input type="file" id="holdingsReimportInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="loadHoldingsFromExcel(this.files[0]);this.value=''">
 
 <script>
 // ─────────────────────────────────────────────────────
@@ -633,6 +634,8 @@ const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:n
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
+const LS_HOLDINGS_ROWS = 'mf_holdings_rows_v1';
+const LS_HOLDINGS_OVERRIDES = 'mf_holdings_overrides_v1';
 let uid = 0, pendingFiles = [];
 
 // ─────────────────────────────────────────────────────
@@ -900,25 +903,26 @@ function buildHoldingsScenario(rows){
     matched.push({...row,matchedFund:fund.name,fund,currentValue,latestNav,impliedNav,navPct,isOverridden});
   }
   const horizonsOut=horizons.map(h=>{
-    let worst=0, base=0, best=0, covered=0;
-    let sumWorstCagr=0, sumBaseCagr=0, sumBestCagr=0;
+    let worst=0,base=0,best=0,covered=0,coveredCurrent=0;
     const fundBreakdown=[];
     for(const r of matched){
       const vals=(r.fund.computed?.[h.key]||[]).map(p=>p.value).filter(v=>isFinite(v)).sort((a,b)=>a-b);
-      if(!vals.length){ fundBreakdown.push({name:r.matchedFund,holding:r.schemeName,current:r.currentValue,worst:null,base:null,best:null,worstCagr:null,baseCagr:null,bestCagr:null}); continue; }
+      if(!vals.length){fundBreakdown.push({name:r.matchedFund,holding:r.schemeName,current:r.currentValue,worst:null,base:null,best:null,worstCagr:null,baseCagr:null,bestCagr:null});continue;}
       covered++;
-      const lo=vals[0], med=medianOfSorted(vals), hi=vals[vals.length-1];
+      coveredCurrent+=r.currentValue;
+      const lo=vals[0],med=medianOfSorted(vals),hi=vals[vals.length-1];
       const wv=r.currentValue*Math.pow(1+lo/100,h.yrs);
       const bav=r.currentValue*Math.pow(1+med/100,h.yrs);
       const bev=r.currentValue*Math.pow(1+hi/100,h.yrs);
-      worst+=wv; base+=bav; best+=bev;
-      sumWorstCagr+=lo; sumBaseCagr+=med; sumBestCagr+=hi;
+      worst+=wv;base+=bav;best+=bev;
       fundBreakdown.push({name:r.matchedFund,holding:r.schemeName,current:r.currentValue,worst:wv,base:bav,best:bev,worstCagr:lo,baseCagr:med,bestCagr:hi});
     }
-    return {label:h.label,yrs:h.yrs,worst,base,best,covered,fundBreakdown,
-      avgWorstCagr:covered?sumWorstCagr/covered:null,
-      avgBaseCagr:covered?sumBaseCagr/covered:null,
-      avgBestCagr:covered?sumBestCagr/covered:null
+    // Portfolio-level implied CAGR derived from aggregated projected totals (value-weighted by construction)
+    const ic=(tot,cur)=>(cur>0&&tot>0)?((Math.pow(tot/cur,1/h.yrs)-1)*100):null;
+    return {label:h.label,yrs:h.yrs,worst,base,best,covered,coveredCurrent,fundBreakdown,
+      impliedWorstCagr:ic(worst,coveredCurrent),
+      impliedBaseCagr:ic(base,coveredCurrent),
+      impliedBestCagr:ic(best,coveredCurrent),
     };
   });
   return {
@@ -950,6 +954,7 @@ async function applyHoldingsMapping(){
     currentValue:currentV===''?null:parseNav(r[+currentV])
   })).filter(r=>r.schemeName);
   S.holdingsRawRows=rows; // Store for re-building after overrides
+  persistHoldings();
   closeHoldingsModal();
   showLoading('Building portfolio scenario outlook…');
   await tick();
@@ -1666,6 +1671,8 @@ async function loadMFIntoFund(code, group, {selectNow=true}={}){
 
   if(selectNow && !S.selected.includes(fid)) S.selected.push(fid);
   renderSidebar();renderDashboard();
+  // If we have saved holdings, try rebuilding now that a new fund is available
+  if(S.holdingsRawRows&&S.holdingsRawRows.length) rebuildHoldingsFromStorage();
 }
 
 function loadMfFavourite(code){
@@ -2007,6 +2014,7 @@ function applyFundMatchOverride(schemeName, fundId){
     return override ? {...r, _overrideFund: S.funds[override]||null} : r;
   });
   S.holdings=buildHoldingsScenario(rows);
+  persistHoldings();
   renderPortfolioTab();
 }
 
@@ -2020,21 +2028,20 @@ function renderPortfolioTab(){
   }
 
   const meta=`${h.matched.length} matched holding${h.matched.length!==1?'s':''} · ${h.unmatched.length} unmatched · imported ${fmtFullDate(h.asOf)}`;
-  const fmtCagr=v=>v==null?'—':(v>=0?'+':'')+v.toFixed(1)+'%';
+  const fmtCagr=v=>v==null?'—':(v>=0?'+':'')+v.toFixed(2)+'%';
 
   // Scenario summary cards
   const cards=h.horizons.map(x=>{
     const status=x.covered?`${x.covered}/${h.matched.length} funds covered`:`No usable history`;
-    const cls=v=>v>0&&v>=h.currentTotal?'pos':'neg';
     return `<div class="proj-card">
       <div class="proj-card-h"><div class="proj-card-t">${x.label} Outlook</div><div class="proj-card-s">${status}</div></div>
       <div class="proj-rows">
         <div class="proj-row"><span class="proj-row-l" style="color:#f87171">Worst</span><span class="proj-row-v neg">${fmtAmtShort(x.worst)}</span></div>
-        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">avg CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--neg)">${fmtCagr(x.avgWorstCagr)}</span></div>
+        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">portfolio CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--neg)">${fmtCagr(x.impliedWorstCagr)}</span></div>
         <div class="proj-row" style="border-top:1px solid var(--br);margin-top:4px;padding-top:6px"><span class="proj-row-l" style="color:#94a3b8">Median</span><span class="proj-row-v">${fmtAmtShort(x.base)}</span></div>
-        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">avg CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--tm)">${fmtCagr(x.avgBaseCagr)}</span></div>
+        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">portfolio CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--tm)">${fmtCagr(x.impliedBaseCagr)}</span></div>
         <div class="proj-row" style="border-top:1px solid var(--br);margin-top:4px;padding-top:6px"><span class="proj-row-l" style="color:#4ade80">Best</span><span class="proj-row-v pos">${fmtAmtShort(x.best)}</span></div>
-        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">avg CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--pos)">${fmtCagr(x.avgBestCagr)}</span></div>
+        <div class="proj-row" style="padding-left:12px"><span class="proj-row-l" style="font-size:9px;color:var(--td)">portfolio CAGR</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--pos)">${fmtCagr(x.impliedBestCagr)}</span></div>
       </div>
     </div>`;
   }).join('');
@@ -2096,14 +2103,21 @@ function renderPortfolioTab(){
   </th>`).join('');
 
   el.innerHTML=`
-    <div class="sec" style="margin-top:6px">Portfolio Outlook <span class="stag">worst · median · best from CAGR distributions</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;margin-bottom:2px;flex-wrap:wrap">
+      <div class="sec" style="margin:0;flex:1">Portfolio Outlook <span class="stag">worst · median · best from CAGR distributions</span></div>
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <button class="export-btn" onclick="exportPortfolioExcel()" title="Export full portfolio analysis to Excel">⬇ Export Analysis</button>
+        <button class="export-btn" style="background:rgba(167,139,250,.12);color:#a78bfa;border-color:rgba(167,139,250,.3)" onclick="exportHoldingsDataExcel()" title="Export holdings data for re-import">⬇ Export Holdings Data</button>
+        <button class="export-btn" style="background:rgba(251,191,36,.10);color:#fbbf24;border-color:rgba(251,191,36,.3)" onclick="document.getElementById('holdingsReimportInput').click()" title="Re-import a previously exported Holdings Data file">↑ Load Saved Holdings</button>
+      </div>
+    </div>
     <div class="holdings-head">
       <div class="holdings-meta">${meta}</div>
       <div class="holdings-meta">Current matched value <strong style="color:var(--tx)">${fmtAmtShort(h.currentTotal)}</strong> · Invested <strong style="color:var(--tx)">${fmtAmtShort(h.investedTotal)}</strong></div>
     </div>
     <div class="proj-grid">${cards}</div>
     <div class="sec" style="margin-top:4px">Fund-level Breakdown <span class="stag">edit matched fund · projected value per scenario</span></div>
-    <div style="font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;margin-bottom:10px">Use the dropdowns to correct any mismatched funds. Changes rebuild the outlook instantly.</div>
+    <div style="font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;margin-bottom:10px">Use the dropdowns to correct any mismatched funds. Changes rebuild the outlook instantly and are auto-saved. CAGR shown per fund is that fund's individual historical CAGR applied; portfolio CAGR in the cards above is value-weighted.</div>
     <div class="proj-detail">
       <table class="proj-tbl" style="min-width:900px">
         <thead>
@@ -2996,7 +3010,164 @@ function buildSIPAuditSheet(wb, fds, sipM) {
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
 }
 
+// ─────────────────────────────────────────────────────
+//  HOLDINGS PERSISTENCE
+// ─────────────────────────────────────────────────────
+function persistHoldings(){
+  try{
+    if(S.holdingsRawRows) localStorage.setItem(LS_HOLDINGS_ROWS, JSON.stringify(S.holdingsRawRows));
+    localStorage.setItem(LS_HOLDINGS_OVERRIDES, JSON.stringify(S.holdingsOverrides||{}));
+  }catch(e){}
+}
+function loadHoldingsFromStorage(){
+  try{
+    const rawRows=localStorage.getItem(LS_HOLDINGS_ROWS);
+    const rawOv=localStorage.getItem(LS_HOLDINGS_OVERRIDES);
+    if(rawRows){
+      S.holdingsRawRows=JSON.parse(rawRows);
+    }
+    if(rawOv) S.holdingsOverrides=JSON.parse(rawOv)||{};
+  }catch(e){}
+}
+function rebuildHoldingsFromStorage(){
+  if(!S.holdingsRawRows||!S.holdingsRawRows.length) return;
+  const rows=S.holdingsRawRows.map(r=>{
+    const override=S.holdingsOverrides?.[r.schemeName];
+    return override?{...r,_overrideFund:S.funds[override]||null}:r;
+  });
+  S.holdings=buildHoldingsScenario(rows);
+  const ptab=document.getElementById('portfolioTab');
+  if(ptab) ptab.style.display='';
+}
+
+// ─────────────────────────────────────────────────────
+//  PORTFOLIO EXCEL EXPORT
+// ─────────────────────────────────────────────────────
+function exportPortfolioExcel(){
+  const h=S.holdings;
+  if(!h){alert('No portfolio data to export.');return;}
+  const wb=XLSX.utils.book_new();
+  const ts=new Date().toISOString().slice(0,10);
+
+  // ── Sheet 1: Scenario Summary
+  const sum=[];
+  sum.push(['MF Analytica — Portfolio Outlook Export']);
+  sum.push(['Generated:',new Date()]);
+  sum.push(['Matched Holdings:',h.matched.length]);
+  sum.push(['Unmatched Holdings:',h.unmatched.length]);
+  sum.push(['Current Portfolio Value (matched):',h.currentTotal]);
+  sum.push(['Invested Value (matched):',h.investedTotal]);
+  sum.push([]);
+  sum.push(['Horizon','Scenario','Projected Value (₹)','Portfolio CAGR (%)','Covered Funds']);
+  for(const x of h.horizons){
+    const fmt=v=>v==null?'N/A':v;
+    sum.push([x.label+' ('+x.yrs+'Y)','Worst (historical min CAGR per fund)',x.worst,x.impliedWorstCagr==null?'N/A':+(x.impliedWorstCagr.toFixed(3)),x.covered+'/'+h.matched.length]);
+    sum.push([x.label+' ('+x.yrs+'Y)','Median (historical median CAGR per fund)',x.base,x.impliedBaseCagr==null?'N/A':+(x.impliedBaseCagr.toFixed(3)),x.covered+'/'+h.matched.length]);
+    sum.push([x.label+' ('+x.yrs+'Y)','Best (historical max CAGR per fund)',x.best,x.impliedBestCagr==null?'N/A':+(x.impliedBestCagr.toFixed(3)),x.covered+'/'+h.matched.length]);
+    sum.push([]);
+  }
+  const sumWs=aoaToWs(sum);
+  sumWs['!cols']=[{wch:14},{wch:42},{wch:22},{wch:22},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,sumWs,'Scenario Summary');
+
+  // ── Sheet 2: Fund Breakdown
+  const hdrRow=['Holding Name','Matched Fund'];
+  for(const x of h.horizons){
+    hdrRow.push(x.label+' Worst (₹)',x.label+' Worst CAGR%',x.label+' Median (₹)',x.label+' Median CAGR%',x.label+' Best (₹)',x.label+' Best CAGR%');
+  }
+  const brkRows=[
+    ['MF Analytica — Fund-level Breakdown'],
+    ['Portfolio CAGR shown is the fund-level historical CAGR applied to that fund (not portfolio-level)'],
+    [],
+    hdrRow
+  ];
+  for(const r of h.matched){
+    const row=[r.schemeName,r.matchedFund];
+    for(const x of h.horizons){
+      const bd=x.fundBreakdown.find(b=>b.holding===r.schemeName);
+      if(!bd||bd.worst==null){row.push('N/A','N/A','N/A','N/A','N/A','N/A');}
+      else row.push(+(bd.worst.toFixed(0)),bd.worstCagr==null?'N/A':+(bd.worstCagr.toFixed(2)),+(bd.base.toFixed(0)),bd.baseCagr==null?'N/A':+(bd.baseCagr.toFixed(2)),+(bd.best.toFixed(0)),bd.bestCagr==null?'N/A':+(bd.bestCagr.toFixed(2)));
+    }
+    brkRows.push(row);
+  }
+  const brkWs=aoaToWs(brkRows);
+  brkWs['!cols']=[{wch:38},{wch:38},...Array(h.horizons.length*6).fill({wch:16})];
+  XLSX.utils.book_append_sheet(wb,brkWs,'Fund Breakdown');
+
+  // ── Sheet 3: Holdings Data (re-importable)
+  exportHoldingsDataSheet(wb);
+
+  XLSX.writeFile(wb,`Portfolio_Outlook_${ts}.xlsx`);
+}
+
+function exportHoldingsDataExcel(){
+  if(!S.holdingsRawRows||!S.holdingsRawRows.length){alert('No holdings data saved.');return;}
+  const wb=XLSX.utils.book_new();
+  exportHoldingsDataSheet(wb);
+  XLSX.writeFile(wb,`Holdings_Data_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+function exportHoldingsDataSheet(wb){
+  // This sheet is designed to be re-imported: columns match what applyHoldingsMapping expects
+  const rows=[
+    ['MF Analytica — Holdings Persistent Data'],
+    ['This file can be reloaded via "↑ Load Holdings". Map: Scheme Name → col A, Units → col C, Invested Value → col D, Current Value → col E'],
+    ['DO NOT change column order. Override Fund Name column is informational only.'],
+    [],
+    ['Scheme Name','Override Fund ID','Override Fund Name','Units','Invested Value','Current Value','As Of Date']
+  ];
+  const asOf=S.holdings?.asOf?S.holdings.asOf.toISOString().slice(0,10):'';
+  for(const r of (S.holdingsRawRows||[])){
+    const ovId=(S.holdingsOverrides||{})[r.schemeName]||'';
+    const ovFund=ovId&&S.funds[ovId]?S.funds[ovId].name:'';
+    rows.push([r.schemeName,ovId,ovFund,r.units??'',r.investedValue??'',r.currentValue??'',asOf]);
+  }
+  const ws=aoaToWs(rows);
+  ws['!cols']=[{wch:46},{wch:18},{wch:44},{wch:12},{wch:16},{wch:16},{wch:14}];
+  XLSX.utils.book_append_sheet(wb,ws,'Holdings Data');
+}
+
+async function loadHoldingsFromExcel(file){
+  try{
+    const p=await parseFile(file);
+    // Find the Holdings Data sheet format: look for 'Scheme Name' in first few rows
+    let hi=0;
+    for(let i=0;i<Math.min(p.rows.length,8);i++){
+      const r=p.rows[i];
+      if(r&&r[0]&&String(r[0]).trim().toLowerCase().includes('scheme')) {hi=i;break;}
+    }
+    // The headers row has: Scheme Name, Override Fund ID, Override Fund Name, Units, Invested Value, Current Value
+    const dataRows=p.rows.slice(hi+1).filter(r=>r[0]&&String(r[0]).trim());
+    if(!dataRows.length){alert('No holdings rows found in file.');return;}
+    const newRows=dataRows.map(r=>({
+      schemeName:String(r[0]||'').trim(),
+      units:parseNav(r[3]),
+      investedValue:parseNav(r[4]),
+      currentValue:parseNav(r[5]),
+    })).filter(r=>r.schemeName);
+    // Restore overrides where the fund is still loaded
+    const newOverrides={};
+    for(const r of dataRows){
+      const scheme=String(r[0]||'').trim();
+      const ovId=String(r[1]||'').trim();
+      if(scheme&&ovId&&S.funds[ovId]) newOverrides[scheme]=ovId;
+    }
+    S.holdingsRawRows=newRows;
+    S.holdingsOverrides=newOverrides;
+    persistHoldings();
+    showLoading('Building portfolio scenario outlook…');
+    await tick();
+    rebuildHoldingsFromStorage();
+    hideLoading();
+    const ptab=document.getElementById('portfolioTab');
+    if(ptab) ptab.style.display='';
+    S.tab='portfolio';
+    renderDashboard();
+  }catch(e){alert('Error loading holdings file: '+e.message);}
+}
+
 loadMfFavouritesFromStorage();
+loadHoldingsFromStorage();
 loadGroupCollapseState();
 initSidebarCollapse();
 renderSidebar();
