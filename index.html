@@ -2047,14 +2047,14 @@ function renderPortfolioTab(){
   }).join('');
 
   // Build matched rows with inline fund selector and per-horizon values
-  const matchedRows=h.matched.map(r=>{
+  const matchedRows=h.matched.map((r, idx)=>{
     const overrideKey=r.schemeName;
     const currentOverride=(S.holdingsOverrides||{})[overrideKey];
     const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
       ${Object.values(S.funds).map(f=>`<option value="${f.id}"${(currentOverride?currentOverride===f.id:f.id===r.fund.id)?'selected':''}>${esc(f.name)}</option>`).join('')}
     </select>`;
     const horizonCells=h.horizons.map(hz=>{
-      const bd=hz.fundBreakdown.find(b=>b.holding===r.schemeName);
+      const bd=hz.fundBreakdown[idx];
       if(!bd||bd.worst==null) return `<td style="text-align:center;color:var(--td);font-size:11px">—</td>`;
       return `<td style="text-align:center">
         <div style="font-size:10px;color:var(--neg);font-family:'DM Mono',monospace">${fmtAmtShort(bd.worst)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.worstCagr)}</span></div>
@@ -3081,15 +3081,15 @@ function exportPortfolioExcel(){
     [],
     hdrRow
   ];
-  for(const r of h.matched){
+  h.matched.forEach((r, idx) => {
     const row=[r.schemeName,r.matchedFund];
     for(const x of h.horizons){
-      const bd=x.fundBreakdown.find(b=>b.holding===r.schemeName);
+      const bd=x.fundBreakdown[idx];
       if(!bd||bd.worst==null){row.push('N/A','N/A','N/A','N/A','N/A','N/A');}
       else row.push(+(bd.worst.toFixed(0)),bd.worstCagr==null?'N/A':+(bd.worstCagr.toFixed(2)),+(bd.base.toFixed(0)),bd.baseCagr==null?'N/A':+(bd.baseCagr.toFixed(2)),+(bd.best.toFixed(0)),bd.bestCagr==null?'N/A':+(bd.bestCagr.toFixed(2)));
     }
     brkRows.push(row);
-  }
+  });
   const brkWs=aoaToWs(brkRows);
   brkWs['!cols']=[{wch:38},{wch:38},...Array(h.horizons.length*6).fill({wch:16})];
   XLSX.utils.book_append_sheet(wb,brkWs,'Fund Breakdown');
@@ -3174,4 +3174,3 @@ renderSidebar();
 </script>
 </body>
 </html>
-
