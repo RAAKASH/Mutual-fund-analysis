@@ -42,7 +42,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .upload-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--acc);color:#000;border:none;border-radius:5px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .15s}
 .upload-btn:hover{background:#fbbf24;transform:translateY(-1px)}
 
-.app{display:flex;height:calc(100vh - 56px);overflow:hidden;position:relative}
+.app{display:flex;height:100%;overflow:hidden;position:relative}
 .sb{width:290px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--br);display:flex;flex-direction:column;overflow:hidden;transition:width .22s ease,opacity .18s ease,min-width .22s ease,border-color .2s ease}
 .app.sb-collapsed .sb{flex-shrink:1;min-width:0;width:0;max-width:0;padding:0;border:none;opacity:0;pointer-events:none;overflow:hidden}
 .sb-hdr{padding:12px 14px;border-bottom:1px solid var(--br);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td)}
@@ -347,6 +347,78 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 
   .sec{font-size:9px}
 }
+
+/* ── Page navigation ─────────────────────────────── */
+.page-nav{display:flex;gap:3px;background:var(--sf3);border:1px solid var(--br);border-radius:8px;padding:3px}
+.page-btn{padding:6px 18px;background:transparent;border:none;border-radius:6px;color:var(--td);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;line-height:1}
+.page-btn:hover{color:var(--tx);background:var(--sf2)}
+.page-btn.active{background:var(--acc);color:#000}
+
+/* ── Pages shell ─────────────────────────────────── */
+.pages-wrap{display:flex;flex-direction:column;flex:1;height:calc(100vh - 56px);overflow:hidden}
+.page{display:none;flex:1;flex-direction:column;overflow:hidden}
+.page.active{display:flex}
+
+/* ── Portfolio Page ──────────────────────────────── */
+#page-portfolio{overflow-y:auto;background:var(--bg)}
+.port-body{max-width:1180px;margin:0 auto;padding:28px 24px;width:100%;box-sizing:border-box}
+
+/* Empty state */
+.port-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;min-height:65vh}
+.port-empty-icon{font-size:56px;opacity:.35;margin-bottom:20px}
+.port-empty-title{font-size:26px;font-weight:800;color:var(--tx);margin-bottom:10px;letter-spacing:-.5px}
+.port-empty-sub{font-size:14px;color:var(--tm);max-width:400px;line-height:1.75;margin-bottom:32px}
+.port-import-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--acc);color:#000;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(251,191,36,.3)}
+.port-import-btn:hover{background:#fcd34d;transform:translateY(-2px);box-shadow:0 6px 28px rgba(251,191,36,.45)}
+.port-steps{display:flex;gap:16px;margin-top:48px;flex-wrap:wrap;justify-content:center}
+.port-step{background:var(--sf);border:1px solid var(--br);border-radius:12px;padding:20px 22px;width:196px;text-align:left;transition:border-color .15s}
+.port-step:hover{border-color:var(--br2)}
+.port-step-n{font-size:20px;margin-bottom:10px}
+.port-step-t{font-size:13px;font-weight:800;color:var(--tx);margin-bottom:5px}
+.port-step-s{font-size:11px;color:var(--td);font-family:'DM Mono',monospace;line-height:1.6}
+
+/* Progress state */
+.port-progress-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;min-height:60vh}
+.port-progress-icon{font-size:44px;margin-bottom:18px;animation:portpulse 1.2s ease-in-out infinite}
+@keyframes portpulse{0%,100%{opacity:.3;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
+.port-progress-title{font-size:18px;font-weight:800;color:var(--tx);margin-bottom:6px}
+.port-progress-current{font-size:12px;font-family:'DM Mono',monospace;color:var(--tm);margin-bottom:22px;max-width:420px;min-height:18px}
+.port-progress-bar-outer{width:340px;max-width:90vw;height:7px;background:var(--sf3);border-radius:4px;overflow:hidden;margin-bottom:10px;border:1px solid var(--br)}
+.port-progress-bar-inner{height:100%;background:var(--acc);border-radius:4px;transition:width .4s ease}
+.port-progress-count{font-size:11px;font-family:'DM Mono',monospace;color:var(--td)}
+.port-progress-warn{margin-top:12px;font-size:11px;color:var(--neg);font-family:'DM Mono',monospace}
+
+/* Portfolio toolbar */
+.port-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.port-meta-block{display:flex;flex-direction:column;gap:3px}
+.port-meta-title{font-size:19px;font-weight:800;color:var(--tx);letter-spacing:-.3px}
+.port-meta-sub{font-size:11px;font-family:'DM Mono',monospace;color:var(--tm);margin-top:2px}
+.port-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.port-reimport-btn{padding:7px 14px;background:transparent;border:1px solid var(--br2);color:var(--tm);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;border-radius:5px;cursor:pointer;transition:all .15s}
+.port-reimport-btn:hover{border-color:var(--acc);color:#f8d27a}
+
+/* ── Fund Analysis Page ──────────────────────────── */
+#page-funds{overflow:hidden}
+#page-funds .app{flex:1;display:flex;overflow:hidden}
+
+/* Sidebar upload row */
+.sb-upload-row{display:flex;gap:5px;padding:8px 10px;border-bottom:1px solid var(--br);flex-shrink:0}
+.sb-upload-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:7px 6px;background:var(--sf3);border:1px solid var(--br);border-radius:5px;color:var(--tm);font-family:'DM Mono',monospace;font-size:10px;font-weight:800;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+.sb-upload-btn:hover{border-color:var(--acc);color:#f8d27a}
+
+/* Failed funds notice */
+.port-failed-notice{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--neg);font-family:'DM Mono',monospace;line-height:1.6}
+.port-failed-notice strong{color:#fca5a5}
+
+@media(max-width:600px){
+  .page-btn{padding:5px 10px;font-size:11px}
+  .port-body{padding:16px 12px}
+  .port-empty-title{font-size:20px}
+  .port-steps{flex-direction:column;align-items:center}
+  .port-step{width:min(260px,calc(100vw - 48px))}
+  .port-progress-bar-outer{width:220px}
+  .port-toolbar{flex-direction:column;align-items:flex-start}
+}
 </style>
 </head>
 <body>
@@ -356,70 +428,81 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
     <div class="logo-mark">📊</div>
     <div><div class="logo-name">MF Analytica</div><div class="logo-tag">NAV → Metrics Engine</div></div>
   </div>
+  <nav class="page-nav">
+    <button class="page-btn active" data-page="portfolio" onclick="switchPage('portfolio')">📊 Portfolio</button>
+    <button class="page-btn" data-page="funds" onclick="switchPage('funds')">📈 Fund Analysis</button>
+  </nav>
   <div class="hdr-r">
     <span class="badge" id="cntBadge">0 funds loaded</span>
-    <button class="upload-btn" onclick="triggerUpload()">↑ Load NAV File</button>
-    <button class="btn-ghost" onclick="triggerHoldingsUpload()" title="Load current holdings workbook">↑ Load Holdings</button>
-    <button class="btn-ghost" onclick="openMfFavModal()" title="Add favorite fund directly from MF API">+ MF API</button>
-    <button class="btn-ghost" id="navDlBtn" onclick="downloadNavData()" title="Download raw NAV data for all loaded funds" style="display:none">↓ NAV Data</button>
+    <button class="btn-ghost" id="navDlBtn" onclick="downloadNavData()" title="Download raw NAV data" style="display:none">↓ NAV Data</button>
   </div>
 </header>
 
-<div class="app" id="appRoot">
-  <button type="button" id="sbExpandBtn" class="sb-expand-tab" onclick="toggleSidebarCollapse(true)" title="Show sidebar" aria-label="Expand sidebar">▶</button>
-  <aside class="sb" id="sideBar">
-    <div class="sb-hdr sb-hdr-flex">
-      <span>Loaded Funds</span>
-      <button type="button" class="sb-icon-btn" onclick="toggleSidebarCollapse(false)" title="Hide sidebar">◀</button>
-    </div>
-    <div class="fund-list" id="fundList">
-      <div class="sb-empty"><div class="sb-empty-icon">📁</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV Excel files.</div></div>
-    </div>
-    <div class="sb-foot" id="sbFoot">Select any number of funds</div>
-  </aside>
+<div class="pages-wrap">
 
-  <main class="main" id="mainArea">
-    <div class="center-state" id="emptyState">
-      <div class="drop-zone" id="dropZone" onclick="triggerUpload()">
-        <div class="dz-icon">📂</div>
-        <div class="dz-title">Drop NAV files here</div>
-        <div class="dz-sub">Each file = one fund<br>Only needs <strong style="color:var(--tx)">Date</strong> &amp; <strong style="color:var(--tx)">NAV</strong> columns<br>All metrics auto-computed</div>
-        <div class="dz-note">Supports .xlsx · .xls · .csv</div>
-      </div>
+  <!-- ── Page: Portfolio ─────────────────────────── -->
+  <div class="page active" id="page-portfolio">
+    <div class="port-body" id="portBody">
+      <!-- rendered by renderPortfolioPage() -->
     </div>
+  </div>
 
-    <div class="center-state" id="noSelState" style="display:none">
-      <div style="font-size:34px;opacity:.3;margin-bottom:8px">☑</div>
-      <div style="font-size:16px;font-weight:700;color:var(--tx)">Select funds to analyse</div>
-      <div style="font-size:12px;color:var(--tm)">Click funds in the sidebar (any number)</div>
-    </div>
-
-    <div class="center-state" id="loadingState" style="display:none">
-      <div class="spin"></div>
-      <div class="load-msg" id="loadMsg">Computing metrics…</div>
-    </div>
-
-    <div id="dashboard" style="display:none;flex-direction:column;flex:1">
-      <div class="tabs-bar">
-        <div class="tab active" data-tab="snapshot" onclick="switchTab('snapshot')">Snapshot</div>
-        <div class="tab" data-tab="distributions" onclick="switchTab('distributions')">Distributions</div>
-        <div class="tab" data-tab="timeseries" onclick="switchTab('timeseries')">Time Series</div>
-        <div class="tab" data-tab="portfolio" onclick="switchTab('portfolio')" id="portfolioTab" style="display:none">Portfolio Overview</div>
-        <button class="export-btn" id="exportBtn" onclick="exportToExcel()" title="Download validation workbook">
-          ⬇ Export Validation Excel
-        </button>
-      </div>
-      <div class="content">
-        <div class="sel-bar" id="selBar"></div>
-        <div class="tab-pane active" id="pane-snapshot">
-          <div id="snapshotContent"></div>
+  <!-- ── Page: Fund Analysis ─────────────────────── -->
+  <div class="page" id="page-funds">
+    <div class="app" id="appRoot">
+      <button type="button" id="sbExpandBtn" class="sb-expand-tab" onclick="toggleSidebarCollapse(true)" title="Show fund library" aria-label="Expand sidebar">▶</button>
+      <aside class="sb" id="sideBar">
+        <div class="sb-hdr sb-hdr-flex">
+          <span>Fund Library</span>
+          <button type="button" class="sb-icon-btn" onclick="toggleSidebarCollapse(false)" title="Hide sidebar">◀</button>
         </div>
-        <div class="tab-pane" id="pane-distributions"><div id="distContent"></div></div>
-        <div class="tab-pane" id="pane-timeseries"><div id="tsContent"></div></div>
-        <div class="tab-pane" id="pane-portfolio"><div id="portfolioContent"></div></div>
-      </div>
+        <div class="sb-upload-row">
+          <button class="sb-upload-btn" onclick="triggerUpload()" title="Upload NAV Excel file">↑ NAV File</button>
+          <button class="sb-upload-btn" onclick="openMfFavModal()" title="Add fund from MF API">+ MF API</button>
+          <button class="sb-upload-btn" onclick="downloadNavData()" id="navDlBtn2" style="display:none" title="Download NAV data">↓ Export</button>
+        </div>
+        <div class="fund-list" id="fundList">
+          <div class="sb-empty"><div class="sb-empty-icon">📁</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV files or add via MF API.</div></div>
+        </div>
+        <div class="sb-foot" id="sbFoot">Select funds to analyse</div>
+      </aside>
+
+      <main class="main" id="mainArea">
+        <div class="center-state" id="emptyState">
+          <div class="drop-zone" id="dropZone" onclick="triggerUpload()">
+            <div class="dz-icon">📂</div>
+            <div class="dz-title">Drop NAV files here</div>
+            <div class="dz-sub">Each file = one fund<br>Only needs <strong style="color:var(--tx)">Date</strong> &amp; <strong style="color:var(--tx)">NAV</strong> columns<br>All metrics auto-computed</div>
+            <div class="dz-note">Supports .xlsx · .xls · .csv</div>
+          </div>
+        </div>
+        <div class="center-state" id="noSelState" style="display:none">
+          <div style="font-size:34px;opacity:.3;margin-bottom:8px">☑</div>
+          <div style="font-size:16px;font-weight:700;color:var(--tx)">Select funds to analyse</div>
+          <div style="font-size:12px;color:var(--tm)">Click funds in the sidebar (any number)</div>
+        </div>
+        <div class="center-state" id="loadingState" style="display:none">
+          <div class="spin"></div>
+          <div class="load-msg" id="loadMsg">Computing metrics…</div>
+        </div>
+        <div id="dashboard" style="display:none;flex-direction:column;flex:1">
+          <div class="tabs-bar">
+            <div class="tab active" data-tab="snapshot" onclick="switchTab('snapshot')">Snapshot</div>
+            <div class="tab" data-tab="distributions" onclick="switchTab('distributions')">Distributions</div>
+            <div class="tab" data-tab="timeseries" onclick="switchTab('timeseries')">Time Series</div>
+            <button class="export-btn" id="exportBtn" onclick="exportToExcel()" title="Download validation workbook">⬇ Export Excel</button>
+          </div>
+          <div class="content">
+            <div class="sel-bar" id="selBar"></div>
+            <div class="tab-pane active" id="pane-snapshot"><div id="snapshotContent"></div></div>
+            <div class="tab-pane" id="pane-distributions"><div id="distContent"></div></div>
+            <div class="tab-pane" id="pane-timeseries"><div id="tsContent"></div></div>
+          </div>
+        </div>
+      </main>
     </div>
-  </main>
+  </div>
+
 </div>
 
 <div class="overlay" id="mappingModal" style="display:none">
@@ -597,6 +680,32 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 <input type="file" id="holdingsFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleHoldingsFiles(this.files)">
 <input type="file" id="holdingsReimportInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="loadHoldingsFromExcel(this.files[0]);this.value=''">
 
+<!-- Inline fund picker for portfolio page -->
+<div class="overlay" id="portFundPickerModal" style="display:none">
+  <div class="modal" style="width:580px">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Find & assign fund</div>
+        <div class="modal-sub" id="portFundPickerSub">Search MF API and assign the correct fund to this holding</div>
+      </div>
+      <button class="modal-x" onclick="closePortFundPicker()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:6px">Holding</div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--tm);margin-bottom:14px;padding:8px 10px;background:var(--sf3);border-radius:5px;border:1px solid var(--br)" id="portFundPickerHolding"></div>
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">Search MF API</div>
+      <div class="mf-search-bar">
+        <input class="msel" id="port_fund_search" type="text" placeholder="Type fund name…" onkeydown="if(event.key==='Enter')portFundSearch()" />
+        <button class="mf-search-btn" type="button" onclick="portFundSearch()">Search</button>
+      </div>
+      <div class="mf-search-results" id="port_fund_results" style="display:none;max-height:260px"></div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-ghost" onclick="closePortFundPicker()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ─────────────────────────────────────────────────────
 //  CONSTANTS
@@ -630,12 +739,13 @@ const TS_SLICES = [
   {key:'full',lbl:'Full', ms: null},
 ];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, tab:'snapshot', pending:null, holdingsPending:null, holdings:null, holdingsRawRows:null, holdingsOverrides:{}, tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' } };
+const S = { funds:{}, favs:[], selected:[], charts:{}, page:'portfolio', tab:'snapshot', pending:null, holdingsPending:null, holdings:null, holdingsRawRows:null, holdingsOverrides:{}, holdingsHistory:[], tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' } };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
 const LS_HOLDINGS_ROWS = 'mf_holdings_rows_v1';
 const LS_HOLDINGS_OVERRIDES = 'mf_holdings_overrides_v1';
+const LS_HOLDINGS_HISTORY = 'mf_holdings_history_v1';
 let uid = 0, pendingFiles = [];
 
 // ─────────────────────────────────────────────────────
@@ -701,12 +811,104 @@ function autoDetectHoldings(headers){
   };
 }
 function normalizeHoldingsName(name){
+  // For fuzzy comparison only — strips noise words but keeps AMC name, fund type keywords
   return String(name||'').toLowerCase()
     .replace(/[-/&(),.]/g,' ')
-    .replace(/\b(direct|regular|growth|plan|option|fund|scheme)\b/g,' ')
+    .replace(/\b(direct|regular|growth|idcw|dividend|payout|reinvestment|plan|option|fund|scheme)\b/g,' ')
     .replace(/\s+/g,' ')
     .trim();
 }
+
+// Tokenize preserving all meaningful words (NOT stripping plan type here)
+function tokenize(name){
+  return String(name||'').toLowerCase()
+    .replace(/[-/&(),.]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean);
+}
+
+// Strip only true noise words (not plan type, not growth/idcw — those matter for matching)
+const NOISE_WORDS=new Set(['the','of','a','an','and','or','fund','scheme','mutual']);
+
+function matchHoldingToFund(name, impliedNav){
+  if(!name) return null;
+  const funds=Object.values(S.funds);
+  if(!funds.length) return null;
+
+  const holdingPlan=detectPlanType(name); // 'direct', 'regular', or null
+  // If no plan mentioned in holding → treat as regular (regular funds often omit the word)
+  const holdingIsDirectOnly = holdingPlan==='direct';
+  const holdingIsRegular = holdingPlan==='regular' || holdingPlan===null;
+
+  const holdingTokens=tokenize(name);
+  const holdingCore=holdingTokens.filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
+  // First meaningful token = fund house (e.g. "hdfc", "axis", "parag")
+  const holdingHouse=holdingCore[0]||null;
+
+  const holdingIsGrowth=/\bgrowth\b/i.test(name);
+  const holdingIsIDCW=/\b(idcw|dividend)\b/i.test(name);
+
+  let best=null;
+
+  for(const f of funds){
+    const fundName=f.name||'';
+    const fundPlan=detectPlanType(fundName);
+    // In MF API: Direct plans always say "Direct". If no "Direct" → it is Regular.
+    const fundIsDirect = fundPlan==='direct';
+    const fundIsRegular = !fundIsDirect;
+
+    // ── Hard plan type filter ──
+    if(holdingIsDirectOnly && !fundIsDirect) continue; // holding=Direct → must match Direct fund
+    if(holdingIsRegular && fundIsDirect) continue;     // holding=Regular/unspecified → reject Direct funds
+
+    const fundTokens=tokenize(fundName);
+    const fundCore=fundTokens.filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
+    const fundHouse=fundCore[0]||null;
+
+    // ── Hard fund-house filter: first meaningful word MUST match ──
+    if(holdingHouse && fundHouse && holdingHouse!==fundHouse) continue;
+
+    // ── Jaccard on core tokens ──
+    const overlap=holdingCore.filter(w=>fundCore.includes(w)).length;
+    const union=new Set([...holdingCore,...fundCore]).size;
+    const jaccard=union>0?overlap/union:0;
+
+    // Require at least 2 core words matching AND ≥45% Jaccard
+    if(overlap<2||jaccard<0.45) continue;
+
+    let score=jaccard*100;
+
+    // Exact normalized match
+    if(normalizeHoldingsName(name)===normalizeHoldingsName(fundName)) score=200;
+
+    // Growth/IDCW alignment
+    const fundIsGrowth=/\bgrowth\b/i.test(fundName);
+    const fundIsIDCW=/\b(idcw|dividend)\b/i.test(fundName);
+    if(holdingIsGrowth&&fundIsGrowth) score+=10;
+    if(holdingIsIDCW&&fundIsIDCW) score+=10;
+    if(holdingIsGrowth&&fundIsIDCW) score-=30;
+    if(holdingIsIDCW&&fundIsGrowth) score-=30;
+
+    // ── NAV proximity: <0.1% is very strong signal ──
+    if(impliedNav&&impliedNav>0){
+      const latestNav=f.rawData?.length?f.rawData[f.rawData.length-1].nav:null;
+      if(latestNav){
+        const pctDiff=Math.abs(impliedNav-latestNav)/latestNav;
+        if(pctDiff<0.001) score+=40;       // <0.1%: almost certainly the same fund
+        else if(pctDiff<0.01) score+=20;   // <1%
+        else if(pctDiff<0.05) score+=5;
+        else if(pctDiff>0.20) score-=15;   // >20%: probably wrong fund
+      }
+    }
+
+    if(!best||score>best.score) best={fund:f,score};
+  }
+
+  return best&&best.score>=50?best.fund:null;
+}
+
 function triggerHoldingsUpload(){
   const input=document.getElementById('holdingsFileInput');
   if(input){ input.value=''; input.click(); }
@@ -844,6 +1046,12 @@ function fmtAmtShort(v){
   if(v==null||!isFinite(v)) return 'N/A';
   return `₹${Number(v).toLocaleString('en-IN',{maximumFractionDigits:0})}`;
 }
+function detectPlanType(name){
+  const s=String(name||'').toLowerCase();
+  if(/\bdirect\b/.test(s)) return 'direct';
+  if(/\bregular\b/.test(s)) return 'regular';
+  return null;
+}
 function matchHoldingToFund(name, impliedNav){
   const target=normalizeHoldingsName(name);
   if(!target) return null;
@@ -863,17 +1071,24 @@ function matchHoldingToFund(name, impliedNav){
       // Weight by fraction of target words matched (avoids matching on generic words)
       score = overlap>=2 ? overlap + (overlap/tw.length)*10 : overlap;
     }
-    // ── NAV proximity scoring (strong signal) ──
+    // ── NAV proximity scoring (tiebreaker only — primary matching uses matchHoldingToFund) ──
     if(impliedNav && impliedNav>0){
       const latestNav=f.rawData?.length ? f.rawData[f.rawData.length-1].nav : null;
       if(latestNav){
         const pctDiff=Math.abs(impliedNav-latestNav)/latestNav;
-        // <1% diff → +50pts, <3% → +30, <10% → +10, else slight penalty
-        if(pctDiff<0.01)      score+=50;
-        else if(pctDiff<0.03) score+=30;
-        else if(pctDiff<0.10) score+=10;
-        else if(pctDiff>0.50) score-=5;
+        // <0.1% → almost certainly same fund; <1% → likely same; >20% → probably wrong
+        if(pctDiff<0.001)     score+=40;
+        else if(pctDiff<0.01) score+=20;
+        else if(pctDiff<0.05) score+=5;
+        else if(pctDiff>0.20) score-=15;
       }
+    }
+    // ── Plan type scoring (Direct vs Regular) ──
+    const holdingPlan=detectPlanType(name);
+    const fundPlan=detectPlanType(f.name);
+    if(holdingPlan&&fundPlan){
+      if(holdingPlan===fundPlan) score+=20;  // same plan type: strong match
+      else score-=15;                         // opposite plan type: strong mismatch
     }
     if(!best||score>best.score) best={fund:f,score};
   }
@@ -895,7 +1110,9 @@ function buildHoldingsScenario(rows){
     const fund=row._overrideFund || matchHoldingToFund(row.schemeName, impliedNav);
     if(!fund){ unmatched.push({...row,reason:'No matching loaded fund'}); continue; }
     const latestNav=fund.rawData?.length?fund.rawData[fund.rawData.length-1].nav:null;
-    const currentValue=row.currentValue??((row.units&&latestNav)?row.units*latestNav:null);
+    // Live value: prefer units × latest NAV (always up-to-date); fall back to stated currentValue
+    const liveValue=(row.units&&row.units>0&&latestNav)?row.units*latestNav:null;
+    const currentValue=liveValue??row.currentValue??null;
     if(currentValue==null||!isFinite(currentValue)||currentValue<=0){ unmatched.push({...row,matchedFund:fund.name,reason:'Missing current value'}); continue; }
     // NAV proximity confidence
     const navPct = (impliedNav && latestNav) ? Math.abs(impliedNav-latestNav)/latestNav : null;
@@ -940,10 +1157,7 @@ async function applyHoldingsMapping(){
   const investedV=document.getElementById('holdings_invested')?.value;
   const currentV=document.getElementById('holdings_current')?.value;
   const warn=document.getElementById('holdingsWarn');
-  if(nameV==='' || (unitsV==='' && currentV==='')){
-    if(warn) warn.style.display='block';
-    return;
-  }
+  if(nameV===''||(unitsV===''&&currentV==='')){if(warn) warn.style.display='block';return;}
   const pending=S.holdingsPending;
   if(!pending) return;
   if(warn) warn.style.display='none';
@@ -953,18 +1167,33 @@ async function applyHoldingsMapping(){
     investedValue:investedV===''?null:parseNav(r[+investedV]),
     currentValue:currentV===''?null:parseNav(r[+currentV])
   })).filter(r=>r.schemeName);
-  S.holdingsRawRows=rows; // Store for re-building after overrides
+  S.holdingsOverrides=S.holdingsOverrides||{};
+  mergeHoldingsSnapshot(rows, new Date().toISOString().slice(0,10));
   persistHoldings();
   closeHoldingsModal();
-  showLoading('Building portfolio scenario outlook…');
+
+  // Switch to portfolio page and show progress
+  S.page='portfolio';
+  document.querySelectorAll('.page-btn').forEach(el=>el.classList.toggle('active',el.dataset.page==='portfolio'));
+  document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-portfolio'));
+
+  showPortfolioProgress(0,rows.length,'Starting…');
   await tick();
-  S.holdings=buildHoldingsScenario(rows);
-  hideLoading();
-  // Show portfolio tab and switch to it
-  const ptab=document.getElementById('portfolioTab');
-  if(ptab) ptab.style.display='';
-  S.tab='portfolio';
-  renderDashboard();
+
+  // Auto-fetch NAV from MF API for each scheme
+  const {total,failed}=await autoFetchSchemesForHoldings(rows,(i,tot,name)=>showPortfolioProgress(i,tot,name));
+
+  // Apply saved overrides against the merged rows
+  const builtRows=(S.holdingsRawRows||[]).map(r=>{
+    const ov=S.holdingsOverrides?.[r.schemeName];
+    return ov?{...r,_overrideFund:S.funds[ov]||null}:r;
+  });
+  S.holdings=buildHoldingsScenario(builtRows);
+  renderSidebar(); // Update fund count badge
+
+  // Show any failures as a notice in the rendered page
+  S._portfolioFetchFailed=failed.length?failed:null;
+  renderPortfolioPage();
 }
 
 // ─────────────────────────────────────────────────────
@@ -1730,91 +1959,6 @@ function removeMfFavourite(e, code){
 // ─────────────────────────────────────────────────────
 //  SIDEBAR
 // ─────────────────────────────────────────────────────
-function renderSidebar(){
-  const funds=Object.values(S.funds);
-  const favs=S.favs||[];
-  document.getElementById('cntBadge').textContent=`${funds.length} fund${funds.length!==1?'s':''} loaded`;
-  const list=document.getElementById('fundList');
-
-  if(!funds.length && !favs.length){
-    list.innerHTML=`<div class="sb-empty"><div class="sb-empty-icon">📁</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV Excel files or add MF API favourites.</div></div>`;
-    document.getElementById('sbFoot').textContent='Select funds';
-    return;
-  }
-
-  const uploadsGroup='Uploads';
-  const loadedBySchemeCode=new Set((funds||[]).map(f=>f.scheme_code).filter(Boolean));
-
-  const groupOrder=[];
-  const groupMap=new Map(); // name -> items
-  const pushGroup=(name)=>{
-    const n=String(name||'Ungrouped').trim()||'Ungrouped';
-    if(!groupMap.has(n)){groupMap.set(n,[]);groupOrder.push(n);}
-  };
-  for(const f of favs) pushGroup(f.group||'Ungrouped');
-  for(const f of funds){
-    const g=f.source==='mf'?(f.group||'Ungrouped'):uploadsGroup;
-    pushGroup(g);
-  }
-
-  // loaded items
-  for(const f of funds){
-    const g=f.source==='mf'?(f.group||'Ungrouped'):uploadsGroup;
-    const items=groupMap.get(g)||[];
-    items.push({type:'loaded', fund:f});
-    groupMap.set(g,items);
-  }
-
-  // fav placeholders not yet loaded
-  for(const fav of favs){
-    if(loadedBySchemeCode.has(fav.code)) continue;
-    const g=fav.group||'Ungrouped';
-    pushGroup(g);
-    groupMap.get(g).push({type:'fav', code:fav.code, name:fav.name||fav.code});
-  }
-
-  list.innerHTML=groupOrder.map((g,gi)=>{
-    const items=groupMap.get(g)||[];
-    if(!items.length) return '';
-    return `<div>
-      <div style="margin-top:12px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);padding:0 2px">${g}</div>
-      ${items.map(it=>{
-        if(it.type==='loaded'){
-          const f=it.fund;
-          const si=S.selected.indexOf(f.id);
-          const selCls=si>=0?'s'+(si%COLORS.length+1):'';
-          const y1=f.rawData?.[0]?.date?.getFullYear?.()??0;
-          const y2=(f.rawData&&f.rawData.length)?f.rawData[f.rawData.length-1].date.getFullYear():y1;
-          const mfEdit=f.scheme_code?`<button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${f.scheme_code}')" title="Change group">✎</button>`:'';
-          return `<div class="fi ${selCls}" onclick="toggleFund('${f.id}')">
-            <div class="fi-dot" style="background:${f.color}"></div>
-            <div class="fi-info">
-              <div class="fi-name" title="${f.name}">${shortN(f.name,20)}</div>
-              <div class="fi-meta">${f.rawData.length} pts · ${y1}${y1!==y2?'–'+y2:''}</div>
-            </div>
-            ${mfEdit}
-            <button class="fi-del" onclick="removeFund(event,'${f.id}')">✕</button>
-          </div>`;
-        }
-        // favourite placeholder (not loaded)
-        const color=COLORS[gi%COLORS.length];
-        return `<div class="fi" onclick="loadMfFavourite('${it.code}')">
-          <div class="fi-dot" style="background:${color}"></div>
-          <div class="fi-info">
-            <div class="fi-name" title="${it.name}">${shortN(it.name,20)}</div>
-            <div class="fi-meta">MF fav · click to load</div>
-          </div>
-          <button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${it.code}')" title="Change group">✎</button>
-          <button class="fi-del" onclick="removeMfFavourite(event,'${it.code}')">✕</button>
-        </div>`;
-      }).join('')}
-    </div>`;
-  }).join('');
-
-  const sel=S.selected.length;
-  document.getElementById('sbFoot').textContent=sel===0?'Select funds':`${sel} fund${sel!==1?'s':''} selected`;
-}
-
 function toggleFund(id){
   const i=S.selected.indexOf(id);
   if(i>=0) S.selected.splice(i,1);
@@ -1831,17 +1975,31 @@ function getVisibleFunds(){
 }
 function removeFund(e,id){e.stopPropagation();delete S.funds[id];S.selected=S.selected.filter(x=>x!==id);renderSidebar();renderDashboard();}
 
+function selectGroup(g){
+  const ids=Object.values(S.funds).filter(f=>(f.group||(f.source==='mf'?'Ungrouped':'Uploads'))===g).map(f=>f.id);
+  const allSel=ids.every(id=>S.selected.includes(id));
+  if(allSel) ids.forEach(id=>{S.selected=S.selected.filter(x=>x!==id);});
+  else ids.forEach(id=>{if(!S.selected.includes(id))S.selected.push(id);});
+  renderSidebar();renderDashboard();
+}
+function selectAllFunds(){
+  const ids=Object.values(S.funds).map(f=>f.id);
+  const allSel=ids.every(id=>S.selected.includes(id));
+  if(allSel) S.selected=[];
+  else S.selected=ids.slice();
+  renderSidebar();renderDashboard();
+}
+
 function renderSidebar(){
   const funds=Object.values(S.funds);
   const favs=S.favs||[];
   document.getElementById('cntBadge').textContent=`${funds.length} fund${funds.length!==1?'s':''} loaded`;
-  const navDlBtn=document.getElementById('navDlBtn');
-  if(navDlBtn) navDlBtn.style.display=funds.length?'':'none';
+  ['navDlBtn','navDlBtn2'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display=funds.length?'':'none';});
   const list=document.getElementById('fundList');
 
   if(!funds.length && !favs.length){
-    list.innerHTML=`<div class="sb-empty"><div class="sb-empty-icon">&#128193;</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV Excel files or add MF API favourites.</div></div>`;
-    document.getElementById('sbFoot').textContent='Select funds';
+    list.innerHTML=`<div class="sb-empty"><div class="sb-empty-icon">&#128193;</div><div class="sb-empty-txt">No funds yet.<br>Upload NAV files or add via MF API.</div></div>`;
+    document.getElementById('sbFoot').innerHTML='<span style="color:var(--td)">No funds loaded</span>';
     return;
   }
 
@@ -1853,7 +2011,6 @@ function renderSidebar(){
     const n=String(name||'Ungrouped').trim()||'Ungrouped';
     if(!groupMap.has(n)){groupMap.set(n,[]);groupOrder.push(n);}
   };
-
   for(const f of favs) pushGroup(f.group||'Ungrouped');
   for(const f of funds){
     const g=f.group||(f.source==='mf'?'Ungrouped':uploadsGroup);
@@ -1875,29 +2032,45 @@ function renderSidebar(){
     if(!items.length) return '';
     const isCollapsed=!!(S.groupCollapsed&&S.groupCollapsed[g]);
     const gid=`group_${String(g).replace(/[^a-z0-9_-]/gi,'_')}`;
-    const loadedCount=items.filter(x=>x.type==='loaded').length;
+    const loadedItems=items.filter(x=>x.type==='loaded');
     const favCount=items.filter(x=>x.type==='fav').length;
-    const groupToggleLabel=favCount>0?'Load All':'Unload All';
+    const loadedIds=loadedItems.map(x=>x.fund.id);
+    const groupAllSel=loadedIds.length>0&&loadedIds.every(id=>S.selected.includes(id));
+    const groupSomeSel=loadedIds.some(id=>S.selected.includes(id));
+    const selBtnLabel=groupAllSel?'✓ All':'Select';
+    const selBtnStyle=groupAllSel
+      ?'background:rgba(251,191,36,.18);border-color:rgba(251,191,36,.5);color:#fcd34d'
+      :groupSomeSel?'background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);color:#f8d27a'
+      :'';
+    const loadBtnLabel=favCount>0?'Load All':'Unload All';
     return `<div class="fund-group" id="${gid}" ondragover='sidebarAllowGroupDrop(${JSON.stringify(g)}, event)' ondragleave='sidebarLeaveGroupDrop(${JSON.stringify(g)})' ondrop='sidebarDropToGroup(${JSON.stringify(g)}, event)'>
       <div class="fg-hdr">
         <button type="button" class="fg-toggle${isCollapsed?' is-collapsed':''}" onclick='toggleFundGroup(${JSON.stringify(g)})'>
           <span class="fg-title"><span class="fg-chevron">&#9660;</span><span class="fg-name" title="${g}">${g}</span></span>
         </button>
-        <span class="fg-actions"><button type="button" class="fg-load-btn" onclick='toggleFundGroupLoad(${JSON.stringify(g)})'>${groupToggleLabel}</button><button type="button" class="fg-rename-btn" onclick='renameFundGroup(${JSON.stringify(g)})' title="Rename group">&#9998;</button><span class="fg-count">${items.length}</span></span>
+        <span class="fg-actions">
+          ${loadedIds.length>0?`<button type="button" class="fg-load-btn" style="${selBtnStyle}" onclick='event.stopPropagation();selectGroup(${JSON.stringify(g)})' title="Select/deselect all loaded funds in this group for analysis">${selBtnLabel}</button>`:''}
+          <button type="button" class="fg-load-btn" onclick='toggleFundGroupLoad(${JSON.stringify(g)})' title="${loadBtnLabel} NAV data">${loadBtnLabel}</button>
+          <button type="button" class="fg-rename-btn" onclick='renameFundGroup(${JSON.stringify(g)})' title="Rename group">&#9998;</button>
+          <span class="fg-count">${items.length}</span>
+        </span>
       </div>
       <div class="fg-items" style="display:${isCollapsed?'none':'block'}">
         ${items.map(it=>{
           if(it.type==='loaded'){
             const f=it.fund;
             const si=S.selected.indexOf(f.id);
-            const selCls=si>=0?'s'+(si%COLORS.length+1):'';
+            const isSel=si>=0;
+            const selCls=isSel?'s'+(si%COLORS.length+1):'';
             const y1=f.rawData?.[0]?.date?.getFullYear?.()??0;
             const y2=(f.rawData&&f.rawData.length)?f.rawData[f.rawData.length-1].date.getFullYear():y1;
             const mfEdit=f.scheme_code?`<button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${f.scheme_code}')" title="Change group">&#9998;</button>`:'';
-            return `<div class="fi ${selCls}" draggable="true" ondragstart="sidebarDragStart('loaded','${f.id}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="toggleFund('${f.id}')">
+            const selTick=isSel?`<span style="font-size:11px;color:var(--acc);margin-right:2px;flex-shrink:0">✓</span>`:'<span style="width:15px;display:inline-block;flex-shrink:0"></span>';
+            return `<div class="fi ${selCls}" draggable="true" ondragstart="sidebarDragStart('loaded','${f.id}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="toggleFund('${f.id}')" title="${isSel?'Remove from analysis':'Add to analysis'}">
+              ${selTick}
               <div class="fi-dot" style="background:${f.color}"></div>
               <div class="fi-info">
-                <div class="fi-name" title="${f.name}">${shortN(f.name,24)}</div>
+                <div class="fi-name" title="${f.name}">${shortN(f.name,22)}</div>
                 <div class="fi-meta">${f.rawData.length} pts &middot; ${y1}${y1!==y2?'&ndash;'+y2:''}</div>
               </div>
               ${mfEdit}
@@ -1905,11 +2078,12 @@ function renderSidebar(){
             </div>`;
           }
           const color=COLORS[gi%COLORS.length];
-          return `<div class="fi" draggable="true" ondragstart="sidebarDragStart('fav','${it.code}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="loadMfFavourite('${it.code}')">
-            <div class="fi-dot" style="background:${color}"></div>
+          return `<div class="fi" draggable="true" ondragstart="sidebarDragStart('fav','${it.code}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="loadMfFavourite('${it.code}')" title="Click to load NAV data">
+            <span style="width:15px;display:inline-block;flex-shrink:0"></span>
+            <div class="fi-dot" style="background:${color};opacity:.4"></div>
             <div class="fi-info">
-              <div class="fi-name" title="${it.name}">${shortN(it.name,24)}</div>
-              <div class="fi-meta">MF fav &middot; click to load</div>
+              <div class="fi-name" title="${it.name}" style="opacity:.6">${shortN(it.name,22)}</div>
+              <div class="fi-meta" style="color:var(--acc);opacity:.7">click to load</div>
             </div>
             <button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${it.code}')" title="Change group">&#9998;</button>
             <button class="fi-del" onclick="removeMfFavourite(event,'${it.code}')">&times;</button>
@@ -1920,7 +2094,15 @@ function renderSidebar(){
   }).join('');
 
   const sel=S.selected.length;
-  document.getElementById('sbFoot').textContent=sel===0?'Select funds':`${sel} fund${sel!==1?'s':''} selected`;
+  const allLoaded=funds.length;
+  const allSel=allLoaded>0&&funds.every(f=>S.selected.includes(f.id));
+  document.getElementById('sbFoot').innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <span>${sel===0?'None selected':`${sel}/${allLoaded} selected`}</span>
+      <div style="display:flex;gap:5px">
+        <button onclick="selectAllFunds()" style="padding:3px 8px;font-size:10px;font-family:'DM Mono',monospace;font-weight:700;border:1px solid var(--br2);background:${allSel?'rgba(251,191,36,.15)':'transparent'};color:${allSel?'#fcd34d':'var(--tm)'};border-radius:4px;cursor:pointer">${allSel?'Deselect All':'Select All'}</button>
+      </div>
+    </div>`;
 }
 
 // ─────────────────────────────────────────────────────
@@ -1931,11 +2113,7 @@ function renderDashboard(){
   document.getElementById('emptyState').style.display=hasFunds?'none':'flex';
   document.getElementById('noSelState').style.display=hasFunds&&!hasSel?'flex':'none';
   document.getElementById('dashboard').style.display=hasSel?'flex':'none';
-  // Portfolio tab visibility
-  const ptab=document.getElementById('portfolioTab');
-  if(ptab) ptab.style.display=S.holdings?'':'none';
   if(!hasSel) return;
-  // Sync active tab states
   document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===S.tab));
   document.querySelectorAll('.tab-pane').forEach(el=>el.classList.toggle('active',el.id==='pane-'+S.tab));
   document.getElementById('selBar').innerHTML=S.selected.map((id)=>{
@@ -1950,16 +2128,12 @@ function renderCurrentPane(){
   updateExportButton();
   if(S.tab==='snapshot') renderSnapshot();
   else if(S.tab==='distributions') renderDistributions();
-  else if(S.tab==='portfolio') renderPortfolioTab();
   else renderTimeSeries();
 }
 function switchTab(t){
   S.tab=t;
   document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===t));
   document.querySelectorAll('.tab-pane').forEach(el=>el.classList.toggle('active',el.id==='pane-'+t));
-  // Ensure portfolio tab button is visible if holdings exist
-  const ptab=document.getElementById('portfolioTab');
-  if(ptab && S.holdings) ptab.style.display='';
   renderCurrentPane();
 }
 
@@ -2002,6 +2176,246 @@ function renderSnapshotBarChart(cid, labels, fds, keys){
     scales:{x:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'}}},
       y:{grid:{color:'#1a2840'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>v+'%'}}}}});
 }
+
+// ─────────────────────────────────────────────────────
+//  PAGE NAVIGATION
+// ─────────────────────────────────────────────────────
+function switchPage(p){
+  S.page=p;
+  document.querySelectorAll('.page-btn').forEach(el=>el.classList.toggle('active',el.dataset.page===p));
+  document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+p));
+  if(p==='portfolio') renderPortfolioPage();
+  else renderDashboard();
+}
+
+// ─────────────────────────────────────────────────────
+//  AUTO-FETCH NAV FOR HOLDINGS
+// ─────────────────────────────────────────────────────
+function nameMatchScore(holdingName,mfName){
+  const a=normalizeHoldingsName(holdingName);
+  const b=normalizeHoldingsName(mfName);
+  if(!a||!b) return 0;
+  if(a===b) return 100;
+  if(a.includes(b)||b.includes(a)) return 80;
+  const aw=a.split(' ').filter(Boolean);
+  const bw=b.split(' ').filter(Boolean);
+  const overlap=aw.filter(w=>bw.includes(w)).length;
+  return overlap>=2?overlap+(overlap/aw.length)*10:overlap;
+}
+
+async function fetchAndStoreFund(code){
+  code=normalizeMfCode(code);
+  if(!code) return false;
+  const fid=`mf_${code}`;
+  if(S.funds[fid]) return true;
+  let j=null;
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/${code}`);
+    j=await r.json();
+  }catch(e){return false;}
+  const rawEntries=Array.isArray(j?.data)?j.data:[];
+  const schemeName=j?.meta?.scheme_name||code;
+  const grp=normalizeMfGroupLabel(j?.meta?.scheme_category||'')||'Ungrouped';
+  const rawData=rawEntries.map(p=>({date:parseDate(p?.date),nav:parseNav(p?.nav)}))
+    .filter(p=>p.date&&p.nav).sort((a,b)=>a.date-b.date);
+  if(rawData.length<24) return false;
+  const computed=await computeMetrics(rawData);
+  const ci=Object.keys(S.funds).length%COLORS.length;
+  S.funds[fid]={id:fid,scheme_code:code,group:grp,source:'mf',name:schemeName,color:COLORS[ci],ci,rawData,computed};
+  upsertMfFavourite(code,grp,schemeName);
+  persistMfFavourites();
+  return true;
+}
+
+async function autoFetchSchemesForHoldings(rows,progressCb){
+  const seen=new Set();
+  const schemes=[];
+  for(const r of rows){
+    if(r.schemeName&&!seen.has(r.schemeName)){
+      seen.add(r.schemeName);
+      const impliedNav=(r.units&&r.units>0&&r.currentValue&&r.currentValue>0)?r.currentValue/r.units:null;
+      schemes.push({name:r.schemeName,impliedNav});
+    }
+  }
+  const failed=[];
+  for(let i=0;i<schemes.length;i++){
+    const {name,impliedNav}=schemes[i];
+    progressCb(i+1,schemes.length,name);
+    await tick();
+    // Already loaded? Use same Jaccard check as matchHoldingToFund
+    const holdingPlan=detectPlanType(name);
+    const holdingIsDirectOnly=holdingPlan==='direct';
+    const holdingIsRegular=holdingPlan==='regular'||holdingPlan===null;
+    const holdingCore=tokenize(name).filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
+    const holdingHouse=holdingCore[0]||null;
+    const already=Object.values(S.funds).find(f=>{
+      const fdIsDirect=detectPlanType(f.name)==='direct';
+      if(holdingIsDirectOnly&&!fdIsDirect) return false;
+      if(holdingIsRegular&&fdIsDirect) return false;
+      const fc=tokenize(f.name).filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
+      if(holdingHouse&&fc[0]&&holdingHouse!==fc[0]) return false;
+      const ov=holdingCore.filter(w=>fc.includes(w)).length;
+      const un=new Set([...holdingCore,...fc]).size;
+      return ov>=2&&(un>0?ov/un:0)>=0.45;
+    });
+    if(already) continue;
+    try{
+      const res=await fetch(`https://api.mfapi.in/mf/search?q=${encodeURIComponent(name)}`);
+      const items=await res.json();
+      const list=Array.isArray(items)?items.slice(0,30):[];
+      if(!list.length){failed.push(name);continue;}
+      const holdingIsGrowth=/\bgrowth\b/i.test(name);
+      const holdingIsIDCW=/\b(idcw|dividend)\b/i.test(name);
+      let bestCode=null,bestScore=-Infinity;
+      for(const it of list){
+        const itName=it.schemeName||'';
+        const itIsDirect=detectPlanType(itName)==='direct';
+        // Hard plan filter
+        if(holdingIsDirectOnly&&!itIsDirect) continue;
+        if(holdingIsRegular&&itIsDirect) continue;
+        const fc=tokenize(itName).filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
+        // Hard fund-house filter
+        if(holdingHouse&&fc[0]&&holdingHouse!==fc[0]) continue;
+        const ov=holdingCore.filter(w=>fc.includes(w)).length;
+        const un=new Set([...holdingCore,...fc]).size;
+        const jac=un>0?ov/un:0;
+        if(ov<2||jac<0.45) continue;
+        let sc=jac*100;
+        if(holdingIsGrowth&&/\bgrowth\b/i.test(itName)) sc+=10;
+        if(holdingIsIDCW&&/\b(idcw|dividend)\b/i.test(itName)) sc+=10;
+        if(holdingIsGrowth&&/\b(idcw|dividend)\b/i.test(itName)) sc-=30;
+        if(holdingIsIDCW&&/\bgrowth\b/i.test(itName)) sc-=30;
+        if(impliedNav&&impliedNav>0){
+          // Can't check NAV until we fetch, so skip NAV scoring here
+        }
+        if(sc>bestScore){bestScore=sc;bestCode=String(it.schemeCode);}
+      }
+      if(!bestCode||bestScore<50){failed.push(name);continue;}
+      const ok=await fetchAndStoreFund(bestCode);
+      if(!ok) failed.push(name);
+    }catch(e){failed.push(name);}
+  }
+  return {total:schemes.length,failed};
+}
+
+// ─────────────────────────────────────────────────────
+//  PORTFOLIO PAGE
+// ─────────────────────────────────────────────────────
+function renderPortfolioPage(){
+  const el=document.getElementById('portBody');
+  if(!el) return;
+  if(!S.holdings){
+    el.innerHTML=`
+      <div class="port-empty">
+        <div class="port-empty-icon">📊</div>
+        <div class="port-empty-title">Portfolio Scenario Analysis</div>
+        <div class="port-empty-sub">Import your mutual fund statement and see where your portfolio could go — worst, median, and best case across 1–10 years.</div>
+        <button class="port-import-btn" onclick="triggerHoldingsUpload()">↑ Import Portfolio Statement</button>
+        <div class="port-steps">
+          <div class="port-step"><div class="port-step-n">①</div><div class="port-step-t">Import holdings</div><div class="port-step-s">CAMS · Kuvera · Zerodha · any Excel with scheme names</div></div>
+          <div class="port-step"><div class="port-step-n">②</div><div class="port-step-t">NAV auto-fetched</div><div class="port-step-s">We search MF API for each fund and pull full history</div></div>
+          <div class="port-step"><div class="port-step-n">③</div><div class="port-step-t">See your scenarios</div><div class="port-step-s">Worst · Median · Best across 1Y · 3Y · 5Y · 10Y</div></div>
+        </div>
+      </div>`;
+    return;
+  }
+  renderPortfolioLoaded();
+}
+
+function showPortfolioProgress(i,total,name){
+  const el=document.getElementById('portBody');
+  if(!el) return;
+  const pct=total>0?Math.round((i/total)*100):0;
+  el.innerHTML=`
+    <div class="port-progress-wrap">
+      <div class="port-progress-icon">🔍</div>
+      <div class="port-progress-title">Fetching NAV history for your funds…</div>
+      <div class="port-progress-current">${esc(name)}</div>
+      <div class="port-progress-bar-outer"><div class="port-progress-bar-inner" style="width:${pct}%"></div></div>
+      <div class="port-progress-count">${i} of ${total} funds</div>
+    </div>`;
+}
+
+// ── Inline fund picker (for portfolio page) ──
+function openPortFundPicker(schemeName){
+  S._portPickerScheme=schemeName;
+  document.getElementById('portFundPickerSub').textContent=`Search and assign the correct NAV fund for this holding`;
+  document.getElementById('portFundPickerHolding').textContent=schemeName;
+  const inp=document.getElementById('port_fund_search');
+  const res=document.getElementById('port_fund_results');
+  if(inp){ inp.value=schemeName; }
+  if(res){ res.style.display='none'; res.innerHTML=''; }
+  document.getElementById('portFundPickerModal').style.display='flex';
+  // Auto-search immediately
+  portFundSearch();
+}
+function closePortFundPicker(){
+  document.getElementById('portFundPickerModal').style.display='none';
+  S._portPickerScheme=null;
+}
+async function portFundSearch(){
+  const q=String(document.getElementById('port_fund_search')?.value||'').trim();
+  const res=document.getElementById('port_fund_results');
+  if(!res) return;
+  if(q.length<2){ res.style.display='block'; res.innerHTML=`<div class="mf-search-empty">Type at least 2 letters.</div>`; return; }
+  res.style.display='block';
+  res.innerHTML=`<div class="mf-search-empty">Searching…</div>`;
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/search?q=${encodeURIComponent(q)}`);
+    const items=await r.json();
+    const scheme=S._portPickerScheme||'';
+    const holdingPlan=detectPlanType(scheme);
+    const holdingIsDirectOnly=holdingPlan==='direct';
+    const holdingIsRegular=holdingPlan==='regular'||holdingPlan===null;
+    const holdingCore=tokenize(scheme).filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
+    const holdingHouse=holdingCore[0]||null;
+    const holdingIsGrowth=/\bgrowth\b/i.test(scheme);
+    const holdingIsIDCW=/\b(idcw|dividend)\b/i.test(scheme);
+
+    const scored=(Array.isArray(items)?items.slice(0,40):[]).map(it=>{
+      const itName=it.schemeName||'';
+      const itIsDirect=detectPlanType(itName)==='direct';
+      // Plan hard filter
+      if(holdingIsDirectOnly&&!itIsDirect) return {...it,sc:-999};
+      if(holdingIsRegular&&itIsDirect) return {...it,sc:-999};
+      const fc=tokenize(itName).filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
+      // Fund house filter — soft here (user is manually searching so show results even if house differs)
+      const houseMatch=!holdingHouse||!fc[0]||holdingHouse===fc[0];
+      const ov=holdingCore.length?holdingCore.filter(w=>fc.includes(w)).length:0;
+      const un=new Set([...holdingCore,...fc]).size;
+      const jac=un>0?ov/un:0;
+      let sc=(jac*100)+(houseMatch?10:0);
+      if(holdingIsGrowth&&/\bgrowth\b/i.test(itName)) sc+=10;
+      if(holdingIsIDCW&&/\b(idcw|dividend)\b/i.test(itName)) sc+=10;
+      if(holdingIsGrowth&&/\b(idcw|dividend)\b/i.test(itName)) sc-=20;
+      if(holdingIsIDCW&&/\bgrowth\b/i.test(itName)) sc-=20;
+      return {...it,sc};
+    }).filter(it=>it.sc>-999).sort((a,b)=>b.sc-a.sc);
+    if(!scored.length){ res.innerHTML=`<div class="mf-search-empty">No results.</div>`; return; }
+    res.innerHTML=scored.map(it=>{
+      const planTag=detectPlanType(it.schemeName||'');
+      const planBadge=planTag?`<span style="font-size:9px;padding:1px 5px;border-radius:4px;background:${planTag==='direct'?'rgba(74,222,128,.15)':'rgba(96,165,250,.15)'};color:${planTag==='direct'?'#4ade80':'#60a5fa'};font-family:'DM Mono',monospace;margin-left:5px">${planTag.toUpperCase()}</span>`:'';
+      return `<button type="button" class="mf-search-item" onclick="portFundPickerSelect('${it.schemeCode}','${String(it.schemeName||'').replace(/'/g,"&#39;")}')">
+        <span class="mf-search-name">${it.schemeName||it.schemeCode}${planBadge}</span>
+        <span class="mf-search-code">${it.schemeCode}</span>
+      </button>`;
+    }).join('');
+  }catch(e){ res.innerHTML=`<div class="mf-search-empty">Search failed.</div>`; }
+}
+async function portFundPickerSelect(code, name){
+  const scheme=S._portPickerScheme;
+  if(!scheme) return;
+  closePortFundPicker();
+  // Show progress on portBody
+  const el=document.getElementById('portBody');
+  if(el) el.innerHTML=`<div class="port-progress-wrap"><div class="port-progress-icon">⬇</div><div class="port-progress-title">Fetching NAV for ${esc(name)}…</div></div>`;
+  const ok=await fetchAndStoreFund(code);
+  if(!ok){ alert('Could not load fund data for scheme '+code); renderPortfolioLoaded(); return; }
+  const fid=`mf_${code}`;
+  applyFundMatchOverride(scheme, fid);
+  renderSidebar();
+}
+
 // ── Fund match override system ──
 function applyFundMatchOverride(schemeName, fundId){
   if(!S.holdingsRawRows) return;
@@ -2015,19 +2429,19 @@ function applyFundMatchOverride(schemeName, fundId){
   });
   S.holdings=buildHoldingsScenario(rows);
   persistHoldings();
-  renderPortfolioTab();
+  renderPortfolioLoaded();
 }
 
-function renderPortfolioTab(){
-  const el=document.getElementById('portfolioContent');
+function renderPortfolioLoaded(){
+  const el=document.getElementById('portBody');
   if(!el) return;
   const h=S.holdings;
-  if(!h){
-    el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:34px;opacity:.3">📁</div><div style="font-size:14px;font-weight:700;color:var(--tx);margin-top:8px">No holdings loaded</div><div style="font-size:12px;color:var(--tm);margin-top:5px">Use "↑ Load Holdings" in the header to import your portfolio statement</div></div>`;
-    return;
-  }
+  if(!h){ renderPortfolioPage(); return; }
 
-  const meta=`${h.matched.length} matched holding${h.matched.length!==1?'s':''} · ${h.unmatched.length} unmatched · imported ${fmtFullDate(h.asOf)}`;
+  const histCount=S.holdingsHistory?.length||0;
+  const histNote=histCount>1?` · ${histCount} upload snapshots saved`:'';
+  const latestDate=S.holdingsHistory?.[0]?.date||h.asOf.toISOString().slice(0,10);
+  const meta=`${h.matched.length} matched · ${h.unmatched.length} unmatched · last upload ${latestDate}${histNote}`;
   const fmtCagr=v=>v==null?'—':(v>=0?'+':'')+v.toFixed(2)+'%';
 
   // Scenario summary cards
@@ -2047,34 +2461,40 @@ function renderPortfolioTab(){
   }).join('');
 
   // Build matched rows with inline fund selector and per-horizon values
-  const matchedRows=h.matched.map((r, idx)=>{
+  // IMPORTANT: use rowIdx for fundBreakdown lookup, NOT find(b=>b.holding===schemeName).
+  // find() always returns the first match — wrong when two holdings share the same scheme name
+  // (e.g. two folios of the same fund). fundBreakdown is built in the same order as matched,
+  // so fundBreakdown[rowIdx] is the correct entry for matched[rowIdx].
+  const matchedRows=h.matched.map((r, rowIdx)=>{
     const overrideKey=r.schemeName;
     const currentOverride=(S.holdingsOverrides||{})[overrideKey];
     const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
       ${Object.values(S.funds).map(f=>`<option value="${f.id}"${(currentOverride?currentOverride===f.id:f.id===r.fund.id)?'selected':''}>${esc(f.name)}</option>`).join('')}
     </select>`;
     const horizonCells=h.horizons.map(hz=>{
-      const bd=hz.fundBreakdown[idx];
-      if(!bd||bd.worst==null) return `<td style="text-align:center;color:var(--td);font-size:11px">—</td>`;
-      return `<td style="text-align:center">
+      const bd=hz.fundBreakdown[rowIdx]; // index-based — correct even for duplicate scheme names
+      if(!bd||bd.worst==null) return `<td style="text-align:center;color:var(--td);font-size:11px;border-left:1px solid var(--br)">—</td>`;
+      return `<td style="text-align:center;border-left:1px solid var(--br)">
         <div style="font-size:10px;color:var(--neg);font-family:'DM Mono',monospace">${fmtAmtShort(bd.worst)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.worstCagr)}</span></div>
-        <div style="font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;margin-top:2px">${fmtAmtShort(bd.base)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.baseCagr)}</span></div>
-        <div style="font-size:10px;color:var(--pos);font-family:'DM Mono',monospace;margin-top:2px">${fmtAmtShort(bd.best)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.bestCagr)}</span></div>
+        <div style="font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(bd.base)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.baseCagr)}</span></div>
+        <div style="font-size:10px;color:var(--pos);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(bd.best)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.bestCagr)}</span></div>
       </td>`;
     }).join('');
-    const navBadge = r.isOverridden
-      ? `<div style="font-size:9px;color:#f8d27a;font-family:'DM Mono',monospace;margin-top:2px">⚡ overridden</div>`
-      : r.navPct != null
-        ? r.navPct < 0.01
-          ? `<div style="font-size:9px;color:var(--pos);font-family:'DM Mono',monospace;margin-top:2px">✓ NAV match &lt;1%</div>`
-          : r.navPct < 0.05
-            ? `<div style="font-size:9px;color:#f8d27a;font-family:'DM Mono',monospace;margin-top:2px">~ NAV diff ${(r.navPct*100).toFixed(1)}%</div>`
-            : `<div style="font-size:9px;color:var(--neg);font-family:'DM Mono',monospace;margin-top:2px">⚠ NAV diff ${(r.navPct*100).toFixed(0)}% — verify</div>`
-        : `<div style="font-size:9px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">name-only match</div>`;
+    // Always show NAV deviation — even for overridden funds — so user can verify
+    const navPctDisplay = r.navPct != null
+      ? r.navPct < 0.001
+        ? `<span style="color:var(--pos)">✓ NAV match &lt;0.1%</span>`
+        : r.navPct < 0.05
+          ? `<span style="color:#f8d27a">~ NAV diff ${(r.navPct*100).toFixed(2)}%</span>`
+          : `<span style="color:var(--neg)">⚠ NAV diff ${(r.navPct*100).toFixed(1)}%</span>`
+      : `<span style="color:var(--td)">no units data</span>`;
+    const fixBtn=`<button data-scheme="${esc(r.schemeName)}" onclick="openPortFundPicker(this.dataset.scheme)" style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa;font-size:9px;font-family:'DM Mono',monospace;border-radius:3px;padding:1px 7px;cursor:pointer;margin-left:5px">Change →</button>`;
+    const overriddenTag=r.isOverridden?`<span style="color:#f8d27a;font-size:9px;font-family:'DM Mono',monospace;margin-left:4px">⚡ overridden</span>`:'';
+    const navBadge=`<div style="font-size:9px;font-family:'DM Mono',monospace;margin-top:3px;display:flex;align-items:center;flex-wrap:wrap;gap:2px">${navPctDisplay}${overriddenTag}${(r.navPct==null||r.navPct>=0.001)?fixBtn:''}</div>`;
     return `<tr>
       <td style="max-width:180px;word-break:break-word;white-space:normal">
-        ${esc(r.schemeName)}
-        ${r.impliedNav ? `<div style="font-size:9px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">implied NAV ₹${r.impliedNav.toFixed(2)}</div>` : ''}
+        <div style="font-weight:700;font-size:12px;color:var(--tx)">${esc(r.schemeName)}</div>
+        ${r.impliedNav ? `<div style="font-size:9px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">your NAV ₹${r.impliedNav.toFixed(2)} · fund NAV ₹${(r.latestNav||0).toFixed(2)}</div>` : ''}
       </td>
       <td>${fundSel}${navBadge}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
@@ -2082,18 +2502,36 @@ function renderPortfolioTab(){
     </tr>`;
   }).join('');
 
+  // Portfolio total row — sums exactly match the scenario cards
+  const totalRowCells=h.horizons.map(hz=>`
+    <td style="text-align:center;border-left:1px solid var(--br);background:var(--sf3)">
+      <div style="font-size:11px;font-weight:700;color:var(--neg);font-family:'DM Mono',monospace">${fmtAmtShort(hz.worst)}</div>
+      <div style="font-size:11px;font-weight:700;color:var(--tm);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(hz.base)}</div>
+      <div style="font-size:11px;font-weight:700;color:var(--pos);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(hz.best)}</div>
+      ${hz.covered<h.matched.length?`<div style="font-size:8px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">${hz.covered}/${h.matched.length} funds</div>`:''}
+    </td>`).join('');
+  const totalRow=`<tr style="border-top:2px solid var(--br2)">
+    <td colspan="2" style="font-size:11px;font-weight:800;color:var(--tx);background:var(--sf3);letter-spacing:.5px">PORTFOLIO TOTAL</td>
+    <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;background:var(--sf3)">${fmtAmtShort(h.currentTotal)}</td>
+    ${totalRowCells}
+  </tr>`;
+
   const unmatchedRows=h.unmatched.map(r=>{
     const overrideKey=r.schemeName;
     const currentOverride=(S.holdingsOverrides||{})[overrideKey];
     const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
       <option value="__none__">— Not matched —</option>
       ${Object.values(S.funds).map(f=>`<option value="${f.id}"${currentOverride===f.id?'selected':''}>${esc(f.name)}</option>`).join('')}
-    </select>`;
-    return `<tr style="opacity:.65">
-      <td style="max-width:180px;word-break:break-word;white-space:normal;color:var(--neg)">${esc(r.schemeName)}</td>
-      <td>${fundSel}<div style="font-size:9px;color:var(--neg);font-family:'DM Mono',monospace;margin-top:3px">${esc(r.reason)}</div></td>
+    </select>
+    <button data-scheme="${esc(overrideKey)}" onclick="openPortFundPicker(this.dataset.scheme)" style="margin-top:4px;display:block;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa;font-size:9px;font-family:'DM Mono',monospace;border-radius:3px;padding:2px 8px;cursor:pointer">Find fund →</button>`;
+    return `<tr style="opacity:.7">
+      <td style="max-width:180px;word-break:break-word;white-space:normal">
+        <span style="color:var(--neg)">${esc(r.schemeName)}</span>
+        <div style="font-size:9px;color:var(--neg);font-family:'DM Mono',monospace;margin-top:2px">${esc(r.reason)}</div>
+      </td>
+      <td>${fundSel}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
-      ${h.horizons.map(()=>`<td style="text-align:center;color:var(--td);font-size:11px">—</td>`).join('')}
+      ${h.horizons.map(()=>`<td style="text-align:center;color:var(--td);font-size:11px;border-left:1px solid var(--br)">—</td>`).join('')}
     </tr>`;
   }).join('');
 
@@ -2103,21 +2541,22 @@ function renderPortfolioTab(){
   </th>`).join('');
 
   el.innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;margin-bottom:2px;flex-wrap:wrap">
-      <div class="sec" style="margin:0;flex:1">Portfolio Outlook <span class="stag">worst · median · best from CAGR distributions</span></div>
-      <div style="display:flex;gap:8px;flex-shrink:0">
-        <button class="export-btn" onclick="exportPortfolioExcel()" title="Export full portfolio analysis to Excel">⬇ Export Analysis</button>
-        <button class="export-btn" style="background:rgba(167,139,250,.12);color:#a78bfa;border-color:rgba(167,139,250,.3)" onclick="exportHoldingsDataExcel()" title="Export holdings data for re-import">⬇ Export Holdings Data</button>
-        <button class="export-btn" style="background:rgba(251,191,36,.10);color:#fbbf24;border-color:rgba(251,191,36,.3)" onclick="document.getElementById('holdingsReimportInput').click()" title="Re-import a previously exported Holdings Data file">↑ Load Saved Holdings</button>
+    <div class="port-toolbar">
+      <div class="port-meta-block">
+        <div class="port-meta-title">Portfolio Outlook</div>
+        <div class="port-meta-sub">${meta} · Current <strong style="color:var(--tx)">${fmtAmtShort(h.currentTotal)}</strong> <span style="font-size:9px;color:var(--pos);font-family:'DM Mono',monospace">(live: units × latest NAV)</span> · Invested <strong style="color:var(--tx)">${fmtAmtShort(h.investedTotal)}</strong></div>
+      </div>
+      <div class="port-actions">
+        <button class="port-reimport-btn" onclick="triggerHoldingsUpload()">↑ Re-import</button>
+        <button class="export-btn" onclick="exportPortfolioExcel()">⬇ Export Analysis</button>
+        <button class="export-btn" style="background:rgba(167,139,250,.12);color:#a78bfa;border-color:rgba(167,139,250,.3)" onclick="exportHoldingsDataExcel()">⬇ Holdings Data</button>
+        <button class="export-btn" style="background:rgba(251,191,36,.10);color:#fbbf24;border-color:rgba(251,191,36,.3)" onclick="document.getElementById('holdingsReimportInput').click()">↑ Load Saved</button>
       </div>
     </div>
-    <div class="holdings-head">
-      <div class="holdings-meta">${meta}</div>
-      <div class="holdings-meta">Current matched value <strong style="color:var(--tx)">${fmtAmtShort(h.currentTotal)}</strong> · Invested <strong style="color:var(--tx)">${fmtAmtShort(h.investedTotal)}</strong></div>
-    </div>
+    ${(S._portfolioFetchFailed&&S._portfolioFetchFailed.length)?`<div class="port-failed-notice"><strong>Could not auto-fetch NAV for ${S._portfolioFetchFailed.length} fund${S._portfolioFetchFailed.length>1?'s':''}.</strong> Use the <strong>Find fund →</strong> button in the table below to search and assign the correct fund inline.<br>Funds: ${S._portfolioFetchFailed.map(n=>`<span data-scheme="${esc(n)}" onclick="openPortFundPicker(this.dataset.scheme)" style="cursor:pointer;text-decoration:underline;color:#fca5a5">${esc(n)}</span>`).join(' · ')}</div>`:''}
     <div class="proj-grid">${cards}</div>
     <div class="sec" style="margin-top:4px">Fund-level Breakdown <span class="stag">edit matched fund · projected value per scenario</span></div>
-    <div style="font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;margin-bottom:10px">Use the dropdowns to correct any mismatched funds. Changes rebuild the outlook instantly and are auto-saved. CAGR shown per fund is that fund's individual historical CAGR applied; portfolio CAGR in the cards above is value-weighted.</div>
+    <div style="font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;margin-bottom:10px">Each fund's projected value uses its own historical worst/median/best rolling CAGR. The <strong style="color:var(--tx)">Portfolio Total row</strong> matches exactly the scenario cards above. Funds showing — have insufficient NAV history for that horizon and are excluded from the total.</div>
     <div class="proj-detail">
       <table class="proj-tbl" style="min-width:900px">
         <thead>
@@ -2128,7 +2567,7 @@ function renderPortfolioTab(){
             ${horizonHeaderCells}
           </tr>
         </thead>
-        <tbody>${matchedRows}${unmatchedRows}</tbody>
+        <tbody>${matchedRows}${unmatchedRows}${totalRow}</tbody>
       </table>
     </div>
   `;
@@ -2699,7 +3138,7 @@ function downloadNavData() {
   const fds = Object.values(S.funds);
   if (!fds.length) { alert('No funds loaded.'); return; }
 
-  const btn = document.getElementById('navDlBtn');
+  const btn = document.getElementById('navDlBtn')||document.getElementById('navDlBtn2');
   if (btn) { btn.disabled = true; btn.textContent = '⏳…'; }
 
   setTimeout(() => {
@@ -2750,7 +3189,7 @@ function downloadNavData() {
       XLSX.writeFile(wb, `NAV_Data_${ts}.xlsx`);
     } catch(e) { alert('Export error: ' + e.message); }
 
-    if (btn) { btn.disabled = false; btn.textContent = '↓ NAV Data'; }
+    if (btn) { btn.disabled = false; btn.textContent = '↓ Export'; }
   }, 30);
 }
 
@@ -3011,23 +3450,49 @@ function buildSIPAuditSheet(wb, fds, sipM) {
 }
 
 // ─────────────────────────────────────────────────────
-//  HOLDINGS PERSISTENCE
+//  HOLDINGS PERSISTENCE (with history)
 // ─────────────────────────────────────────────────────
 function persistHoldings(){
   try{
     if(S.holdingsRawRows) localStorage.setItem(LS_HOLDINGS_ROWS, JSON.stringify(S.holdingsRawRows));
     localStorage.setItem(LS_HOLDINGS_OVERRIDES, JSON.stringify(S.holdingsOverrides||{}));
+    localStorage.setItem(LS_HOLDINGS_HISTORY, JSON.stringify(S.holdingsHistory||[]));
   }catch(e){}
 }
 function loadHoldingsFromStorage(){
   try{
     const rawRows=localStorage.getItem(LS_HOLDINGS_ROWS);
     const rawOv=localStorage.getItem(LS_HOLDINGS_OVERRIDES);
-    if(rawRows){
+    const rawHist=localStorage.getItem(LS_HOLDINGS_HISTORY);
+    if(rawHist){
+      S.holdingsHistory=JSON.parse(rawHist)||[];
+      // Prime holdingsRawRows from latest history snapshot
+      if(S.holdingsHistory.length) S.holdingsRawRows=S.holdingsHistory[0].rows.slice();
+    } else if(rawRows){
+      // Backwards compat: no history yet, use stored rows
       S.holdingsRawRows=JSON.parse(rawRows);
     }
     if(rawOv) S.holdingsOverrides=JSON.parse(rawOv)||{};
   }catch(e){}
+}
+function mergeHoldingsSnapshot(newRows, uploadDate){
+  // Upsert into holdingsHistory by uploadDate (ISO date string YYYY-MM-DD)
+  const dateKey=uploadDate||new Date().toISOString().slice(0,10);
+  const existing=S.holdingsHistory.find(h=>h.date===dateKey);
+  if(existing){
+    // Merge: upsert each scheme into this snapshot
+    for(const nr of newRows){
+      const found=existing.rows.find(r=>r.schemeName===nr.schemeName);
+      if(found) Object.assign(found,nr);
+      else existing.rows.push({...nr});
+    }
+  } else {
+    S.holdingsHistory.push({date:dateKey, rows:newRows.map(r=>({...r}))});
+  }
+  // Sort history by date desc
+  S.holdingsHistory.sort((a,b)=>b.date.localeCompare(a.date));
+  // Latest snapshot becomes active holdings
+  S.holdingsRawRows=S.holdingsHistory[0].rows.slice();
 }
 function rebuildHoldingsFromStorage(){
   if(!S.holdingsRawRows||!S.holdingsRawRows.length) return;
@@ -3036,8 +3501,7 @@ function rebuildHoldingsFromStorage(){
     return override?{...r,_overrideFund:S.funds[override]||null}:r;
   });
   S.holdings=buildHoldingsScenario(rows);
-  const ptab=document.getElementById('portfolioTab');
-  if(ptab) ptab.style.display='';
+  if(S.page==='portfolio') renderPortfolioPage();
 }
 
 // ─────────────────────────────────────────────────────
@@ -3077,19 +3541,26 @@ function exportPortfolioExcel(){
   }
   const brkRows=[
     ['MF Analytica — Fund-level Breakdown'],
-    ['Portfolio CAGR shown is the fund-level historical CAGR applied to that fund (not portfolio-level)'],
+    ['CAGR shown per fund is that fund\'s individual historical CAGR. Portfolio totals match the Scenario Summary sheet exactly.'],
     [],
     hdrRow
   ];
-  h.matched.forEach((r, idx) => {
+  h.matched.forEach((r, rowIdx)=>{
     const row=[r.schemeName,r.matchedFund];
     for(const x of h.horizons){
-      const bd=x.fundBreakdown[idx];
+      const bd=x.fundBreakdown[rowIdx]; // index-based — safe for duplicate scheme names
       if(!bd||bd.worst==null){row.push('N/A','N/A','N/A','N/A','N/A','N/A');}
       else row.push(+(bd.worst.toFixed(0)),bd.worstCagr==null?'N/A':+(bd.worstCagr.toFixed(2)),+(bd.base.toFixed(0)),bd.baseCagr==null?'N/A':+(bd.baseCagr.toFixed(2)),+(bd.best.toFixed(0)),bd.bestCagr==null?'N/A':+(bd.bestCagr.toFixed(2)));
     }
     brkRows.push(row);
   });
+  // Portfolio total row
+  const totRow=['PORTFOLIO TOTAL',''];
+  for(const x of h.horizons){
+    totRow.push(+(x.worst.toFixed(0)),x.impliedWorstCagr==null?'N/A':+(x.impliedWorstCagr.toFixed(2)),+(x.base.toFixed(0)),x.impliedBaseCagr==null?'N/A':+(x.impliedBaseCagr.toFixed(2)),+(x.best.toFixed(0)),x.impliedBestCagr==null?'N/A':+(x.impliedBestCagr.toFixed(2)));
+  }
+  brkRows.push([]);
+  brkRows.push(totRow);
   const brkWs=aoaToWs(brkRows);
   brkWs['!cols']=[{wch:38},{wch:38},...Array(h.horizons.length*6).fill({wch:16})];
   XLSX.utils.book_append_sheet(wb,brkWs,'Fund Breakdown');
@@ -3108,62 +3579,147 @@ function exportHoldingsDataExcel(){
 }
 
 function exportHoldingsDataSheet(wb){
-  // This sheet is designed to be re-imported: columns match what applyHoldingsMapping expects
+  const h=S.holdings;
+  // Build a scheme→{matchedFund,schemeCode} map from BOTH h.matched AND S.holdingsOverrides
+  // Priority: explicit override > auto-matched result
+  const codeMap={}; // schemeName → {matchedFundName, schemeCode}
+  // 1. From auto-matched results
+  if(h){
+    h.matched.forEach((r,idx)=>{
+      if(!codeMap[r.schemeName]) codeMap[r.schemeName]={matchedFundName:r.matchedFund, schemeCode:r.fund?.scheme_code||''};
+    });
+    h.unmatched.forEach(r=>{
+      if(!codeMap[r.schemeName]) codeMap[r.schemeName]={matchedFundName:'', schemeCode:''};
+    });
+  }
+  // 2. Override with explicit user overrides (source of truth)
+  for(const [scheme,fundId] of Object.entries(S.holdingsOverrides||{})){
+    const fund=S.funds[fundId];
+    if(fund) codeMap[scheme]={matchedFundName:fund.name, schemeCode:fund.scheme_code||''};
+  }
+
   const rows=[
-    ['MF Analytica — Holdings Persistent Data'],
-    ['This file can be reloaded via "↑ Load Holdings". Map: Scheme Name → col A, Units → col C, Invested Value → col D, Current Value → col E'],
-    ['DO NOT change column order. Override Fund Name column is informational only.'],
+    ['MF Analytica — Holdings Data (re-importable)'],
+    ['Re-import via "↑ Import Portfolio Statement". Col C Scheme Code is used for exact fund matching — do not edit it.'],
     [],
-    ['Scheme Name','Override Fund ID','Override Fund Name','Units','Invested Value','Current Value','As Of Date']
+    ['Scheme Name','Matched Fund Name','Matched Scheme Code','Units','Invested Value','Current Value (live)','Upload Date']
   ];
-  const asOf=S.holdings?.asOf?S.holdings.asOf.toISOString().slice(0,10):'';
+  const uploadDate=S.holdingsHistory?.[0]?.date||new Date().toISOString().slice(0,10);
   for(const r of (S.holdingsRawRows||[])){
-    const ovId=(S.holdingsOverrides||{})[r.schemeName]||'';
-    const ovFund=ovId&&S.funds[ovId]?S.funds[ovId].name:'';
-    rows.push([r.schemeName,ovId,ovFund,r.units??'',r.investedValue??'',r.currentValue??'',asOf]);
+    const m=codeMap[r.schemeName]||{matchedFundName:'',schemeCode:''};
+    const fund=m.schemeCode?S.funds[`mf_${m.schemeCode}`]:null;
+    const latestNav=fund?.rawData?.length?fund.rawData[fund.rawData.length-1].nav:null;
+    const liveVal=(r.units&&latestNav)?(r.units*latestNav):r.currentValue;
+    rows.push([r.schemeName, m.matchedFundName, m.schemeCode, r.units??'', r.investedValue??'', liveVal??'', uploadDate]);
   }
   const ws=aoaToWs(rows);
-  ws['!cols']=[{wch:46},{wch:18},{wch:44},{wch:12},{wch:16},{wch:16},{wch:14}];
+  ws['!cols']=[{wch:48},{wch:48},{wch:16},{wch:12},{wch:16},{wch:16},{wch:14}];
   XLSX.utils.book_append_sheet(wb,ws,'Holdings Data');
+  if(S.holdingsHistory&&S.holdingsHistory.length>1){
+    const histRows=[['MF Analytica — Holdings History'],[],['Upload Date','Scheme Name','Units','Invested Value','Current Value']];
+    for(const snap of S.holdingsHistory){
+      for(const r of snap.rows) histRows.push([snap.date,r.schemeName,r.units??'',r.investedValue??'',r.currentValue??'']);
+    }
+    const hw=aoaToWs(histRows);
+    hw['!cols']=[{wch:14},{wch:48},{wch:12},{wch:16},{wch:16}];
+    XLSX.utils.book_append_sheet(wb,hw,'Upload History');
+  }
 }
-
 async function loadHoldingsFromExcel(file){
   try{
     const p=await parseFile(file);
-    // Find the Holdings Data sheet format: look for 'Scheme Name' in first few rows
     let hi=0;
     for(let i=0;i<Math.min(p.rows.length,8);i++){
       const r=p.rows[i];
-      if(r&&r[0]&&String(r[0]).trim().toLowerCase().includes('scheme')) {hi=i;break;}
+      if(r&&r[0]&&String(r[0]).trim().toLowerCase().includes('scheme')){hi=i;break;}
     }
-    // The headers row has: Scheme Name, Override Fund ID, Override Fund Name, Units, Invested Value, Current Value
-    const dataRows=p.rows.slice(hi+1).filter(r=>r[0]&&String(r[0]).trim());
+    const dataRows=p.rows.slice(hi+1).filter(r=>r[0]&&String(r[0]).trim()&&!String(r[0]).trim().startsWith('MF Analytica'));
     if(!dataRows.length){alert('No holdings rows found in file.');return;}
     const newRows=dataRows.map(r=>({
       schemeName:String(r[0]||'').trim(),
+      _matchedSchemeCode:normalizeMfCode(String(r[2]||'').trim()),
       units:parseNav(r[3]),
       investedValue:parseNav(r[4]),
       currentValue:parseNav(r[5]),
     })).filter(r=>r.schemeName);
-    // Restore overrides where the fund is still loaded
-    const newOverrides={};
-    for(const r of dataRows){
-      const scheme=String(r[0]||'').trim();
-      const ovId=String(r[1]||'').trim();
-      if(scheme&&ovId&&S.funds[ovId]) newOverrides[scheme]=ovId;
+
+    // Switch to portfolio page
+    S.page='portfolio';
+    document.querySelectorAll('.page-btn').forEach(el=>el.classList.toggle('active',el.dataset.page==='portfolio'));
+    document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-portfolio'));
+
+    const withCode=newRows.filter(r=>r._matchedSchemeCode);
+    const withoutCode=newRows.filter(r=>!r._matchedSchemeCode);
+    const total=withCode.length+withoutCode.length;
+    let done=0;
+    const failed=[];
+
+    // Phase 1: Load exact scheme codes and register overrides — never fuzzy-match these
+    if(withCode.length){
+      showPortfolioProgress(0,total,'Loading funds from saved data…');
+      await tick();
+      // Pre-register overrides BEFORE building scenario so matchHoldingToFund never runs for these
+      if(!S.holdingsOverrides) S.holdingsOverrides={};
+      for(const r of withCode){
+        S.holdingsOverrides[r.schemeName]=`mf_${r._matchedSchemeCode}`;
+      }
+      for(const r of withCode){
+        showPortfolioProgress(++done,total,r.schemeName);
+        await tick();
+        const ok=await fetchAndStoreFund(r._matchedSchemeCode);
+        if(!ok){
+          failed.push(r.schemeName);
+          delete S.holdingsOverrides[r.schemeName]; // remove override if fetch failed
+        }
+      }
     }
-    S.holdingsRawRows=newRows;
-    S.holdingsOverrides=newOverrides;
+
+    // Phase 2: Auto-fetch rows with no scheme code
+    if(withoutCode.length){
+      const {failed:f2}=await autoFetchSchemesForHoldings(withoutCode,(i,tot,name)=>showPortfolioProgress(done+i,total,name));
+      failed.push(...f2);
+    }
+
+    const uploadDate=String(dataRows[0]?.[6]||'').trim()||new Date().toISOString().slice(0,10);
+    const cleanRows=newRows.map(r=>({schemeName:r.schemeName,units:r.units,investedValue:r.investedValue,currentValue:r.currentValue}));
+    mergeHoldingsSnapshot(cleanRows,uploadDate);
     persistHoldings();
-    showLoading('Building portfolio scenario outlook…');
-    await tick();
     rebuildHoldingsFromStorage();
-    hideLoading();
-    const ptab=document.getElementById('portfolioTab');
-    if(ptab) ptab.style.display='';
-    S.tab='portfolio';
-    renderDashboard();
+    renderSidebar();
+    S._portfolioFetchFailed=failed.length?failed:null;
+    renderPortfolioPage();
   }catch(e){alert('Error loading holdings file: '+e.message);}
+}
+
+async function autoLoadFundsOnStartup(){
+  const favs=S.favs||[];
+  const toLoad=favs.filter(f=>f.code&&!S.funds[`mf_${f.code}`]);
+  if(!toLoad.length){
+    if(S.holdingsRawRows&&S.holdingsRawRows.length) rebuildHoldingsFromStorage();
+    else renderPortfolioPage();
+    return;
+  }
+  const el=document.getElementById('portBody');
+  if(el) el.innerHTML=`<div class="port-progress-wrap">
+    <div class="port-progress-icon">⬇</div>
+    <div class="port-progress-title">Restoring your fund library…</div>
+    <div class="port-progress-current"></div>
+    <div class="port-progress-bar-outer"><div class="port-progress-bar-inner" id="startupBar" style="width:0%"></div></div>
+    <div class="port-progress-count" id="startupCount">0 of ${toLoad.length} funds</div>
+  </div>`;
+  for(let i=0;i<toLoad.length;i++){
+    const fav=toLoad[i];
+    const bar=document.getElementById('startupBar');
+    const cnt=document.getElementById('startupCount');
+    const pc=Math.round(((i+1)/toLoad.length)*100);
+    if(bar) bar.style.width=pc+'%';
+    if(cnt) cnt.textContent=`${i+1} of ${toLoad.length}: ${fav.name||fav.code}`;
+    await fetchAndStoreFund(fav.code);
+    await tick();
+  }
+  renderSidebar();
+  if(S.holdingsRawRows&&S.holdingsRawRows.length) rebuildHoldingsFromStorage();
+  else renderPortfolioPage();
 }
 
 loadMfFavouritesFromStorage();
@@ -3171,6 +3727,8 @@ loadHoldingsFromStorage();
 loadGroupCollapseState();
 initSidebarCollapse();
 renderSidebar();
+autoLoadFundsOnStartup();
 </script>
 </body>
 </html>
+
