@@ -397,7 +397,37 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .port-reimport-btn{padding:7px 14px;background:transparent;border:1px solid var(--br2);color:var(--tm);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;border-radius:5px;cursor:pointer;transition:all .15s}
 .port-reimport-btn:hover{border-color:var(--acc);color:#f8d27a}
 
-/* ── Fund Analysis Page ──────────────────────────── */
+/* ── Recommendations ─────────────────────────────── */
+.reco-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-top:4px}
+.reco-card{background:var(--sf);border:1px solid var(--br);border-radius:10px;padding:16px 18px;position:relative;transition:border-color .15s}
+.reco-card:hover{border-color:var(--br2)}
+.reco-card.priority-high{border-left:3px solid #f87171}
+.reco-card.priority-med{border-left:3px solid #fbbf24}
+.reco-card.priority-low{border-left:3px solid #60a5fa}
+.reco-card.priority-good{border-left:3px solid #4ade80}
+.reco-type{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.reco-badge{padding:2px 7px;border-radius:20px;font-size:9px;font-weight:800;font-family:'DM Mono',monospace}
+.reco-badge.high{background:rgba(248,113,113,.15);color:#fca5a5}
+.reco-badge.med{background:rgba(251,191,36,.15);color:#fcd34d}
+.reco-badge.low{background:rgba(96,165,250,.15);color:#93c5fd}
+.reco-badge.good{background:rgba(74,222,128,.15);color:#86efac}
+.reco-title{font-size:14px;font-weight:800;color:var(--tx);margin-bottom:5px;line-height:1.35}
+.reco-body{font-size:12px;color:var(--tm);line-height:1.7;margin-bottom:10px}
+.reco-body strong{color:var(--tx)}
+.reco-impact{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.reco-impact-item{padding:5px 10px;background:var(--sf2);border:1px solid var(--br);border-radius:6px;font-size:11px;font-family:'DM Mono',monospace;color:var(--tm);text-align:center}
+.reco-impact-item strong{display:block;font-size:13px;font-weight:700;color:var(--tx)}
+.reco-action{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:#f8d27a;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;border-radius:5px;cursor:pointer;transition:all .15s}
+.reco-action:hover{background:rgba(251,191,36,.22);border-color:rgba(251,191,36,.55)}
+.reco-empty{text-align:center;padding:40px 20px;color:var(--td);font-family:'DM Mono',monospace;font-size:12px}
+.reco-summary-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.reco-sum-item{padding:8px 14px;border-radius:7px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid}
+.reco-sum-item.high{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.25);color:#fca5a5}
+.reco-sum-item.med{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.25);color:#fcd34d}
+.reco-sum-item.low{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.25);color:#93c5fd}
+.reco-sum-item.good{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.25);color:#86efac}
+
+@media(max-width:600px){.reco-grid{grid-template-columns:1fr}}
 #page-funds{overflow:hidden}
 #page-funds .app{flex:1;display:flex;overflow:hidden}
 
@@ -1117,7 +1147,9 @@ function buildHoldingsScenario(rows){
     // NAV proximity confidence
     const navPct = (impliedNav && latestNav) ? Math.abs(impliedNav-latestNav)/latestNav : null;
     const isOverridden = !!row._overrideFund;
-    matched.push({...row,matchedFund:fund.name,fund,currentValue,latestNav,impliedNav,navPct,isOverridden});
+    const gainLoss = (row.investedValue && row.investedValue > 0) ? currentValue - row.investedValue : null;
+    const gainLossPct = (gainLoss != null && row.investedValue > 0) ? (gainLoss / row.investedValue) * 100 : null;
+    matched.push({...row,matchedFund:fund.name,fund,currentValue,latestNav,impliedNav,navPct,isOverridden,gainLoss,gainLossPct});
   }
   const horizonsOut=horizons.map(h=>{
     let worst=0,base=0,best=0,covered=0,coveredCurrent=0;
@@ -1148,6 +1180,7 @@ function buildHoldingsScenario(rows){
     unmatched,
     investedTotal:matched.reduce((s,r)=>s+(r.investedValue||0),0),
     currentTotal:matched.reduce((s,r)=>s+r.currentValue,0),
+    gainLossTotal:matched.reduce((s,r)=>s+(r.gainLoss||0),0),
     horizons:horizonsOut
   };
 }
@@ -2061,7 +2094,7 @@ function renderSidebar(){
             const f=it.fund;
             const si=S.selected.indexOf(f.id);
             const isSel=si>=0;
-            const selCls=isSel?'s'+(si%COLORS.length+1):'';
+            const selCls=isSel?'s'+((f.ci%COLORS.length)+1):'';
             const y1=f.rawData?.[0]?.date?.getFullYear?.()??0;
             const y2=(f.rawData&&f.rawData.length)?f.rawData[f.rawData.length-1].date.getFullYear():y1;
             const mfEdit=f.scheme_code?`<button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${f.scheme_code}')" title="Change group">&#9998;</button>`:'';
@@ -2491,6 +2524,12 @@ function renderPortfolioLoaded(){
     const fixBtn=`<button data-scheme="${esc(r.schemeName)}" onclick="openPortFundPicker(this.dataset.scheme)" style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa;font-size:9px;font-family:'DM Mono',monospace;border-radius:3px;padding:1px 7px;cursor:pointer;margin-left:5px">Change →</button>`;
     const overriddenTag=r.isOverridden?`<span style="color:#f8d27a;font-size:9px;font-family:'DM Mono',monospace;margin-left:4px">⚡ overridden</span>`:'';
     const navBadge=`<div style="font-size:9px;font-family:'DM Mono',monospace;margin-top:3px;display:flex;align-items:center;flex-wrap:wrap;gap:2px">${navPctDisplay}${overriddenTag}${(r.navPct==null||r.navPct>=0.001)?fixBtn:''}</div>`;
+    const plCell=r.gainLoss!=null
+      ?`<td style="text-align:right;font-family:'DM Mono',monospace;color:${r.gainLoss>=0?'var(--pos)':'var(--neg)'}">
+          <div style="font-weight:700">${r.gainLoss>=0?'+':''}${fmtAmtShort(r.gainLoss)}</div>
+          <div style="font-size:9px;opacity:.75">${r.gainLossPct>=0?'+':''}${r.gainLossPct.toFixed(1)}%</div>
+        </td>`
+      :`<td style="text-align:right;color:var(--td);font-size:11px">—</td>`;
     return `<tr>
       <td style="max-width:180px;word-break:break-word;white-space:normal">
         <div style="font-weight:700;font-size:12px;color:var(--tx)">${esc(r.schemeName)}</div>
@@ -2498,6 +2537,7 @@ function renderPortfolioLoaded(){
       </td>
       <td>${fundSel}${navBadge}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
+      ${plCell}
       ${horizonCells}
     </tr>`;
   }).join('');
@@ -2510,9 +2550,13 @@ function renderPortfolioLoaded(){
       <div style="font-size:11px;font-weight:700;color:var(--pos);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(hz.best)}</div>
       ${hz.covered<h.matched.length?`<div style="font-size:8px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">${hz.covered}/${h.matched.length} funds</div>`:''}
     </td>`).join('');
+  const totalGainLoss=h.gainLossTotal;
   const totalRow=`<tr style="border-top:2px solid var(--br2)">
     <td colspan="2" style="font-size:11px;font-weight:800;color:var(--tx);background:var(--sf3);letter-spacing:.5px">PORTFOLIO TOTAL</td>
     <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;background:var(--sf3)">${fmtAmtShort(h.currentTotal)}</td>
+    <td style="text-align:right;background:var(--sf3);font-family:'DM Mono',monospace;font-weight:700;color:${totalGainLoss>=0?'var(--pos)':'var(--neg)'}">
+      ${h.investedTotal>0?`<div>${totalGainLoss>=0?'+':''}${fmtAmtShort(totalGainLoss)}</div><div style="font-size:9px;opacity:.75">${((totalGainLoss/h.investedTotal)*100).toFixed(1)}%</div>`:'—'}
+    </td>
     ${totalRowCells}
   </tr>`;
 
@@ -2531,6 +2575,7 @@ function renderPortfolioLoaded(){
       </td>
       <td>${fundSel}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
+      <td style="text-align:right;color:var(--td);font-size:11px">—</td>
       ${h.horizons.map(()=>`<td style="text-align:center;color:var(--td);font-size:11px;border-left:1px solid var(--br)">—</td>`).join('')}
     </tr>`;
   }).join('');
@@ -2544,7 +2589,7 @@ function renderPortfolioLoaded(){
     <div class="port-toolbar">
       <div class="port-meta-block">
         <div class="port-meta-title">Portfolio Outlook</div>
-        <div class="port-meta-sub">${meta} · Current <strong style="color:var(--tx)">${fmtAmtShort(h.currentTotal)}</strong> <span style="font-size:9px;color:var(--pos);font-family:'DM Mono',monospace">(live: units × latest NAV)</span> · Invested <strong style="color:var(--tx)">${fmtAmtShort(h.investedTotal)}</strong></div>
+        <div class="port-meta-sub">${meta} · Current <strong style="color:var(--tx)">${fmtAmtShort(h.currentTotal)}</strong> <span style="font-size:9px;color:var(--pos);font-family:'DM Mono',monospace">(live: units × latest NAV)</span> · Invested <strong style="color:var(--tx)">${fmtAmtShort(h.investedTotal)}</strong>${h.investedTotal>0?` · P&amp;L <strong style="color:${h.gainLossTotal>=0?'var(--pos)':'var(--neg)'}">${h.gainLossTotal>=0?'+':''}${fmtAmtShort(h.gainLossTotal)} (${((h.gainLossTotal/h.investedTotal)*100).toFixed(1)}%)</strong>`:''}</div>
       </div>
       <div class="port-actions">
         <button class="port-reimport-btn" onclick="triggerHoldingsUpload()">↑ Re-import</button>
@@ -2564,13 +2609,409 @@ function renderPortfolioLoaded(){
             <th style="min-width:160px">Holding Name</th>
             <th style="min-width:180px">Matched Fund <span style="font-weight:400;opacity:.6">(editable)</span></th>
             <th style="text-align:right;min-width:100px">Current Value</th>
+            <th style="text-align:right;min-width:110px">P &amp; L</th>
             ${horizonHeaderCells}
           </tr>
         </thead>
         <tbody>${matchedRows}${unmatchedRows}${totalRow}</tbody>
       </table>
     </div>
+    ${renderRecommendations()}
   `;
+}
+
+// ─────────────────────────────────────────────────────
+//  RECOMMENDATIONS ENGINE
+// ─────────────────────────────────────────────────────
+
+function getFundCAGRStats(fund, key){
+  const pts=(fund.computed?.[key]||[]).map(p=>p.value).filter(v=>isFinite(v));
+  if(!pts.length) return null;
+  const sorted=[...pts].sort((a,b)=>a-b);
+  return {
+    min:sorted[0], max:sorted[sorted.length-1],
+    median:medianOfSorted(sorted),
+    mean:pts.reduce((a,b)=>a+b,0)/pts.length,
+    latest:latestVal(fund,key)?.value??null,
+    n:pts.length
+  };
+}
+
+function extractAMC(name){
+  // First meaningful word = AMC (hdfc, axis, parag, mirae, uti, sbi, etc.)
+  const core=tokenize(name).filter(w=>!NOISE_WORDS.has(w));
+  return core[0]||'';
+}
+
+function extractCategory(fund){
+  // Use group if meaningful, else infer from name
+  const g=String(fund.group||'').toLowerCase();
+  if(g&&g!=='ungrouped'&&g!=='uploads') return g;
+  const n=String(fund.name||'').toLowerCase();
+  if(/mid.?cap/i.test(n)) return 'mid cap';
+  if(/small.?cap/i.test(n)) return 'small cap';
+  if(/large.?cap/i.test(n)) return 'large cap';
+  if(/flexi.?cap|multi.?cap/i.test(n)) return 'flexi cap';
+  if(/elss|tax.?sav/i.test(n)) return 'elss';
+  if(/liquid|overnight|money.?market/i.test(n)) return 'liquid';
+  if(/debt|bond|gilt|income/i.test(n)) return 'debt';
+  if(/hybrid|balanced/i.test(n)) return 'hybrid';
+  if(/international|global|us.?equity|nasdaq/i.test(n)) return 'international';
+  if(/index|nifty|sensex|bse/i.test(n)) return 'index';
+  return 'equity';
+}
+
+function fmtCr(v){
+  if(v==null||!isFinite(v)) return 'N/A';
+  if(Math.abs(v)>=10000000) return '₹'+(v/10000000).toFixed(2)+'Cr';
+  if(Math.abs(v)>=100000) return '₹'+(v/100000).toFixed(1)+'L';
+  return fmtAmtShort(v);
+}
+
+function generateRecommendations(){
+  const h=S.holdings;
+  if(!h||!h.matched.length) return [];
+  const recos=[];
+  const totalVal=h.currentTotal||0;
+
+  // ── 1. REGULAR → DIRECT UPGRADE ──────────────────────────
+  for(const r of h.matched){
+    const isRegular = !detectPlanType(r.schemeName) || detectPlanType(r.schemeName)==='regular';
+    if(!isRegular) continue;
+    if(detectPlanType(r.fund?.name||'')==='direct') continue; // already matched to direct
+
+    // Estimate savings: Direct plans save ~0.5–1.5% p.a. depending on category
+    const cat=extractCategory(r.fund||{});
+    const isEquity=!['liquid','debt','hybrid','index'].some(c=>cat.includes(c));
+    const terSaving = cat.includes('index')?0.3 : isEquity?0.9 : 0.5; // typical avg saving %
+    const cv=r.currentValue||0;
+
+    // Project savings at 5Y and 10Y horizon using compound effect
+    const saving5y = cv*(Math.pow(1+terSaving/100,5)-1);
+    const saving10y = cv*(Math.pow(1+terSaving/100,10)-1);
+
+    // Find the 5Y median CAGR of this fund to show in context
+    const stats5y=getFundCAGRStats(r.fund,'cagr5y');
+    const baseCagr=stats5y?.median??null;
+
+    recos.push({
+      id:`direct_${r.schemeName}`,
+      priority:'high',
+      type:'Cost Saving',
+      icon:'💸',
+      title:`Switch to Direct plan: ${shortN(r.schemeName,42)}`,
+      body:`This appears to be a <strong>Regular plan</strong> — you're paying distributor commission (~${terSaving}% p.a. extra TER) that goes to the intermediary, not to you. Switching to the <strong>Direct equivalent</strong> of the same fund gives you identical exposure at a lower cost, compounding silently in your favour every year.`,
+      impacts:[
+        {label:'Est. saving at 5Y',value:fmtCr(saving5y)},
+        {label:'Est. saving at 10Y',value:fmtCr(saving10y)},
+        {label:'Extra cost/yr',value:(terSaving).toFixed(1)+'% TER'},
+        {label:'Current value',value:fmtCr(cv)},
+      ],
+      actionLabel:'Find Direct fund →',
+      actionFn:`openPortFundPicker(${JSON.stringify(r.schemeName)})`,
+      scheme:r.schemeName
+    });
+  }
+
+  // ── 2. TAX HARVESTING OPPORTUNITIES ─────────────────────
+  // STCG: gains on equity MFs held < 12 months, taxed at 20% (post-2024 budget)
+  // LTCG: gains on equity MFs held > 12 months, taxed at 12.5% above ₹1.25L exemption (post-2024)
+  // Loss harvesting: book losses to offset gains
+  const LTCG_EXEMPTION = 125000; // ₹1.25L annual exemption
+  const LTCG_RATE = 0.125;
+  const STCG_RATE = 0.20;
+
+  // Funds with unrealised losses — can be booked to offset gains
+  const lossHoldings=h.matched.filter(r=>r.gainLoss!=null&&r.gainLoss<-1000);
+  if(lossHoldings.length){
+    const totalLoss=lossHoldings.reduce((s,r)=>s+r.gainLoss,0);
+    const totalGain=h.matched.filter(r=>r.gainLoss>0).reduce((s,r)=>s+r.gainLoss,0);
+    const offsettable=Math.min(Math.abs(totalLoss),totalGain);
+    const taxSaved=offsettable*LTCG_RATE; // approx
+
+    recos.push({
+      id:'tax_loss_harvest',
+      priority:Math.abs(totalLoss)>50000?'high':'med',
+      type:'Tax Planning',
+      icon:'🏛',
+      title:`Tax-loss harvesting: book ₹${Math.abs(totalLoss/1000).toFixed(0)}K in losses`,
+      body:`You have <strong>${lossHoldings.length} holding${lossHoldings.length>1?'s':''} in unrealised loss</strong>: ${lossHoldings.map(r=>`<strong>${shortN(r.matchedFund,22)}</strong> (${fmtAmtShort(r.gainLoss)})`).join(', ')}. Redeeming and re-investing in a similar (not same) fund books these losses, which can be used to offset capital gains from other funds — reducing your tax liability. Re-enter after 30 days to avoid wash-sale-like risk.`,
+      impacts:[
+        {label:'Total unrealised loss',value:fmtAmtShort(totalLoss)},
+        {label:'Offsettable vs gains',value:fmtAmtShort(offsettable)},
+        {label:'Est. LTCG tax saved',value:fmtAmtShort(taxSaved)},
+        {label:'Funds in loss',value:String(lossHoldings.length)},
+      ],
+      actionLabel:null,
+      scheme:null
+    });
+  }
+
+  // LTCG exemption utilisation — if total LTCG gains < ₹1.25L, may be worth realising more
+  const totalGainEstimate=h.matched.filter(r=>r.gainLoss>0).reduce((s,r)=>s+r.gainLoss,0);
+  if(totalGainEstimate>0&&totalGainEstimate<LTCG_EXEMPTION*1.5){
+    const unusedExemption=Math.max(0,LTCG_EXEMPTION-totalGainEstimate);
+    if(unusedExemption>10000){
+      recos.push({
+        id:'ltcg_exemption',
+        priority:'low',
+        type:'Tax Planning',
+        icon:'📋',
+        title:'LTCG ₹1.25L exemption — partial utilisation',
+        body:`Your estimated unrealised gains across matched holdings total ~<strong>${fmtAmtShort(totalGainEstimate)}</strong>. The annual LTCG exemption on equity MFs is <strong>₹1.25 lakh</strong>. You may have ~<strong>${fmtAmtShort(unusedExemption)}</strong> of unused exemption this financial year. Consider redeeming and repurchasing appreciated holdings to step up your cost basis tax-free.`,
+        impacts:[
+          {label:'Est. total gains',value:fmtAmtShort(totalGainEstimate)},
+          {label:'Unused exemption',value:fmtAmtShort(unusedExemption)},
+          {label:'LTCG rate (equity)',value:'12.5% above ₹1.25L'},
+        ],
+        actionLabel:null,
+        scheme:null
+      });
+    }
+  }
+  const catGroups={};
+  for(const r of h.matched){
+    const cat=extractCategory(r.fund||{});
+    if(!catGroups[cat]) catGroups[cat]=[];
+    catGroups[cat].push(r);
+  }
+  for(const [cat,rows] of Object.entries(catGroups)){
+    if(rows.length<2) continue;
+    // Need 5Y or 3Y stats for comparison
+    const withStats=rows.map(r=>({
+      r,
+      s5:getFundCAGRStats(r.fund,'cagr5y'),
+      s3:getFundCAGRStats(r.fund,'cagr3y'),
+    })).filter(x=>x.s5||x.s3);
+    if(withStats.length<2) continue;
+
+    // Sort by 5Y median (fallback to 3Y)
+    withStats.sort((a,b)=>{
+      const am=(a.s5?.median??a.s3?.median??-999);
+      const bm=(b.s5?.median??b.s3?.median??-999);
+      return am-bm;
+    });
+    const worst=withStats[0];
+    const best=withStats[withStats.length-1];
+    const worstMed=worst.s5?.median??worst.s3?.median;
+    const bestMed=best.s5?.median??best.s3?.median;
+    if(worstMed==null||bestMed==null) continue;
+    const gap=bestMed-worstMed;
+    if(gap<1.5) continue; // Only flag if gap >1.5% — meaningful
+
+    const cv=worst.r.currentValue||0;
+    const years=5;
+    const opportunity=cv*(Math.pow(1+bestMed/100,years)-Math.pow(1+worstMed/100,years));
+
+    recos.push({
+      id:`underperform_${cat}`,
+      priority:gap>4?'high':'med',
+      type:'Performance',
+      icon:'📉',
+      title:`Weakest ${cat.toUpperCase()} fund: ${shortN(worst.r.matchedFund,36)}`,
+      body:`Among your <strong>${cat}</strong> holdings, <strong>${shortN(worst.r.matchedFund,30)}</strong> has a median 5Y rolling CAGR of <strong>${worstMed.toFixed(1)}%</strong> vs <strong>${bestMed.toFixed(1)}%</strong> for <strong>${shortN(best.r.matchedFund,30)}</strong> — a gap of <strong>${gap.toFixed(1)}%</strong>. If you had the same amount in the better fund, the projected 5Y difference on your current value would be significant.`,
+      impacts:[
+        {label:'Worst CAGR (5Y med)',value:worstMed.toFixed(1)+'%'},
+        {label:'Best CAGR (5Y med)',value:bestMed.toFixed(1)+'%'},
+        {label:'Gap',value:gap.toFixed(1)+'%'},
+        {label:'5Y opportunity cost',value:fmtCr(opportunity)},
+      ],
+      actionLabel:'Review this fund →',
+      actionFn:`openPortFundPicker(${JSON.stringify(worst.r.schemeName)})`,
+      scheme:worst.r.schemeName
+    });
+  }
+
+  // ── 3. CAGR MOMENTUM DECAY ────────────────────────────────
+  for(const r of h.matched){
+    const s1=getFundCAGRStats(r.fund,'cagr1y');
+    const s5=getFundCAGRStats(r.fund,'cagr5y');
+    if(!s1||!s5||s1.latest==null||s5.median==null) continue;
+    const decay=s5.median - s1.latest; // positive = recent CAGR << long-term
+    if(decay<5) continue; // Only flag if recent 1Y is >5% below 5Y median
+    const wt=(r.currentValue/totalVal)*100;
+
+    recos.push({
+      id:`decay_${r.schemeName}`,
+      priority:decay>10?'high':'med',
+      type:'Momentum Alert',
+      icon:'⚡',
+      title:`Recent underperformance: ${shortN(r.matchedFund,38)}`,
+      body:`This fund's <strong>latest 1Y CAGR is ${s1.latest.toFixed(1)}%</strong>, significantly below its own <strong>5Y rolling median of ${s5.median.toFixed(1)}%</strong> — a decay of <strong>${decay.toFixed(1)}%</strong>. This may be temporary (market cycle) or structural. It accounts for <strong>${wt.toFixed(1)}%</strong> of your portfolio.`,
+      impacts:[
+        {label:'Latest 1Y CAGR',value:s1.latest.toFixed(1)+'%'},
+        {label:'5Y rolling median',value:s5.median.toFixed(1)+'%'},
+        {label:'Shortfall',value:decay.toFixed(1)+'%'},
+        {label:'Portfolio weight',value:wt.toFixed(1)+'%'},
+      ],
+      actionLabel:null,
+      scheme:r.schemeName
+    });
+  }
+
+  // ── 4. CONCENTRATION RISK ─────────────────────────────────
+  for(const r of h.matched){
+    const wt=(r.currentValue/totalVal)*100;
+    if(wt<25) continue;
+    recos.push({
+      id:`concentration_${r.schemeName}`,
+      priority:wt>40?'high':'med',
+      type:'Concentration Risk',
+      icon:'🎯',
+      title:`High concentration: ${shortN(r.matchedFund,38)}`,
+      body:`<strong>${shortN(r.matchedFund,32)}</strong> represents <strong>${wt.toFixed(1)}%</strong> of your matched portfolio — any single-fund concentration above 25% is meaningful risk. A fund-specific event (manager change, style drift, regulatory action) would have an outsized impact on your overall portfolio.`,
+      impacts:[
+        {label:'Portfolio weight',value:wt.toFixed(1)+'%'},
+        {label:'Value at risk',value:fmtCr(r.currentValue)},
+        {label:'Guideline',value:'<25% per fund'},
+      ],
+      actionLabel:null,
+      scheme:r.schemeName
+    });
+  }
+
+  // ── 5. CATEGORY CONCENTRATION ────────────────────────────
+  const catVal={};
+  for(const r of h.matched){
+    const cat=extractCategory(r.fund||{});
+    catVal[cat]=(catVal[cat]||0)+r.currentValue;
+  }
+  for(const [cat,val] of Object.entries(catVal)){
+    const wt=(val/totalVal)*100;
+    if(wt<50||cat==='liquid'||cat==='debt') continue;
+    recos.push({
+      id:`catconc_${cat}`,
+      priority:'med',
+      type:'Diversification',
+      icon:'🧩',
+      title:`${wt.toFixed(0)}% in ${cat.toUpperCase()} — consider diversifying`,
+      body:`<strong>${wt.toFixed(1)}%</strong> of your portfolio is in <strong>${cat}</strong> funds. High intra-category allocation amplifies sector-cycle risk. Consider whether you have intended exposure to other categories — large cap, international, debt — to provide ballast in downturns.`,
+      impacts:[
+        {label:'Category weight',value:wt.toFixed(1)+'%'},
+        {label:'Invested value',value:fmtCr(val)},
+        {label:'Guideline',value:'<50% single category'},
+      ],
+      actionLabel:null,
+      scheme:null
+    });
+  }
+
+  // ── 6. LONG-TAIL FRAGMENTATION ────────────────────────────
+  const smallFunds=h.matched.filter(r=>(r.currentValue/totalVal)*100<2);
+  if(smallFunds.length>=3){
+    const smallTotal=smallFunds.reduce((s,r)=>s+r.currentValue,0);
+    recos.push({
+      id:'longtail',
+      priority:'low',
+      type:'Portfolio Hygiene',
+      icon:'🧹',
+      title:`${smallFunds.length} micro-holdings — simplify your portfolio`,
+      body:`You have <strong>${smallFunds.length} holdings each below 2%</strong> of portfolio value: ${smallFunds.map(r=>shortN(r.matchedFund,20)).join(', ')}. These add administrative complexity, tracking overhead, and tax filing work without meaningful diversification benefit. Consider consolidating into your strongest conviction funds.`,
+      impacts:[
+        {label:'No. of micro-holdings',value:String(smallFunds.length)},
+        {label:'Combined value',value:fmtCr(smallTotal)},
+        {label:'Avg weight each',value:((smallTotal/totalVal/smallFunds.length)*100).toFixed(1)+'%'},
+      ],
+      actionLabel:null,
+      scheme:null
+    });
+  }
+
+  // ── 7. AMC OVERLAP DETECTION ─────────────────────────────
+  const amcGroups={};
+  for(const r of h.matched){
+    const amc=extractAMC(r.fund?.name||r.matchedFund||'');
+    if(!amc) continue;
+    if(!amcGroups[amc]) amcGroups[amc]=[];
+    amcGroups[amc].push(r);
+  }
+  for(const [amc,rows] of Object.entries(amcGroups)){
+    if(rows.length<2) continue;
+    // Only flag if same category within same AMC (truly overlapping)
+    const withSameCat=rows.filter((r,i,arr)=>{
+      const c=extractCategory(r.fund||{});
+      return arr.some((r2,j)=>j!==i&&extractCategory(r2.fund||{})===c);
+    });
+    if(withSameCat.length<2) continue;
+    const amcVal=rows.reduce((s,r)=>s+r.currentValue,0);
+    recos.push({
+      id:`overlap_${amc}`,
+      priority:'low',
+      type:'Overlap',
+      icon:'🔄',
+      title:`Same-AMC overlap: ${amc.toUpperCase()} funds in same category`,
+      body:`You hold <strong>${rows.length} funds</strong> from <strong>${amc.toUpperCase()}</strong> including same-category funds: ${withSameCat.map(r=>shortN(r.matchedFund,22)).join(', ')}. Funds from the same AMC and category often share similar underlying stocks, reducing the diversification you think you're getting.`,
+      impacts:[
+        {label:'AMC funds held',value:String(rows.length)},
+        {label:'Combined value',value:fmtCr(amcVal)},
+        {label:'Risk',value:'High stock overlap'},
+      ],
+      actionLabel:null,
+      scheme:null
+    });
+  }
+
+  // ── 8. GOOD: WELL-DIVERSIFIED PORTFOLIO ───────────────────
+  const noHighConc=h.matched.every(r=>(r.currentValue/totalVal)*100<25);
+  const hasMultipleCats=Object.keys(catGroups).length>=3;
+  const noRegular=h.matched.every(r=>detectPlanType(r.schemeName)==='direct'||detectPlanType(r.fund?.name||'')==='direct');
+  if(noHighConc&&hasMultipleCats){
+    recos.push({
+      id:'wellbalanced',
+      priority:'good',
+      type:'Portfolio Health',
+      icon:'✅',
+      title:'Well-distributed across categories',
+      body:`Your portfolio spans <strong>${Object.keys(catGroups).length} fund categories</strong> with no single fund exceeding 25%. This is a healthy diversification structure that limits single-fund drawdown impact on the overall portfolio.`,
+      impacts:[{label:'Categories',value:String(Object.keys(catGroups).length)},{label:'Max single fund',value:Math.max(...h.matched.map(r=>(r.currentValue/totalVal)*100)).toFixed(1)+'%'}],
+      actionLabel:null,
+      scheme:null
+    });
+  }
+
+  // Sort: high > med > low > good
+  const pOrder={high:0,med:1,low:2,good:3};
+  recos.sort((a,b)=>pOrder[a.priority]-pOrder[b.priority]);
+  return recos;
+}
+
+function renderRecommendations(){
+  const recos=generateRecommendations();
+  if(!recos.length) return '';
+  const counts={high:0,med:0,low:0,good:0};
+  recos.forEach(r=>counts[r.priority]=(counts[r.priority]||0)+1);
+
+  const summaryBar=[
+    counts.high?`<div class="reco-sum-item high">⚠ ${counts.high} High Priority</div>`:'',
+    counts.med?`<div class="reco-sum-item med">◎ ${counts.med} Medium</div>`:'',
+    counts.low?`<div class="reco-sum-item low">○ ${counts.low} Low</div>`:'',
+    counts.good?`<div class="reco-sum-item good">✓ ${counts.good} Positive</div>`:'',
+  ].filter(Boolean).join('');
+
+  const cards=recos.map(reco=>`
+    <div class="reco-card priority-${reco.priority}">
+      <div class="reco-type">
+        <span>${reco.icon}</span>
+        <span style="color:var(--td)">${reco.type}</span>
+        <span class="reco-badge ${reco.priority}">${reco.priority==='high'?'High Priority':reco.priority==='med'?'Medium':reco.priority==='low'?'Low':'Positive'}</span>
+      </div>
+      <div class="reco-title">${reco.title}</div>
+      <div class="reco-body">${reco.body}</div>
+      <div class="reco-impact">
+        ${reco.impacts.map(i=>`<div class="reco-impact-item"><strong>${i.value}</strong>${i.label}</div>`).join('')}
+      </div>
+      ${reco.actionLabel&&reco.scheme?`<button class="reco-action" data-scheme="${esc(reco.scheme)}" onclick="openPortFundPicker(this.dataset.scheme)">${reco.actionLabel}</button>`:''}
+    </div>`).join('');
+
+  return `
+    <div class="sec" style="margin-top:20px">
+      Recommendations <span class="stag">${recos.length} insights · based on historical data</span>
+    </div>
+    <div style="font-size:11px;color:var(--td);font-family:'DM Mono',monospace;margin-bottom:12px">
+      Generated from your portfolio's rolling CAGR history, expense structure, and concentration. Not financial advice — use as a starting point for research.
+    </div>
+    <div class="reco-summary-bar">${summaryBar}</div>
+    <div class="reco-grid">${cards}</div>`;
 }
 
 function renderHoldingsProjection(){ return ''; } // Moved to Portfolio tab
