@@ -72,14 +72,6 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .fg-items{margin-top:2px}
 .fi{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:5px;cursor:pointer;transition:background .1s,border-color .12s,opacity .12s;border:1px solid transparent;margin-bottom:2px;user-select:none}
 .fi:hover{background:var(--sf2)}
-.fi.s1{background:var(--c1a);border-color:var(--c1b)}
-.fi.s2{background:var(--c2a);border-color:var(--c2b)}
-.fi.s3{background:var(--c3a);border-color:var(--c3b)}
-.fi.s4{background:var(--c4a);border-color:var(--c4b)}
-.fi.s5{background:var(--c5a);border-color:var(--c5b)}
-.fi.s6{background:var(--c6a);border-color:var(--c6b)}
-.fi.s7{background:var(--c7a);border-color:var(--c7b)}
-.fi.s8{background:var(--c8a);border-color:var(--c8b)}
 .fi.is-dragging{opacity:.55;border-color:var(--acc)}
 .fi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .fi-info{flex:1;min-width:0}
@@ -126,14 +118,6 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .sel-badge:hover{transform:translateY(-1px);filter:brightness(1.06)}
 .sel-badge:active{transform:translateY(0)}
 .sel-badge.is-muted{opacity:.45;filter:saturate(.6);border-style:dashed}
-.sel-badge.p1{color:var(--c1);background:var(--c1a);border-color:var(--c1b)}
-.sel-badge.p2{color:var(--c2);background:var(--c2a);border-color:var(--c2b)}
-.sel-badge.p3{color:var(--c3);background:var(--c3a);border-color:var(--c3b)}
-.sel-badge.p4{color:var(--c4);background:var(--c4a);border-color:var(--c4b)}
-.sel-badge.p5{color:var(--c5);background:var(--c5a);border-color:var(--c5b)}
-.sel-badge.p6{color:var(--c6);background:var(--c6a);border-color:var(--c6b)}
-.sel-badge.p7{color:var(--c7);background:var(--c7a);border-color:var(--c7b)}
-.sel-badge.p8{color:var(--c8);background:var(--c8a);border-color:var(--c8b)}
 .b-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
 
 .sec{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:10px;display:flex;align-items:center;gap:10px}
@@ -291,16 +275,35 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .proj-tbl tr:last-child td{border-bottom:none}
 .proj-match-ok{color:var(--pos);font-weight:700}
 .proj-match-miss{color:var(--neg);font-weight:700}
+.port-view-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.port-tool-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--br);border-radius:999px;background:var(--sf);color:var(--tm);font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;font-family:'DM Mono',monospace}
+.port-tool-chip input{accent-color:var(--acc)}
+.port-tool-select{padding:7px 10px;background:var(--sf);border:1px solid var(--br);border-radius:999px;color:var(--tx);font-size:11px;font-weight:700;font-family:'DM Mono',monospace}
+.port-tool-btn{padding:7px 12px;background:var(--sf);border:1px solid var(--br);border-radius:999px;color:var(--tx);font-size:11px;font-weight:700;font-family:'DM Mono',monospace;cursor:pointer}
+.port-tool-btn:hover,.port-tool-select:hover{border-color:var(--acc);color:#f8d27a}
+.port-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px}
+.port-row-edit{background:transparent;border:1px solid rgba(96,165,250,.35);color:#93c5fd;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer}
+.port-row-edit:hover{border-color:rgba(96,165,250,.65);color:#bfdbfe}
+.port-row-del{background:transparent;border:1px solid rgba(248,113,113,.35);color:#fca5a5;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:800;font-family:'DM Mono',monospace;cursor:pointer}
+.port-row-del:hover{border-color:rgba(248,113,113,.65);color:#fecaca}
+.proj-tbl th.is-sortable{cursor:pointer;user-select:none}
+.proj-tbl th.is-sortable:hover{color:var(--tx)}
+.proj-tbl th.is-sorted{color:var(--acc)}
+.proj-tbl th .sort-arrow{display:inline-block;margin-left:5px;opacity:.4;font-size:9px;line-height:1}
+.proj-tbl th.is-sorted .sort-arrow{opacity:1}
+.proj-tbl .freeze-col{position:sticky;left:0;z-index:3;background:var(--sf);background-clip:padding-box}
+.proj-tbl th.freeze-col{z-index:5;background:var(--sf2);background-clip:padding-box}
+.proj-tbl tbody tr:hover .freeze-col{background:var(--sf2)}
+.proj-tbl .freeze-col::after{content:'';position:absolute;top:0;right:-1px;width:1px;height:100%;background:var(--br2)}
+.proj-tbl .freeze-col.total-cell{background:var(--sf3)}
+
+@media(max-width:860px){.tiles-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
 
 @media(max-width:600px){
   .snap-tbl th,.snap-tbl td{padding:8px 10px;font-size:11px}
   .snap-tbl td:first-child{max-width:130px}
   .proj-grid{grid-template-columns:1fr}
-}
 
-@media(max-width:860px){.tiles-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
-
-@media(max-width:600px){
   .logo-tag{display:none}
   .badge{display:none}
   .hdr{padding:0 12px;gap:8px}
@@ -621,6 +624,13 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
           <select class="msel" id="holdings_current"></select>
         </div>
       </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--br)">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">Portfolio Holding Date</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <input class="nav-date" type="date" id="holdings_date" style="min-width:160px" />
+          <span style="font-size:11px;font-family:DM Mono,monospace;color:var(--td)">NAV comparison uses the latest available date <em>before</em> this date</span>
+        </div>
+      </div>
       <div class="warn" id="holdingsWarn">Please select at least Scheme Name and either Current Value or Units.</div>
     </div>
     <div class="modal-ftr">
@@ -634,14 +644,14 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   <div class="modal" style="width:480px">
     <div class="modal-hdr">
       <div>
-        <div class="modal-title">Change MF group</div>
-        <div class="modal-sub">Move this scheme to another sidebar group</div>
+        <div class="modal-title">Edit fund</div>
+        <div class="modal-sub">Rename or move this fund to another sidebar group</div>
       </div>
       <button class="modal-x" onclick="closeMfGroupModal()">×</button>
     </div>
     <div class="modal-body">
       <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px">Scheme</div>
-      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--tm);margin-bottom:4px">Code: <span id="mf_edit_code"></span></div>
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--tm);margin-bottom:4px" id="mf_edit_code_row">Code: <span id="mf_edit_code"></span></div>
       <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:14px" id="mf_edit_name"></div>
       <div class="map-field">
         <div class="map-label">Group</div>
@@ -676,9 +686,29 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   </div>
 </div>
 
+<div class="overlay" id="reimportDateModal" style="display:none">
+  <div class="modal" style="width:420px">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Portfolio Holding Date</div>
+        <div class="modal-sub">Set the date for this import — NAV comparison uses the prior trading day</div>
+      </div>
+      <button class="modal-x" onclick="cancelReimportDate()">×</button>
+    </div>
+    <div class="modal-body" style="padding:20px 22px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:10px">Holding Date</div>
+      <input class="nav-date" type="date" id="reimport_date" style="width:100%;font-size:14px;padding:9px 12px" />
+      <div style="margin-top:12px;font-size:11px;font-family:DM Mono,monospace;color:var(--td);line-height:1.7">Default is today. Change this if you are importing a statement from an earlier date — the NAV match will use the latest available NAV <em>before</em> this date.</div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-ghost" onclick="cancelReimportDate()">Cancel</button>
+      <button class="btn-ok" onclick="confirmReimportDate()">Import →</button>
+    </div>
+  </div>
+</div>
 <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple style="display:none" onchange="handleFiles(this.files)">
 <input type="file" id="holdingsFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleHoldingsFiles(this.files)">
-<input type="file" id="holdingsReimportInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="loadHoldingsFromExcel(this.files[0]);this.value=''">
+<input type="file" id="holdingsReimportInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="interceptReimportFile(this.files[0]);this.value=''">
 
 <!-- Inline fund picker for portfolio page -->
 <div class="overlay" id="portFundPickerModal" style="display:none">
@@ -706,12 +736,148 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
   </div>
 </div>
 
+<div class="overlay" id="addHoldingModal" style="display:none">
+  <div class="modal" style="width:620px">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Add holding</div>
+        <div class="modal-sub">Search a mutual fund first, then enter your holding details</div>
+      </div>
+      <button class="modal-x" onclick="closeAddHoldingModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="map-field" style="margin-bottom:14px">
+        <div class="map-label">Search MF API</div>
+        <div class="mf-search-bar">
+          <input class="msel" id="add_holding_search" type="text" placeholder="Type fund name..." onkeydown="if(event.key==='Enter')searchAddHoldingFund()" />
+          <button class="mf-search-btn" type="button" onclick="searchAddHoldingFund()">Search</button>
+        </div>
+        <div class="mf-search-results" id="add_holding_results" style="display:none;max-height:220px"></div>
+      </div>
+      <div class="map-field" style="margin-bottom:14px">
+        <div class="map-label">Selected Fund</div>
+        <div class="mf-picked" id="add_holding_picked" style="display:none"></div>
+      </div>
+      <div class="map-grid">
+        <div class="map-field">
+          <div class="map-label">Holding Name</div>
+          <input class="msel" id="add_holding_name" type="text" placeholder="Auto-filled from selected fund" />
+        </div>
+        <div class="map-field">
+          <div class="map-label">Units</div>
+          <input class="msel" id="add_holding_units" type="text" placeholder="e.g. 123.456" />
+        </div>
+        <div class="map-field">
+          <div class="map-label">Invested Value</div>
+          <input class="msel" id="add_holding_invested" type="text" placeholder="Optional" />
+        </div>
+        <div class="map-field">
+          <div class="map-label">Current Value</div>
+          <input class="msel" id="add_holding_current" type="text" placeholder="Optional" />
+        </div>
+      </div>
+      <div class="warn" id="addHoldingWarn">Please select a fund and enter at least units or current value.</div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-ghost" onclick="closeAddHoldingModal()">Cancel</button>
+      <button class="btn-ok" onclick="saveAddHolding()">Add Holding</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="editHoldingModal" style="display:none">
+  <div class="modal" style="width:560px">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-title">Edit Holding</div>
+        <div class="modal-sub" id="edit_holding_sub"></div>
+      </div>
+      <button class="modal-x" onclick="closeEditHoldingModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--br)">
+        <div class="map-label" style="margin-bottom:6px">Matched Fund</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span id="edit_holding_matched" style="font-size:12px;font-weight:600;color:var(--tx);flex:1;min-width:0"></span>
+          <button class="mf-search-btn" type="button" onclick="editHoldingChangeFund()" style="white-space:nowrap">Change fund →</button>
+        </div>
+      </div>
+      <div class="map-grid">
+        <div class="map-field">
+          <div class="map-label">Units Held</div>
+          <div class="map-desc">Leave blank to keep unchanged</div>
+          <input class="msel" id="edit_holding_units" type="number" step="any" min="0" placeholder="e.g. 123.456" />
+        </div>
+        <div class="map-field">
+          <div class="map-label">Invested Value (₹)</div>
+          <div class="map-desc">Total amount invested</div>
+          <input class="msel" id="edit_holding_invested" type="number" step="any" min="0" placeholder="e.g. 50000" />
+        </div>
+        <div class="map-field">
+          <div class="map-label">Current Value (₹)</div>
+          <div class="map-desc">Auto-calculated if units are set</div>
+          <input class="msel" id="edit_holding_current" type="number" step="any" min="0" placeholder="e.g. 62000" />
+        </div>
+        <div class="map-field">
+          <div class="map-label">Holding Date</div>
+          <div class="map-desc">Date of this snapshot</div>
+          <input class="msel nav-date" id="edit_holding_date" type="date" />
+        </div>
+      </div>
+      <div class="warn" id="editHoldingWarn" style="display:none">Please enter at least units or current value.</div>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-ghost" onclick="closeEditHoldingModal()">Cancel</button>
+      <button class="btn-ok" onclick="saveEditHolding()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ─────────────────────────────────────────────────────
 //  CONSTANTS
 // ─────────────────────────────────────────────────────
-const COLORS    = ['#f59e0b','#60a5fa','#34d399','#f472b6','#a78bfa','#fb7185','#22d3ee','#84cc16'];
-const COLORS_BG = ['rgba(245,158,11,.4)','rgba(96,165,250,.4)','rgba(52,211,153,.4)','rgba(244,114,182,.4)','rgba(167,139,250,.4)','rgba(251,113,133,.4)','rgba(34,211,238,.4)','rgba(132,204,22,.4)'];
+const COLORS    = ['#ff5454','#ffb300','#8bd32e','#2fd161','#23b0b0','#4277f7','#a352ea','#ea52bd'];
+const COLORS_BG = ['rgba(255,84,84,.4)','rgba(255,179,0,.4)','rgba(139,211,46,.4)','rgba(47,209,97,.4)','rgba(35,176,176,.4)','rgba(66,119,247,.4)','rgba(163,82,234,.4)','rgba(234,82,189,.4)'];
+function hslaFromIndex(idx, alpha){
+  const hue=(idx*137.508)%360;
+  return `hsla(${hue.toFixed(1)},78%,62%,${alpha})`;
+}
+function ensureColorSlot(idx){
+  while(COLORS.length<=idx){
+    COLORS.push(hslaFromIndex(COLORS.length, 1));
+    COLORS_BG.push(hslaFromIndex(COLORS_BG.length, .4));
+  }
+  return idx;
+}
+function getColorAt(idx){
+  ensureColorSlot(idx);
+  return COLORS[idx];
+}
+function getColorBgAt(idx){
+  ensureColorSlot(idx);
+  return COLORS_BG[idx];
+}
+// Derive tinted background + border style directly from the fund's dot color.
+// Works for both hex (#rrggbb) and hsla(...) formats, so ci >= 8 always matches.
+function fundSelStyle(color){
+  if(!color) return '';
+  if(color.startsWith('#')&&color.length===7){
+    // append hex alpha: 0x26=15%, 0x66=40%
+    return `background:${color}26;border-color:${color}66`;
+  }
+  // hsla(h,s%,l%,alpha) — replace alpha component
+  const bg=color.replace(/,[\d.]+\)$/,',0.15)');
+  const bd=color.replace(/,[\d.]+\)$/,',0.40)');
+  return `background:${bg};border-color:${bd}`;
+}
+function nextFundColorIndex(){
+  const used=new Set(Object.values(S?.funds||{}).map(f=>f?.ci).filter(Number.isInteger));
+  let idx=0;
+  while(used.has(idx)) idx++;
+  ensureColorSlot(idx);
+  return idx;
+}
 const MS_YEAR   = 365.25 * 24 * 3600 * 1000;
 const MAX_SIP_DATE_GAP_MS = 35 * 24 * 3600 * 1000;
 
@@ -739,7 +905,7 @@ const TS_SLICES = [
   {key:'full',lbl:'Full', ms: null},
 ];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, page:'portfolio', tab:'snapshot', pending:null, holdingsPending:null, holdings:null, holdingsRawRows:null, holdingsOverrides:{}, holdingsHistory:[], tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' } };
+const S = { funds:{}, favs:[], selected:[], charts:{}, page:'portfolio', tab:'snapshot', pending:null, holdingsPending:null, holdings:null, holdingsRawRows:null, holdingsOverrides:{}, holdingsHistory:[], tsSlice:'full', groupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' }, portfolioView:{ showMatchedFund:true, sortKey:'holding', sortDir:1, columns:{ invested:false, current:true, pl:true, daily:true } } };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
@@ -832,93 +998,14 @@ function tokenize(name){
 // Strip only true noise words (not plan type, not growth/idcw — those matter for matching)
 const NOISE_WORDS=new Set(['the','of','a','an','and','or','fund','scheme','mutual']);
 
-function matchHoldingToFund(name, impliedNav){
-  if(!name) return null;
-  const funds=Object.values(S.funds);
-  if(!funds.length) return null;
-
-  const holdingPlan=detectPlanType(name); // 'direct', 'regular', or null
-  // If no plan mentioned in holding → treat as regular (regular funds often omit the word)
-  const holdingIsDirectOnly = holdingPlan==='direct';
-  const holdingIsRegular = holdingPlan==='regular' || holdingPlan===null;
-
-  const holdingTokens=tokenize(name);
-  const holdingCore=holdingTokens.filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
-  // First meaningful token = fund house (e.g. "hdfc", "axis", "parag")
-  const holdingHouse=holdingCore[0]||null;
-
-  const holdingIsGrowth=/\bgrowth\b/i.test(name);
-  const holdingIsIDCW=/\b(idcw|dividend)\b/i.test(name);
-
-  let best=null;
-
-  for(const f of funds){
-    const fundName=f.name||'';
-    const fundPlan=detectPlanType(fundName);
-    // In MF API: Direct plans always say "Direct". If no "Direct" → it is Regular.
-    const fundIsDirect = fundPlan==='direct';
-    const fundIsRegular = !fundIsDirect;
-
-    // ── Hard plan type filter ──
-    if(holdingIsDirectOnly && !fundIsDirect) continue; // holding=Direct → must match Direct fund
-    if(holdingIsRegular && fundIsDirect) continue;     // holding=Regular/unspecified → reject Direct funds
-
-    const fundTokens=tokenize(fundName);
-    const fundCore=fundTokens.filter(w=>!NOISE_WORDS.has(w)&&!['direct','regular','growth','idcw','dividend','payout','reinvestment','plan','option'].includes(w));
-    const fundHouse=fundCore[0]||null;
-
-    // ── Hard fund-house filter: first meaningful word MUST match ──
-    if(holdingHouse && fundHouse && holdingHouse!==fundHouse) continue;
-
-    // ── Jaccard on core tokens ──
-    const overlap=holdingCore.filter(w=>fundCore.includes(w)).length;
-    const union=new Set([...holdingCore,...fundCore]).size;
-    const jaccard=union>0?overlap/union:0;
-
-    // Require at least 2 core words matching AND ≥45% Jaccard
-    if(overlap<2||jaccard<0.45) continue;
-
-    let score=jaccard*100;
-
-    // Exact normalized match
-    if(normalizeHoldingsName(name)===normalizeHoldingsName(fundName)) score=200;
-
-    // Growth/IDCW alignment
-    const fundIsGrowth=/\bgrowth\b/i.test(fundName);
-    const fundIsIDCW=/\b(idcw|dividend)\b/i.test(fundName);
-    if(holdingIsGrowth&&fundIsGrowth) score+=10;
-    if(holdingIsIDCW&&fundIsIDCW) score+=10;
-    if(holdingIsGrowth&&fundIsIDCW) score-=30;
-    if(holdingIsIDCW&&fundIsGrowth) score-=30;
-
-    // ── NAV proximity: <0.1% is very strong signal ──
-    if(impliedNav&&impliedNav>0){
-      const latestNav=f.rawData?.length?f.rawData[f.rawData.length-1].nav:null;
-      if(latestNav){
-        const pctDiff=Math.abs(impliedNav-latestNav)/latestNav;
-        if(pctDiff<0.001) score+=40;       // <0.1%: almost certainly the same fund
-        else if(pctDiff<0.01) score+=20;   // <1%
-        else if(pctDiff<0.05) score+=5;
-        else if(pctDiff>0.20) score-=15;   // >20%: probably wrong fund
-      }
-    }
-
-    if(!best||score>best.score) best={fund:f,score};
-  }
-
-  return best&&best.score>=50?best.fund:null;
-}
-
-function triggerHoldingsUpload(){
-  const input=document.getElementById('holdingsFileInput');
-  if(input){ input.value=''; input.click(); }
-}
+// matchHoldingToFund is defined below (uses uploadDate + getFundNavPointForHoldingDate for prior-day NAV comparison)
 
 // ─────────────────────────────────────────────────────
 //  FILE HANDLING
 // ─────────────────────────────────────────────────────
-function triggerUpload() { document.getElementById('fileInput').value=''; document.getElementById('fileInput').click(); }
-
+function triggerFileInput(id){const el=document.getElementById(id);if(el){el.value='';el.click();}}
+function triggerUpload(){triggerFileInput('fileInput');}
+function triggerHoldingsUpload(){triggerFileInput('holdingsFileInput');}
 function parseFile(file) {
   return new Promise((res,rej) => {
     const r = new FileReader();
@@ -971,7 +1058,7 @@ function showModal({id,headers,rows,sheetName,fileName}) {
   const {dI,nI} = autoDetect(headers,rows);
   document.getElementById('mFundName').textContent = shortN(fileName.replace(/\.(xlsx|xls|csv)$/i,''),30);
   document.getElementById('mSub').textContent = `Sheet: ${sheetName} · ${rows.length} rows · ${headers.filter(Boolean).length} cols`;
-  document.getElementById('mapWarn').style.display='none';
+  hide('mapWarn');
   const visIdx=headers.map((_,i)=>headers[i]?i:-1).filter(i=>i>=0);
   const visH=visIdx.map(i=>headers[i]);
   const pt=document.getElementById('prevTbl');
@@ -984,26 +1071,26 @@ function showModal({id,headers,rows,sheetName,fileName}) {
   else document.getElementById('dateAutoTag').innerHTML='';
   if(nI>=0){document.getElementById('map_nav').value=nI;document.getElementById('navAutoTag').innerHTML='<span class="auto-tag">auto</span>';}
   else document.getElementById('navAutoTag').innerHTML='';
-  document.getElementById('mappingModal').style.display='flex';
+  show('mappingModal',true);
 }
 
-function closeModal(){document.getElementById('mappingModal').style.display='none';S.pending=null;nextFile();}
+function closeModal(){hide('mappingModal');S.pending=null;nextFile();}
 
 async function applyMapping() {
   const dv=document.getElementById('map_date').value;
   const nv=document.getElementById('map_nav').value;
-  if(dv===''||nv===''){document.getElementById('mapWarn').style.display='block';return;}
+  if(dv===''||nv===''){show('mapWarn');return;}
   const {id,headers,rows,fileName}=S.pending;
-  const ci=Object.keys(S.funds).length%COLORS.length;
+  const ci=nextFundColorIndex();
   const rawData=rows.map(r=>({date:parseDate(r[+dv]),nav:parseNav(r[+nv])}))
     .filter(p=>p.date&&p.nav).sort((a,b)=>a.date-b.date);
   if(rawData.length<24){alert('Need at least 24 data points. Found: '+rawData.length);return;}
-  document.getElementById('mappingModal').style.display='none';
+  hide('mappingModal');
   S.pending=null;
   showLoading('Computing metrics for '+shortN(fileName.replace(/\.(xlsx|xls|csv)$/i,''),22)+'…');
   await tick();
   const computed=await computeMetrics(rawData);
-  S.funds[id]={id,fileName,name:fileName.replace(/\.(xlsx|xls|csv)$/i,''),color:COLORS[ci],ci,group:'Uploads',rawData,computed};
+  S.funds[id]={id,fileName,name:fileName.replace(/\.(xlsx|xls|csv)$/i,''),color:getColorAt(ci),ci,group:'Uploads',rawData,computed};
   hideLoading();
   if(S.selected.length<3) S.selected.push(id);
   renderSidebar();
@@ -1014,7 +1101,7 @@ async function applyMapping() {
 function showHoldingsModal({headers,rows,sheetName,fileName}){
   const auto=autoDetectHoldings(headers);
   document.getElementById('holdingsSub').textContent=`Sheet: ${sheetName} · ${rows.length} rows · ${headers.filter(Boolean).length} cols`;
-  document.getElementById('holdingsWarn').style.display='none';
+  hide('holdingsWarn');
   const visIdx=headers.map((_,i)=>headers[i]?i:-1).filter(i=>i>=0);
   const visH=visIdx.map(i=>headers[i]);
   document.getElementById('holdingsPrevTbl').innerHTML=`<thead><tr>${visH.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.slice(0,5).map(r=>`<tr>${visIdx.map(i=>`<td>${r[i]??''}</td>`).join('')}</tr>`).join('')}</tbody>`;
@@ -1030,7 +1117,10 @@ function showHoldingsModal({headers,rows,sheetName,fileName}){
     if(el && val>=0){ el.value=String(val); if(tag) tag.innerHTML='<span class="auto-tag">auto</span>'; }
     else if(tag) tag.innerHTML='';
   });
-  document.getElementById('holdingsModal').style.display='flex';
+  // Pre-populate date to today; user can change before confirming
+  const dateEl=document.getElementById('holdings_date');
+  if(dateEl) dateEl.value=fmtIsoLocalDate(new Date());
+  show('holdingsModal',true);
 }
 function closeHoldingsModal(){
   const m=document.getElementById('holdingsModal');
@@ -1042,6 +1132,14 @@ function medianOfSorted(arr){
   const mid=Math.floor(arr.length/2);
   return arr.length%2 ? arr[mid] : (arr[mid-1]+arr[mid])/2;
 }
+function pruneHoldingsOverrides(validSchemeNames){
+  const keep=new Set((validSchemeNames||[]).map(v=>String(v||'').trim()).filter(Boolean));
+  const next={};
+  for(const [scheme,fundId] of Object.entries(S.holdingsOverrides||{})){
+    if(keep.has(scheme)) next[scheme]=fundId;
+  }
+  S.holdingsOverrides=next;
+}
 function fmtAmtShort(v){
   if(v==null||!isFinite(v)) return 'N/A';
   return `₹${Number(v).toLocaleString('en-IN',{maximumFractionDigits:0})}`;
@@ -1052,7 +1150,57 @@ function detectPlanType(name){
   if(/\bregular\b/.test(s)) return 'regular';
   return null;
 }
-function matchHoldingToFund(name, impliedNav){
+function parseIsoLocalDate(value){
+  const s=String(value||'').trim();
+  const m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return null;
+  const dt=new Date(+m[1], +m[2]-1, +m[3]);
+  return Number.isFinite(dt.getTime()) ? dt : null;
+}
+function fmtIsoLocalDate(dt){
+  if(!(dt instanceof Date) || !Number.isFinite(dt.getTime())) return '';
+  const y=dt.getFullYear();
+  const m=String(dt.getMonth()+1).padStart(2,'0');
+  const d=String(dt.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+function getHoldingUploadDate(row){
+  // Always return normalized YYYY-MM-DD — handles old localStorage with non-standard formats
+  const candidates=[
+    String(row?._uploadDate||'').trim(),
+    String(S.holdingsHistory?.[0]?.date||'').trim()
+  ];
+  for(const c of candidates){
+    if(!c) continue;
+    if(/^\d{4}-\d{2}-\d{2}$/.test(c)) return c;
+    const d=parseDate(c);
+    if(d&&!isNaN(d)) return fmtIsoLocalDate(d);
+  }
+  return fmtIsoLocalDate(new Date());
+}
+function getFundNavPointForHoldingDate(fund, uploadDate){
+  const data=fund?.rawData||[];
+  if(!data.length) return null;
+  // Try strict ISO parser first; fall back to general parseDate for old localStorage formats
+  const parsedUpload=parseIsoLocalDate(uploadDate)||(uploadDate?parseDate(uploadDate):null);
+  if(!parsedUpload||isNaN(parsedUpload)){
+    // Truly no upload date context: return one step before latest (never same-day NAV)
+    return data.length>1?data[data.length-2]:data[0];
+  }
+  // Compare calendar Y/M/D in local time — avoids UTC-vs-local-midnight edge cases
+  // (MF API dates via new Date("Apr 08, 2026") can land at UTC midnight = IST April 7 18:30,
+  // making raw timestamp comparisons unreliable)
+  const uY=parsedUpload.getFullYear(), uM=parsedUpload.getMonth(), uD=parsedUpload.getDate();
+  for(let i=data.length-1;i>=0;i--){
+    const pt=data[i];
+    if(!(pt?.date instanceof Date)) continue;
+    const pY=pt.date.getFullYear(), pM=pt.date.getMonth(), pD=pt.date.getDate();
+    // Strictly before upload date — never return same-day or future NAV
+    if(pY<uY||(pY===uY&&pM<uM)||(pY===uY&&pM===uM&&pD<uD)) return pt;
+  }
+  return data[0]||null;
+}
+function matchHoldingToFund(name, impliedNav, uploadDate){
   const target=normalizeHoldingsName(name);
   if(!target) return null;
   const funds=Object.values(S.funds);
@@ -1073,9 +1221,10 @@ function matchHoldingToFund(name, impliedNav){
     }
     // ── NAV proximity scoring (tiebreaker only — primary matching uses matchHoldingToFund) ──
     if(impliedNav && impliedNav>0){
-      const latestNav=f.rawData?.length ? f.rawData[f.rawData.length-1].nav : null;
-      if(latestNav){
-        const pctDiff=Math.abs(impliedNav-latestNav)/latestNav;
+      const navPoint=getFundNavPointForHoldingDate(f, uploadDate);
+      const referenceNav=navPoint?.nav||null;
+      if(referenceNav){
+        const pctDiff=Math.abs(impliedNav-referenceNav)/referenceNav;
         // <0.1% → almost certainly same fund; <1% → likely same; >20% → probably wrong
         if(pctDiff<0.001)     score+=40;
         else if(pctDiff<0.01) score+=20;
@@ -1103,21 +1252,28 @@ function buildHoldingsScenario(rows){
     {yrs:10,key:'cagr10y',label:'10Y'},
   ];
   const matched=[], unmatched=[];
-  for(const row of rows){
+  for(const [sourceIndex,row] of rows.entries()){
+    const uploadDate=getHoldingUploadDate(row);
     // Compute implied NAV from units + current value for smarter matching
     const impliedNav=(row.units&&row.units>0&&row.currentValue&&row.currentValue>0)
       ? row.currentValue/row.units : null;
-    const fund=row._overrideFund || matchHoldingToFund(row.schemeName, impliedNav);
-    if(!fund){ unmatched.push({...row,reason:'No matching loaded fund'}); continue; }
+    const fund=row._overrideFund || matchHoldingToFund(row.schemeName, impliedNav, uploadDate);
+    if(!fund){ unmatched.push({...row,sourceIndex,reason:'No matching loaded fund'}); continue; }
     const latestNav=fund.rawData?.length?fund.rawData[fund.rawData.length-1].nav:null;
+    const prevNav=(fund.rawData&&fund.rawData.length>1)?fund.rawData[fund.rawData.length-2].nav:null;
+    const refNavPoint=getFundNavPointForHoldingDate(fund, uploadDate);
+    // referenceNav MUST be strictly prior-day — never fall back to latestNav (same-day)
+    const referenceNav=refNavPoint?.nav??null;
     // Live value: prefer units × latest NAV (always up-to-date); fall back to stated currentValue
     const liveValue=(row.units&&row.units>0&&latestNav)?row.units*latestNav:null;
     const currentValue=liveValue??row.currentValue??null;
-    if(currentValue==null||!isFinite(currentValue)||currentValue<=0){ unmatched.push({...row,matchedFund:fund.name,reason:'Missing current value'}); continue; }
+    if(currentValue==null||!isFinite(currentValue)||currentValue<=0){ unmatched.push({...row,sourceIndex,matchedFund:fund.name,reason:'Missing current value'}); continue; }
     // NAV proximity confidence
-    const navPct = (impliedNav && latestNav) ? Math.abs(impliedNav-latestNav)/latestNav : null;
+    const navPct = (impliedNav && referenceNav) ? Math.abs(impliedNav-referenceNav)/referenceNav : null;
     const isOverridden = !!row._overrideFund;
-    matched.push({...row,matchedFund:fund.name,fund,currentValue,latestNav,impliedNav,navPct,isOverridden});
+    const profitLoss=(row.investedValue!=null&&isFinite(row.investedValue)) ? currentValue-row.investedValue : null;
+    const dailyProfitLoss=(row.units&&row.units>0&&latestNav!=null&&prevNav!=null) ? row.units*(latestNav-prevNav) : null;
+    matched.push({...row,sourceIndex,matchedFund:fund.name,fund,currentValue,latestNav,prevNav,referenceNav,referenceNavDate:refNavPoint?.date||null,impliedNav,navPct,isOverridden,profitLoss,dailyProfitLoss});
   }
   const horizonsOut=horizons.map(h=>{
     let worst=0,base=0,best=0,covered=0,coveredCurrent=0;
@@ -1161,14 +1317,19 @@ async function applyHoldingsMapping(){
   const pending=S.holdingsPending;
   if(!pending) return;
   if(warn) warn.style.display='none';
+  const dateInput=document.getElementById('holdings_date');
+  const chosenDate=(dateInput&&dateInput.value&&/^\d{4}-\d{2}-\d{2}$/.test(dateInput.value))
+    ? dateInput.value : fmtIsoLocalDate(new Date());
   const rows=pending.rows.map(r=>({
     schemeName:String(r[+nameV]||'').trim(),
     units:unitsV===''?null:parseNav(r[+unitsV]),
     investedValue:investedV===''?null:parseNav(r[+investedV]),
-    currentValue:currentV===''?null:parseNav(r[+currentV])
+    currentValue:currentV===''?null:parseNav(r[+currentV]),
+    _uploadDate:chosenDate
   })).filter(r=>r.schemeName);
   S.holdingsOverrides=S.holdingsOverrides||{};
-  mergeHoldingsSnapshot(rows, new Date().toISOString().slice(0,10));
+  pruneHoldingsOverrides(rows.map(r=>r.schemeName));
+  mergeHoldingsSnapshot(rows, chosenDate);
   persistHoldings();
   closeHoldingsModal();
 
@@ -1262,17 +1423,6 @@ function bsearchSIP(arr, targetMs) {
   let lo=0, hi=arr.length-1, best=-1;
   while(lo<=hi){const mid=(lo+hi)>>1;if(arr[mid].date.getTime()>=targetMs){best=mid;hi=mid-1;}else lo=mid+1;}
   return best;
-}
-
-function sampleMonthly(rawData){
-  if(rawData.length<120) return rawData;
-  const m=[]; let lm=-1,ly=-1;
-  for(const pt of rawData){
-    const mo=pt.date.getMonth(),y=pt.date.getFullYear();
-    if(y!==ly||mo!==lm){m.push(pt);lm=mo;ly=y;}
-    else m[m.length-1]=pt;
-  }
-  return m;
 }
 
 function shiftMonthClamped(date, deltaMonths){
@@ -1782,21 +1932,26 @@ function sidebarDropToGroup(groupName, ev){
   if(drag.type==='loaded') setFundGroup(drag.id, g);
   else if(drag.type==='fav') setMfFavouriteGroup(drag.id, g);
 }
-function openMfGroupModal(code){
-  code=normalizeMfCode(code);
-  if(!code) return;
-  const fav=getMfFavourite(code);
-  const fid=`mf_${code}`;
+function openMfGroupModal(codeOrId){
+  // Accept either a scheme code (MF API funds) or a fund id (uploaded funds)
+  const byCode=normalizeMfCode(codeOrId);
+  const fid=byCode?`mf_${byCode}`:codeOrId;
+  const fav=byCode?getMfFavourite(byCode):null;
   const loaded=S.funds[fid];
   const currentGroup=(loaded&&loaded.group)||(fav&&fav.group)||'Ungrouped';
-  const displayName=(loaded&&loaded.name)||(fav&&fav.name)||code;
+  const displayName=(loaded&&loaded.name)||(fav&&fav.name)||codeOrId;
   const m=document.getElementById('mfGroupModal');
   const cEl=document.getElementById('mf_edit_code');
   const nEl=document.getElementById('mf_edit_name');
   const gEl=document.getElementById('mf_edit_group');
-  if(cEl) cEl.textContent=code;
+  // Store whichever identifier we have so saveMfGroupFromModal can route correctly
+  if(cEl) cEl.textContent=byCode||'';
   if(nEl) nEl.textContent=displayName;
   if(gEl) gEl.value=currentGroup;
+  // Stash the raw fund id so the save handler can always find the fund
+  if(m) m.dataset.fundId=fid;
+  const codeRow=document.getElementById('mf_edit_code_row');
+  if(codeRow) codeRow.style.display=byCode?'':'none';
   if(m) m.style.display='flex';
 }
 function closeMfGroupModal(){
@@ -1804,23 +1959,21 @@ function closeMfGroupModal(){
   if(m) m.style.display='none';
 }
 function saveMfGroupFromModal(){
-  const code=normalizeMfCode(document.getElementById('mf_edit_code')?.textContent);
+  const m=document.getElementById('mfGroupModal');
   const raw=document.getElementById('mf_edit_group')?.value;
   const newGroup=String(raw||'').trim()||'Ungrouped';
-  if(!code) return;
-  setMfFavouriteGroup(code, newGroup);
+  const code=normalizeMfCode(document.getElementById('mf_edit_code')?.textContent);
+  if(code){
+    // MF API fund — update favourite + fund object
+    setMfFavouriteGroup(code, newGroup);
+  } else {
+    // Uploaded fund — update fund object directly by id
+    const fid=m?.dataset?.fundId;
+    if(fid) setFundGroup(fid, newGroup);
+  }
   closeMfGroupModal();
 }
 
-async function resolveMfSchemeName(code){
-  try{
-    const r=await fetch(`https://api.mfapi.in/mf/${code}/latest`);
-    const j=await r.json();
-    return j?.meta?.scheme_name || code;
-  }catch(e){
-    return code;
-  }
-}
 async function resolveMfMeta(code){
   try{
     const r=await fetch(`https://api.mfapi.in/mf/${code}/latest`);
@@ -1882,14 +2035,14 @@ async function loadMFIntoFund(code, group, {selectNow=true}={}){
   const computed=await computeMetrics(rawData);
   hideLoading();
 
-  const ci=Object.keys(S.funds).length%COLORS.length;
+  const ci=nextFundColorIndex();
   S.funds[fid]={
     id:fid,
     scheme_code:code,
     group:g,
     source:'mf',
     name:schemeName,
-    color:COLORS[ci],
+    color:getColorAt(ci),
     ci,
     rawData,
     computed
@@ -2030,6 +2183,7 @@ function renderSidebar(){
   list.innerHTML=groupOrder.map((g,gi)=>{
     const items=groupMap.get(g)||[];
     if(!items.length) return '';
+    let groupColorCursor=gi*100;
     const isCollapsed=!!(S.groupCollapsed&&S.groupCollapsed[g]);
     const gid=`group_${String(g).replace(/[^a-z0-9_-]/gi,'_')}`;
     const loadedItems=items.filter(x=>x.type==='loaded');
@@ -2059,14 +2213,13 @@ function renderSidebar(){
         ${items.map(it=>{
           if(it.type==='loaded'){
             const f=it.fund;
-            const si=S.selected.indexOf(f.id);
-            const isSel=si>=0;
-            const selCls=isSel?'s'+(si%COLORS.length+1):'';
+            const isSel=S.selected.includes(f.id);
+            const selStyle=isSel?fundSelStyle(f.color):'';
             const y1=f.rawData?.[0]?.date?.getFullYear?.()??0;
             const y2=(f.rawData&&f.rawData.length)?f.rawData[f.rawData.length-1].date.getFullYear():y1;
-            const mfEdit=f.scheme_code?`<button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${f.scheme_code}')" title="Change group">&#9998;</button>`:'';
+            const mfEdit=`<button class="fi-edit" onclick="event.stopPropagation();openMfGroupModal('${f.scheme_code||f.id}')" title="Change group">&#9998;</button>`;
             const selTick=isSel?`<span style="font-size:11px;color:var(--acc);margin-right:2px;flex-shrink:0">✓</span>`:'<span style="width:15px;display:inline-block;flex-shrink:0"></span>';
-            return `<div class="fi ${selCls}" draggable="true" ondragstart="sidebarDragStart('loaded','${f.id}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="toggleFund('${f.id}')" title="${isSel?'Remove from analysis':'Add to analysis'}">
+            return `<div class="fi" style="${selStyle}" draggable="true" ondragstart="sidebarDragStart('loaded','${f.id}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="toggleFund('${f.id}')" title="${isSel?'Remove from analysis':'Add to analysis'}">
               ${selTick}
               <div class="fi-dot" style="background:${f.color}"></div>
               <div class="fi-info">
@@ -2077,7 +2230,7 @@ function renderSidebar(){
               <button class="fi-del" onclick="removeFund(event,'${f.id}')">&times;</button>
             </div>`;
           }
-          const color=COLORS[gi%COLORS.length];
+          const color=getColorAt(groupColorCursor++);
           return `<div class="fi" draggable="true" ondragstart="sidebarDragStart('fav','${it.code}',event);sidebarItemDragClass(this,true)" ondragend="sidebarDragEnd()" onclick="loadMfFavourite('${it.code}')" title="Click to load NAV data">
             <span style="width:15px;display:inline-block;flex-shrink:0"></span>
             <div class="fi-dot" style="background:${color};opacity:.4"></div>
@@ -2120,7 +2273,7 @@ function renderDashboard(){
     const f=S.funds[id];
     const muted=S.hiddenFunds?.[f.id]?' is-muted':'';
     const label=S.hiddenFunds?.[f.id]?'Show':'Hide';
-    return `<button type="button" class="sel-badge p${(f.ci%COLORS.length)+1}${muted}" onclick="toggleLegendFund('${f.id}')" title="${label} ${f.name} in charts"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</button>`;
+    return `<button type="button" class="sel-badge${muted}" style="${fundSelStyle(f.color)};color:${f.color}" onclick="toggleLegendFund('${f.id}')" title="${label} ${f.name} in charts"><span class="b-dot" style="background:${f.color}"></span>${shortN(f.name,26)}</button>`;
   }).join('');
   renderCurrentPane();
 }
@@ -2166,8 +2319,8 @@ function renderSnapshotBarChart(cid, labels, fds, keys){
   S.charts[cid]=new Chart(ctx,{type:'bar',data:{labels,datasets:fds.map((f,i)=>({
     label:shortN(f.name,50),
     data:keys.map(k=>latestVal(f,k)?.value),
-    backgroundColor:COLORS_BG[f.ci%COLORS.length],
-    borderColor:COLORS[f.ci%COLORS.length],
+    backgroundColor:getColorBgAt(f.ci),
+    borderColor:getColorAt(f.ci),
     borderWidth:2,
     borderRadius:4,
   }))},options:{responsive:true,maintainAspectRatio:false,
@@ -2191,18 +2344,6 @@ function switchPage(p){
 // ─────────────────────────────────────────────────────
 //  AUTO-FETCH NAV FOR HOLDINGS
 // ─────────────────────────────────────────────────────
-function nameMatchScore(holdingName,mfName){
-  const a=normalizeHoldingsName(holdingName);
-  const b=normalizeHoldingsName(mfName);
-  if(!a||!b) return 0;
-  if(a===b) return 100;
-  if(a.includes(b)||b.includes(a)) return 80;
-  const aw=a.split(' ').filter(Boolean);
-  const bw=b.split(' ').filter(Boolean);
-  const overlap=aw.filter(w=>bw.includes(w)).length;
-  return overlap>=2?overlap+(overlap/aw.length)*10:overlap;
-}
-
 async function fetchAndStoreFund(code){
   code=normalizeMfCode(code);
   if(!code) return false;
@@ -2220,8 +2361,8 @@ async function fetchAndStoreFund(code){
     .filter(p=>p.date&&p.nav).sort((a,b)=>a.date-b.date);
   if(rawData.length<24) return false;
   const computed=await computeMetrics(rawData);
-  const ci=Object.keys(S.funds).length%COLORS.length;
-  S.funds[fid]={id:fid,scheme_code:code,group:grp,source:'mf',name:schemeName,color:COLORS[ci],ci,rawData,computed};
+  const ci=nextFundColorIndex();
+  S.funds[fid]={id:fid,scheme_code:code,group:grp,source:'mf',name:schemeName,color:getColorAt(ci),ci,rawData,computed};
   upsertMfFavourite(code,grp,schemeName);
   persistMfFavourites();
   return true;
@@ -2345,12 +2486,12 @@ function openPortFundPicker(schemeName){
   const res=document.getElementById('port_fund_results');
   if(inp){ inp.value=schemeName; }
   if(res){ res.style.display='none'; res.innerHTML=''; }
-  document.getElementById('portFundPickerModal').style.display='flex';
+  show('portFundPickerModal',true);
   // Auto-search immediately
   portFundSearch();
 }
 function closePortFundPicker(){
-  document.getElementById('portFundPickerModal').style.display='none';
+  hide('portFundPickerModal');
   S._portPickerScheme=null;
 }
 async function portFundSearch(){
@@ -2438,13 +2579,23 @@ function renderPortfolioLoaded(){
   const h=S.holdings;
   if(!h){ renderPortfolioPage(); return; }
 
+  S.portfolioView=S.portfolioView||{showMatchedFund:true,sortKey:'holding',sortDir:1,columns:{ invested:false, current:true, pl:true, daily:true }};
+  const showMatchedFund=S.portfolioView.showMatchedFund!==false;
+  const columns={ invested:false, current:true, pl:true, daily:true, ...(S.portfolioView.columns||{}) };
+  const sortKey=S.portfolioView.sortKey||'holding';
+  const sortDir=S.portfolioView.sortDir===-1?-1:1;
   const histCount=S.holdingsHistory?.length||0;
   const histNote=histCount>1?` · ${histCount} upload snapshots saved`:'';
   const latestDate=S.holdingsHistory?.[0]?.date||h.asOf.toISOString().slice(0,10);
   const meta=`${h.matched.length} matched · ${h.unmatched.length} unmatched · last upload ${latestDate}${histNote}`;
   const fmtCagr=v=>v==null?'—':(v>=0?'+':'')+v.toFixed(2)+'%';
+  const fmtPL=v=>v==null?'—':`${v>=0?'+':'-'}${fmtAmtShort(Math.abs(v))}`;
+  const sortLabelMap={holding:'Holding name',matched:'Matched fund',invested:'Invested value',current:'Current value',pl:'P&L',daily:'Day Change',status:'Match status'};
+  const sortArrow=(key)=>sortKey===key?`<span class="sort-arrow">${sortDir===1?'&#9650;':'&#9660;'}</span>`:'<span class="sort-arrow">&#8645;</span>';
+  const sortClass=(key)=>`is-sortable${sortKey===key?' is-sorted':''}`;
+  const fmtPct=v=>v==null||!isFinite(v)?'â€”':`${v>=0?'+':'-'}${Math.abs(v).toFixed(2)}%`;
+  const renderDeltaCell=(amount,pct,empty='â€”')=>amount==null?`<span style="color:var(--td)">${empty}</span>`:`<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px"><span>${fmtPL(amount)}</span><span style="font-size:10px;opacity:.78">${fmtPct(pct)}</span></div>`;
 
-  // Scenario summary cards
   const cards=h.horizons.map(x=>{
     const status=x.covered?`${x.covered}/${h.matched.length} funds covered`:`No usable history`;
     return `<div class="proj-card">
@@ -2460,49 +2611,88 @@ function renderPortfolioLoaded(){
     </div>`;
   }).join('');
 
-  // Build matched rows with inline fund selector and per-horizon values
-  // IMPORTANT: use rowIdx for fundBreakdown lookup, NOT find(b=>b.holding===schemeName).
-  // find() always returns the first match — wrong when two holdings share the same scheme name
-  // (e.g. two folios of the same fund). fundBreakdown is built in the same order as matched,
-  // so fundBreakdown[rowIdx] is the correct entry for matched[rowIdx].
-  const matchedRows=h.matched.map((r, rowIdx)=>{
+  const rowModels=[
+    ...h.matched.map((r, rowIdx)=>({kind:'matched',row:r,rowIdx,sortHolding:(r.schemeName||'').toLowerCase(),sortMatched:(r.matchedFund||'').toLowerCase(),sortInvested:r.investedValue??-Infinity,sortCurrent:r.currentValue??-Infinity,sortPL:r.profitLoss??-Infinity,sortDaily:r.dailyProfitLoss??-Infinity,sortStatus:1})),
+    ...h.unmatched.map(r=>({kind:'unmatched',row:r,rowIdx:-1,sortHolding:(r.schemeName||'').toLowerCase(),sortMatched:(r.matchedFund||'').toLowerCase(),sortInvested:r.investedValue??-Infinity,sortCurrent:r.currentValue??-Infinity,sortPL:(r.currentValue!=null&&r.investedValue!=null)?(r.currentValue-r.investedValue):-Infinity,sortDaily:-Infinity,sortStatus:0}))
+  ];
+  const sortAccessorMap={holding:'sortHolding',matched:'sortMatched',invested:'sortInvested',current:'sortCurrent',pl:'sortPL',daily:'sortDaily',status:'sortStatus'};
+  const sortProp=sortAccessorMap[sortKey]||'sortHolding';
+  rowModels.sort((a,b)=>{
+    const av=a[sortProp], bv=b[sortProp];
+    if(typeof av==='string' || typeof bv==='string') return sortDir*String(av||'').localeCompare(String(bv||''));
+    return sortDir*((av??-Infinity)-(bv??-Infinity));
+  });
+
+  const renderedRows=rowModels.map(item=>{
+    const r=item.row;
     const overrideKey=r.schemeName;
     const currentOverride=(S.holdingsOverrides||{})[overrideKey];
+    const investedDisplay=r.investedValue!=null&&isFinite(r.investedValue)?fmtAmtShort(r.investedValue):'—';
+    const currentDisplay=r.currentValue!=null&&isFinite(r.currentValue)?fmtAmtShort(r.currentValue):'—';
+    const profitLoss=item.kind==='matched' ? r.profitLoss : ((r.currentValue!=null&&r.investedValue!=null)?(r.currentValue-r.investedValue):null);
+    const profitLossStyle=profitLoss==null?'':`color:${profitLoss>=0?'var(--pos)':'var(--neg)'}`;
+    const dailyProfitLoss=item.kind==='matched' ? r.dailyProfitLoss : null;
+    const dailyProfitLossStyle=dailyProfitLoss==null?'':`color:${dailyProfitLoss>=0?'var(--pos)':'var(--neg)'}`;
+    const profitLossPct=(profitLoss!=null&&r.investedValue!=null&&r.investedValue>0)?(profitLoss/r.investedValue)*100:null;
+    const dayChangePct=(item.kind==='matched'&&r.latestNav!=null&&r.prevNav!=null&&r.prevNav>0)?((r.latestNav-r.prevNav)/r.prevNav)*100:null;
+    const deleteBtn=`<div class="port-row-actions"><button class="port-row-edit" onclick="openEditHoldingModal(${r.sourceIndex})" title="Edit holding">&#9998;</button><button class="port-row-del" onclick="deleteHoldingAt(${r.sourceIndex})" title="Delete holding">&times;</button></div>`;
+    if(item.kind==='matched'){
+      const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
+        ${Object.values(S.funds).map(f=>`<option value="${f.id}"${(currentOverride?currentOverride===f.id:f.id===r.fund.id)?'selected':''}>${esc(f.name)}</option>`).join('')}
+      </select>`;
+      const horizonCells=h.horizons.map(hz=>{
+        const bd=hz.fundBreakdown[item.rowIdx];
+        if(!bd||bd.worst==null) return `<td style="text-align:center;color:var(--td);font-size:11px;border-left:1px solid var(--br)">—</td>`;
+        return `<td style="text-align:center;border-left:1px solid var(--br)">
+          <div style="font-size:10px;color:var(--neg);font-family:'DM Mono',monospace">${fmtAmtShort(bd.worst)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.worstCagr)}</span></div>
+          <div style="font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(bd.base)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.baseCagr)}</span></div>
+          <div style="font-size:10px;color:var(--pos);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(bd.best)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.bestCagr)}</span></div>
+        </td>`;
+      }).join('');
+      const navPctDisplay = r.navPct != null
+        ? r.navPct < 0.001
+          ? `<span style="color:var(--pos)">✓ NAV match &lt;0.1%</span>`
+          : r.navPct < 0.05
+            ? `<span style="color:#f8d27a">~ NAV diff ${(r.navPct*100).toFixed(2)}%</span>`
+            : `<span style="color:var(--neg)">⚠ NAV diff ${(r.navPct*100).toFixed(1)}%</span>`
+        : `<span style="color:var(--td)">no units data</span>`;
+      const fixBtn=`<button data-scheme="${esc(r.schemeName)}" onclick="openPortFundPicker(this.dataset.scheme)" style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa;font-size:9px;font-family:'DM Mono',monospace;border-radius:3px;padding:1px 7px;cursor:pointer;margin-left:5px">Change →</button>`;
+      const overriddenTag=r.isOverridden?`<span style="color:#f8d27a;font-size:9px;font-family:'DM Mono',monospace;margin-left:4px">⚡ overridden</span>`:'';
+      const navBadge=`<div style="font-size:9px;font-family:'DM Mono',monospace;margin-top:3px;display:flex;align-items:center;flex-wrap:wrap;gap:2px">${navPctDisplay}${overriddenTag}${(r.navPct==null||r.navPct>=0.001)?fixBtn:''}</div>`;
+      return `<tr>
+        <td class="freeze-col" style="min-width:220px;max-width:220px;word-break:break-word;white-space:normal">
+          <div style="font-weight:700;font-size:12px;color:var(--tx)">${esc(r.schemeName)}</div>
+          ${r.impliedNav ? `<div style="font-size:9px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">your NAV ₹${r.impliedNav.toFixed(2)} · ref NAV ${r.referenceNav!=null?'₹'+r.referenceNav.toFixed(2)+' ('+fmtFullDate(r.referenceNavDate)+')':'—'}</div>` : ''}
+        </td>
+        ${showMatchedFund?`<td>${fundSel}${navBadge}</td>`:''}
+        ${columns.invested?`<td style="text-align:right;font-family:'DM Mono',monospace">${investedDisplay}</td>`:''}
+        ${columns.current?`<td style="text-align:right;font-family:'DM Mono',monospace">${currentDisplay}</td>`:''}
+        ${columns.pl?`<td style="text-align:right;font-family:'DM Mono',monospace;${profitLossStyle}">${renderDeltaCell(profitLoss, profitLossPct)}</td>`:''}
+        ${columns.daily?`<td style="text-align:right;font-family:'DM Mono',monospace;${dailyProfitLossStyle}">${renderDeltaCell(dailyProfitLoss, dayChangePct)}</td>`:''}
+        ${horizonCells}
+        <td>${deleteBtn}</td>
+      </tr>`;
+    }
     const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
-      ${Object.values(S.funds).map(f=>`<option value="${f.id}"${(currentOverride?currentOverride===f.id:f.id===r.fund.id)?'selected':''}>${esc(f.name)}</option>`).join('')}
-    </select>`;
-    const horizonCells=h.horizons.map(hz=>{
-      const bd=hz.fundBreakdown[rowIdx]; // index-based — correct even for duplicate scheme names
-      if(!bd||bd.worst==null) return `<td style="text-align:center;color:var(--td);font-size:11px;border-left:1px solid var(--br)">—</td>`;
-      return `<td style="text-align:center;border-left:1px solid var(--br)">
-        <div style="font-size:10px;color:var(--neg);font-family:'DM Mono',monospace">${fmtAmtShort(bd.worst)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.worstCagr)}</span></div>
-        <div style="font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(bd.base)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.baseCagr)}</span></div>
-        <div style="font-size:10px;color:var(--pos);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(bd.best)}<br><span style="font-size:9px;opacity:.7">${fmtCagr(bd.bestCagr)}</span></div>
-      </td>`;
-    }).join('');
-    // Always show NAV deviation — even for overridden funds — so user can verify
-    const navPctDisplay = r.navPct != null
-      ? r.navPct < 0.001
-        ? `<span style="color:var(--pos)">✓ NAV match &lt;0.1%</span>`
-        : r.navPct < 0.05
-          ? `<span style="color:#f8d27a">~ NAV diff ${(r.navPct*100).toFixed(2)}%</span>`
-          : `<span style="color:var(--neg)">⚠ NAV diff ${(r.navPct*100).toFixed(1)}%</span>`
-      : `<span style="color:var(--td)">no units data</span>`;
-    const fixBtn=`<button data-scheme="${esc(r.schemeName)}" onclick="openPortFundPicker(this.dataset.scheme)" style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa;font-size:9px;font-family:'DM Mono',monospace;border-radius:3px;padding:1px 7px;cursor:pointer;margin-left:5px">Change →</button>`;
-    const overriddenTag=r.isOverridden?`<span style="color:#f8d27a;font-size:9px;font-family:'DM Mono',monospace;margin-left:4px">⚡ overridden</span>`:'';
-    const navBadge=`<div style="font-size:9px;font-family:'DM Mono',monospace;margin-top:3px;display:flex;align-items:center;flex-wrap:wrap;gap:2px">${navPctDisplay}${overriddenTag}${(r.navPct==null||r.navPct>=0.001)?fixBtn:''}</div>`;
-    return `<tr>
-      <td style="max-width:180px;word-break:break-word;white-space:normal">
-        <div style="font-weight:700;font-size:12px;color:var(--tx)">${esc(r.schemeName)}</div>
-        ${r.impliedNav ? `<div style="font-size:9px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">your NAV ₹${r.impliedNav.toFixed(2)} · fund NAV ₹${(r.latestNav||0).toFixed(2)}</div>` : ''}
+      <option value="__none__">— Not matched —</option>
+      ${Object.values(S.funds).map(f=>`<option value="${f.id}"${currentOverride===f.id?'selected':''}>${esc(f.name)}</option>`).join('')}
+    </select>
+    <button data-scheme="${esc(overrideKey)}" onclick="openPortFundPicker(this.dataset.scheme)" style="margin-top:4px;display:block;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa;font-size:9px;font-family:'DM Mono',monospace;border-radius:3px;padding:2px 8px;cursor:pointer">Find fund →</button>`;
+    return `<tr style="opacity:.82">
+      <td class="freeze-col" style="min-width:220px;max-width:220px;word-break:break-word;white-space:normal">
+        <span style="color:var(--neg)">${esc(r.schemeName)}</span>
+        <div style="font-size:9px;color:var(--neg);font-family:'DM Mono',monospace;margin-top:2px">${esc(r.reason)}</div>
       </td>
-      <td>${fundSel}${navBadge}</td>
-      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
-      ${horizonCells}
+      ${showMatchedFund?`<td>${fundSel}</td>`:''}
+      ${columns.invested?`<td style="text-align:right;font-family:'DM Mono',monospace">${investedDisplay}</td>`:''}
+      ${columns.current?`<td style="text-align:right;font-family:'DM Mono',monospace">${currentDisplay}</td>`:''}
+      ${columns.pl?`<td style="text-align:right;font-family:'DM Mono',monospace;${profitLossStyle}">${renderDeltaCell(profitLoss, profitLossPct)}</td>`:''}
+      ${columns.daily?`<td style="text-align:right;font-family:'DM Mono',monospace">${renderDeltaCell(null, null)}</td>`:''}
+      ${h.horizons.map(()=>`<td style="text-align:center;color:var(--td);font-size:11px;border-left:1px solid var(--br)">—</td>`).join('')}
+      <td>${deleteBtn}</td>
     </tr>`;
   }).join('');
 
-  // Portfolio total row — sums exactly match the scenario cards
   const totalRowCells=h.horizons.map(hz=>`
     <td style="text-align:center;border-left:1px solid var(--br);background:var(--sf3)">
       <div style="font-size:11px;font-weight:700;color:var(--neg);font-family:'DM Mono',monospace">${fmtAmtShort(hz.worst)}</div>
@@ -2510,35 +2700,27 @@ function renderPortfolioLoaded(){
       <div style="font-size:11px;font-weight:700;color:var(--pos);font-family:'DM Mono',monospace;margin-top:3px">${fmtAmtShort(hz.best)}</div>
       ${hz.covered<h.matched.length?`<div style="font-size:8px;color:var(--td);font-family:'DM Mono',monospace;margin-top:2px">${hz.covered}/${h.matched.length} funds</div>`:''}
     </td>`).join('');
+  const totalProfitLoss=(h.currentTotal!=null&&h.investedTotal!=null)?(h.currentTotal-h.investedTotal):null;
+  const totalDailyProfitLoss=h.matched.reduce((sum,r)=>sum+(r.dailyProfitLoss||0),0);
+  const totalProfitLossPct=(totalProfitLoss!=null&&h.investedTotal>0)?(totalProfitLoss/h.investedTotal)*100:null;
+  const prevPortfolioValue=(h.currentTotal!=null)?(h.currentTotal-totalDailyProfitLoss):null;
+  const totalDailyProfitLossPct=(prevPortfolioValue!=null&&prevPortfolioValue>0)?(totalDailyProfitLoss/prevPortfolioValue)*100:null;
   const totalRow=`<tr style="border-top:2px solid var(--br2)">
-    <td colspan="2" style="font-size:11px;font-weight:800;color:var(--tx);background:var(--sf3);letter-spacing:.5px">PORTFOLIO TOTAL</td>
-    <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;background:var(--sf3)">${fmtAmtShort(h.currentTotal)}</td>
+    <td class="freeze-col total-cell" style="font-size:11px;font-weight:800;color:var(--tx);letter-spacing:.5px">PORTFOLIO TOTAL</td>
+    ${showMatchedFund?`<td style="background:var(--sf3)"></td>`:''}
+    ${columns.invested?`<td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;background:var(--sf3)">${fmtAmtShort(h.investedTotal)}</td>`:''}
+    ${columns.current?`<td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;background:var(--sf3)">${fmtAmtShort(h.currentTotal)}</td>`:''}
+    ${columns.pl?`<td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;background:var(--sf3);color:${(totalProfitLoss??0)>=0?'var(--pos)':'var(--neg)'}">${renderDeltaCell(totalProfitLoss, totalProfitLossPct)}</td>`:''}
+    ${columns.daily?`<td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;background:var(--sf3);color:${totalDailyProfitLoss>=0?'var(--pos)':'var(--neg)'}">${renderDeltaCell(totalDailyProfitLoss, totalDailyProfitLossPct)}</td>`:''}
     ${totalRowCells}
+    <td style="background:var(--sf3)"></td>
   </tr>`;
-
-  const unmatchedRows=h.unmatched.map(r=>{
-    const overrideKey=r.schemeName;
-    const currentOverride=(S.holdingsOverrides||{})[overrideKey];
-    const fundSel=`<select class="msel" style="font-size:10px;padding:3px 6px;height:28px;min-width:140px;max-width:200px" data-scheme="${esc(overrideKey)}" onchange="applyFundMatchOverride(this.dataset.scheme, this.value)">
-      <option value="__none__">— Not matched —</option>
-      ${Object.values(S.funds).map(f=>`<option value="${f.id}"${currentOverride===f.id?'selected':''}>${esc(f.name)}</option>`).join('')}
-    </select>
-    <button data-scheme="${esc(overrideKey)}" onclick="openPortFundPicker(this.dataset.scheme)" style="margin-top:4px;display:block;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#60a5fa;font-size:9px;font-family:'DM Mono',monospace;border-radius:3px;padding:2px 8px;cursor:pointer">Find fund →</button>`;
-    return `<tr style="opacity:.7">
-      <td style="max-width:180px;word-break:break-word;white-space:normal">
-        <span style="color:var(--neg)">${esc(r.schemeName)}</span>
-        <div style="font-size:9px;color:var(--neg);font-family:'DM Mono',monospace;margin-top:2px">${esc(r.reason)}</div>
-      </td>
-      <td>${fundSel}</td>
-      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtAmtShort(r.currentValue)}</td>
-      ${h.horizons.map(()=>`<td style="text-align:center;color:var(--td);font-size:11px;border-left:1px solid var(--br)">—</td>`).join('')}
-    </tr>`;
-  }).join('');
 
   const horizonHeaderCells=h.horizons.map(hz=>`<th style="text-align:center;border-left:1px solid var(--br)">
     <div>${hz.label} Horizon</div>
     <div style="font-size:9px;font-weight:400;color:var(--td);margin-top:2px">Worst / Median / Best</div>
   </th>`).join('');
+  const matchedHeader=showMatchedFund?`<th class="${sortClass('matched')}" style="min-width:180px" onclick="setPortfolioSort('matched')">Matched Fund <span style="font-weight:400;opacity:.6">(editable)</span>${sortArrow('matched')}</th>`:'';
 
   el.innerHTML=`
     <div class="port-toolbar">
@@ -2551,29 +2733,40 @@ function renderPortfolioLoaded(){
         <button class="export-btn" onclick="exportPortfolioExcel()">⬇ Export Analysis</button>
         <button class="export-btn" style="background:rgba(167,139,250,.12);color:#a78bfa;border-color:rgba(167,139,250,.3)" onclick="exportHoldingsDataExcel()">⬇ Holdings Data</button>
         <button class="export-btn" style="background:rgba(251,191,36,.10);color:#fbbf24;border-color:rgba(251,191,36,.3)" onclick="document.getElementById('holdingsReimportInput').click()">↑ Load Saved</button>
+        <button class="port-reimport-btn" style="border-color:rgba(248,113,113,.3);color:var(--neg)" onclick="clearPortfolioCache()" title="Wipe cached portfolio data from browser storage">🗑 Clear Cache</button>
       </div>
     </div>
     ${(S._portfolioFetchFailed&&S._portfolioFetchFailed.length)?`<div class="port-failed-notice"><strong>Could not auto-fetch NAV for ${S._portfolioFetchFailed.length} fund${S._portfolioFetchFailed.length>1?'s':''}.</strong> Use the <strong>Find fund →</strong> button in the table below to search and assign the correct fund inline.<br>Funds: ${S._portfolioFetchFailed.map(n=>`<span data-scheme="${esc(n)}" onclick="openPortFundPicker(this.dataset.scheme)" style="cursor:pointer;text-decoration:underline;color:#fca5a5">${esc(n)}</span>`).join(' · ')}</div>`:''}
     <div class="proj-grid">${cards}</div>
     <div class="sec" style="margin-top:4px">Fund-level Breakdown <span class="stag">edit matched fund · projected value per scenario</span></div>
     <div style="font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;margin-bottom:10px">Each fund's projected value uses its own historical worst/median/best rolling CAGR. The <strong style="color:var(--tx)">Portfolio Total row</strong> matches exactly the scenario cards above. Funds showing — have insufficient NAV history for that horizon and are excluded from the total.</div>
+    <div class="port-view-tools">
+      <label class="port-tool-chip"><input type="checkbox" ${showMatchedFund?'checked':''} onchange="setPortfolioShowMatchedFund(this.checked)"> Show matched fund</label>
+      <label class="port-tool-chip"><input type="checkbox" ${columns.invested?'checked':''} onchange="setPortfolioColumnVisible('invested', this.checked)"> Invested</label>
+      <label class="port-tool-chip"><input type="checkbox" ${columns.current?'checked':''} onchange="setPortfolioColumnVisible('current', this.checked)"> Current value</label>
+      <label class="port-tool-chip"><input type="checkbox" ${columns.pl?'checked':''} onchange="setPortfolioColumnVisible('pl', this.checked)"> P&amp;L</label>
+      <label class="port-tool-chip"><input type="checkbox" ${columns.daily?'checked':''} onchange="setPortfolioColumnVisible('daily', this.checked)"> Day Change</label>
+      <button class="port-tool-btn" onclick="addManualHolding()">+ Add holding</button>
+    </div>
     <div class="proj-detail">
-      <table class="proj-tbl" style="min-width:900px">
+      <table class="proj-tbl" style="min-width:${showMatchedFund?1220:1040}px">
         <thead>
           <tr>
-            <th style="min-width:160px">Holding Name</th>
-            <th style="min-width:180px">Matched Fund <span style="font-weight:400;opacity:.6">(editable)</span></th>
-            <th style="text-align:right;min-width:100px">Current Value</th>
+            <th class="freeze-col ${sortClass('holding')}" style="min-width:220px" onclick="setPortfolioSort('holding')">Holding Name${sortArrow('holding')}</th>
+            ${matchedHeader}
+            ${columns.invested?`<th class="${sortClass('invested')}" style="text-align:right;min-width:110px" onclick="setPortfolioSort('invested')">Invested${sortArrow('invested')}</th>`:''}
+            ${columns.current?`<th class="${sortClass('current')}" style="text-align:right;min-width:110px" onclick="setPortfolioSort('current')">Current Value${sortArrow('current')}</th>`:''}
+            ${columns.pl?`<th class="${sortClass('pl')}" style="text-align:right;min-width:118px" onclick="setPortfolioSort('pl')">P&amp;L${sortArrow('pl')}</th>`:''}
+            ${columns.daily?`<th class="${sortClass('daily')}" style="text-align:right;min-width:130px" onclick="setPortfolioSort('daily')">Day Change${sortArrow('daily')}</th>`:''}
             ${horizonHeaderCells}
+            <th style="text-align:right;min-width:76px">Actions</th>
           </tr>
         </thead>
-        <tbody>${matchedRows}${unmatchedRows}${totalRow}</tbody>
+        <tbody>${renderedRows}${totalRow}</tbody>
       </table>
     </div>
   `;
 }
-
-function renderHoldingsProjection(){ return ''; } // Moved to Portfolio tab
 
 function renderSnapshot(){
   const fds=S.selected.map(id=>S.funds[id]);
@@ -2691,14 +2884,14 @@ function renderDistributions(){
   if(!valid.length){el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:32px;opacity:.2">📉</div><div style="font-size:15px;font-weight:800;color:var(--tx);margin-top:8px">Insufficient data</div></div>`;return;}
   el.innerHTML=`<div class="sec">Return Distributions <span class="stag">all historical rolling returns</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar now shows the <strong style="color:var(--tx)">percentage of observations</strong> that fall in a return range <strong style="color:var(--tx)">[lower, upper)</strong>, except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
   valid.forEach(m=>{
-    const fd=fds.map(f=>({name:shortN(f.name,50),ci:f.ci%COLORS.length,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
+    const fd=fds.map(f=>({name:shortN(f.name,50),ci:f.ci,vals:f.computed[m.key].map(p=>p.value)})).filter(d=>d.vals.length>=5);
     if(!fd.length) return;
     const hist=makeHist(fd,25),cid=`d_${m.key}`;
     const statsHtml=fd.map(d=>{
       const sv=[...d.vals].sort((a,b)=>a-b),mean=d.vals.reduce((a,b)=>a+b,0)/d.vals.length,
         med=sv[Math.floor(sv.length/2)],std=Math.sqrt(d.vals.reduce((s,v)=>s+(v-mean)**2,0)/d.vals.length),
         ppos=(d.vals.filter(v=>v>0).length/d.vals.length*100);
-      return `<div class="dsf"><div class="dsf-name" style="color:${COLORS[d.ci]}">${d.name}</div><div class="dsrow">${sp('Min',sv[0].toFixed(1)+'%')}${sp('Max',sv[sv.length-1].toFixed(1)+'%')}${sp('Avg',mean.toFixed(1)+'%')}${sp('Med',med.toFixed(1)+'%')}${sp('Std',std.toFixed(1)+'%')}${sp('>0%',ppos.toFixed(0)+'%')}${sp('n',d.vals.length)}</div></div>`;
+      return `<div class="dsf"><div class="dsf-name" style="color:${getColorAt(d.ci)}">${d.name}</div><div class="dsrow">${sp('Min',sv[0].toFixed(1)+'%')}${sp('Max',sv[sv.length-1].toFixed(1)+'%')}${sp('Avg',mean.toFixed(1)+'%')}${sp('Med',med.toFixed(1)+'%')}${sp('Std',std.toFixed(1)+'%')}${sp('>0%',ppos.toFixed(0)+'%')}${sp('n',d.vals.length)}</div></div>`;
     }).join('');
     document.getElementById('distGrid').insertAdjacentHTML('beforeend',`<div class="cc clickable" onclick="openDistributionDetail('${m.key}')"><div class="cc-t">${m.lbl} Distribution</div><div class="cc-s">Share of historical rolling values by return bucket · click to inspect rows</div><div class="cw"><canvas id="${cid}"></canvas></div><div class="dstats">${statsHtml}</div></div>`);
     requestAnimationFrame(()=>{
@@ -2747,7 +2940,7 @@ function openDistributionDetail(metricKey){
   document.getElementById('distDetailTable').innerHTML=
     `<thead><tr><th>Fund</th><th>Period</th><th>Start Date</th><th>End Date</th><th>Return %</th></tr></thead>`+
     `<tbody>${rows.map(r=>`<tr><td>${r.fund}</td><td>${r.period}</td><td>${r.startDate?fmtFullDate(r.startDate):'—'}</td><td>${r.endDate?fmtFullDate(r.endDate):'—'}</td><td>${r.value.toFixed(3)}%</td></tr>`).join('')}</tbody>`;
-  document.getElementById('distDetailModal').style.display='flex';
+  show('distDetailModal',true);
 }
 
 function closeDistDetailModal(){
@@ -2767,7 +2960,7 @@ function makeHist(fds,bins=25){
     const counts=Array(bins).fill(0);for(const v of d.vals){const b=Math.min(bins-1,Math.max(0,Math.floor((v-mn)/bsz)));counts[b]++;}
     const total=d.vals.length||1;
     const pct=counts.map(v=>+(v*100/total).toFixed(2));
-    return{label:d.name,data:pct,backgroundColor:COLORS_BG[d.ci],borderColor:COLORS[d.ci],borderWidth:1.5};
+      return{label:d.name,data:pct,backgroundColor:getColorBgAt(d.ci),borderColor:getColorAt(d.ci),borderWidth:1.5};
   })};
 }
 
@@ -2853,14 +3046,6 @@ function setTsSlice(key){
   renderTimeSeries();
 }
 
-// Absolute return over the current slice window
-function computeSliceAbs(f){
-  const sd=sliceData(f.rawData);
-  if(sd.length<2) return null;
-  const ret=(sd[sd.length-1].nav/sd[0].nav-1)*100;
-  return isFinite(ret)?ret:null;
-}
-
 // CAGR annualised over the current slice window
 function computeSliceCAGR(f){
   const sd=sliceData(f.rawData);
@@ -2938,8 +3123,8 @@ function buildNavDatasets(fds){
     return {
       label:shortN(f.name,50),
       data:sampleForChart(pts,500),
-      borderColor:COLORS[f.ci%COLORS.length],
-      backgroundColor:COLORS_BG[f.ci%COLORS.length],
+      borderColor:getColorAt(f.ci),
+      backgroundColor:getColorBgAt(f.ci),
       borderWidth:2,
       pointRadius:0,
       pointHitRadius:20,
@@ -3045,7 +3230,7 @@ function renderTimeSeries(){
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
       const rollDatasets=fds.filter(f=>f.computed[m.key]&&f.computed[m.key].length>=5).map(f=>({
         label:shortN(f.name,50),data:sampleForChart(sliceData(f.computed[m.key]),350).map(p=>({x:p.date.getTime(),y:p.value})),
-        borderColor:COLORS[f.ci%COLORS.length],borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
+        borderColor:getColorAt(f.ci),borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
       }));
       const rollXR=xRangeForPoints(rollDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
       const rollXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
@@ -3083,8 +3268,6 @@ function pctCell(v) {
 function numCell(v, dp=4) {
   return { t:'n', v:+v.toFixed(dp), z:`0.${'0'.repeat(dp)}` };
 }
-function headerCell(s) { return { t:'s', v:s }; }
-
 // Apply an array-of-arrays to a worksheet with mixed cell types
 function aoaToWs(aoa) {
   const ws = {};
@@ -3459,6 +3642,20 @@ function persistHoldings(){
     localStorage.setItem(LS_HOLDINGS_HISTORY, JSON.stringify(S.holdingsHistory||[]));
   }catch(e){}
 }
+function clearPortfolioCache(){
+  if(!confirm('Clear all portfolio data from this browser? You will need to re-import your holdings file.')) return;
+  try{
+    localStorage.removeItem(LS_HOLDINGS_ROWS);
+    localStorage.removeItem(LS_HOLDINGS_OVERRIDES);
+    localStorage.removeItem(LS_HOLDINGS_HISTORY);
+  }catch(e){}
+  S.holdingsRawRows=null;
+  S.holdingsOverrides={};
+  S.holdingsHistory=[];
+  S.holdings=null;
+  S._portfolioFetchFailed=null;
+  renderPortfolioPage();
+}
 function loadHoldingsFromStorage(){
   try{
     const rawRows=localStorage.getItem(LS_HOLDINGS_ROWS);
@@ -3476,32 +3673,218 @@ function loadHoldingsFromStorage(){
   }catch(e){}
 }
 function mergeHoldingsSnapshot(newRows, uploadDate){
-  // Upsert into holdingsHistory by uploadDate (ISO date string YYYY-MM-DD)
   const dateKey=uploadDate||new Date().toISOString().slice(0,10);
+  const preparedRows=(newRows||[]).map(r=>({...r,_uploadDate:r?._uploadDate||dateKey}));
   const existing=S.holdingsHistory.find(h=>h.date===dateKey);
   if(existing){
-    // Merge: upsert each scheme into this snapshot
-    for(const nr of newRows){
-      const found=existing.rows.find(r=>r.schemeName===nr.schemeName);
-      if(found) Object.assign(found,nr);
-      else existing.rows.push({...nr});
-    }
+    existing.rows=preparedRows;
   } else {
-    S.holdingsHistory.push({date:dateKey, rows:newRows.map(r=>({...r}))});
+    S.holdingsHistory.push({date:dateKey, rows:preparedRows});
   }
-  // Sort history by date desc
   S.holdingsHistory.sort((a,b)=>b.date.localeCompare(a.date));
-  // Latest snapshot becomes active holdings
   S.holdingsRawRows=S.holdingsHistory[0].rows.slice();
 }
 function rebuildHoldingsFromStorage(){
   if(!S.holdingsRawRows||!S.holdingsRawRows.length) return;
+  // Re-stamp _uploadDate from snapshot date — fixes old localStorage rows without _uploadDate
+  const snapshotDate=S.holdingsHistory?.[0]?.date||fmtIsoLocalDate(new Date());
   const rows=S.holdingsRawRows.map(r=>{
     const override=S.holdingsOverrides?.[r.schemeName];
-    return override?{...r,_overrideFund:S.funds[override]||null}:r;
+    const withDate={...r,_uploadDate:r._uploadDate||snapshotDate};
+    return override?{...withDate,_overrideFund:S.funds[override]||null}:withDate;
   });
   S.holdings=buildHoldingsScenario(rows);
   if(S.page==='portfolio') renderPortfolioPage();
+}
+function saveHoldingsRows(rows, uploadDate){
+  const dateKey=String(uploadDate||S.holdingsHistory?.[0]?.date||fmtIsoLocalDate(new Date())).trim()||fmtIsoLocalDate(new Date());
+  const normalized=(rows||[]).map(r=>({...r,_uploadDate:r?._uploadDate||dateKey}));
+  if(!normalized.length){
+    S.holdingsRawRows=[];
+    if(Array.isArray(S.holdingsHistory)){
+      const existing=S.holdingsHistory.find(h=>h.date===dateKey);
+      if(existing) existing.rows=[];
+    }
+    pruneHoldingsOverrides([]);
+    S.holdings=null;
+    persistHoldings();
+    renderSidebar();
+    renderPortfolioPage();
+    return;
+  }
+  mergeHoldingsSnapshot(normalized, dateKey);
+  persistHoldings();
+  rebuildHoldingsFromStorage();
+  renderSidebar();
+}
+function setPortfolioShowMatchedFund(show){
+  S.portfolioView=S.portfolioView||{showMatchedFund:true,sortKey:'holding',sortDir:1,columns:{ invested:false, current:true, pl:true, daily:true }};
+  S.portfolioView.showMatchedFund=!!show;
+  renderPortfolioLoaded();
+}
+function setPortfolioSort(key){
+  S.portfolioView=S.portfolioView||{showMatchedFund:true,sortKey:'holding',sortDir:1,columns:{ invested:false, current:true, pl:true, daily:true }};
+  const nextKey=key||'holding';
+  if(S.portfolioView.sortKey===nextKey) S.portfolioView.sortDir=S.portfolioView.sortDir===-1?1:-1;
+  else{
+    S.portfolioView.sortKey=nextKey;
+    S.portfolioView.sortDir=1;
+  }
+  renderPortfolioLoaded();
+}
+function setPortfolioColumnVisible(key, show){
+  S.portfolioView=S.portfolioView||{showMatchedFund:true,sortKey:'holding',sortDir:1,columns:{ invested:false, current:true, pl:true, daily:true }};
+  S.portfolioView.columns=S.portfolioView.columns||{ invested:false, current:true, pl:true, daily:true };
+  S.portfolioView.columns[key]=!!show;
+  renderPortfolioLoaded();
+}
+function deleteHoldingAt(index){
+  if(index==null||index<0||!Array.isArray(S.holdingsRawRows)||index>=S.holdingsRawRows.length) return;
+  const row=S.holdingsRawRows[index];
+  if(!confirm(`Delete holding "${row?.schemeName||'this holding'}"?`)) return;
+  const nextRows=S.holdingsRawRows.filter((_,i)=>i!==index);
+  pruneHoldingsOverrides(nextRows.map(r=>r.schemeName));
+  saveHoldingsRows(nextRows, row?._uploadDate||S.holdingsHistory?.[0]?.date);
+}
+function addManualHolding(){
+  openAddHoldingModal();
+}
+function openAddHoldingModal(){
+  S._addHoldingSelected=null;
+  const modal=document.getElementById('addHoldingModal');
+  const picked=document.getElementById('add_holding_picked');
+  const results=document.getElementById('add_holding_results');
+  const warn=document.getElementById('addHoldingWarn');
+  ['add_holding_search','add_holding_name','add_holding_units','add_holding_invested','add_holding_current'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  if(picked){ picked.style.display='none'; picked.innerHTML=''; }
+  if(results){ results.style.display='none'; results.innerHTML=''; }
+  if(warn) warn.style.display='none';
+  if(modal) modal.style.display='flex';
+}
+function closeAddHoldingModal(){
+  const modal=document.getElementById('addHoldingModal');
+  if(modal) modal.style.display='none';
+  S._addHoldingSelected=null;
+}
+function openEditHoldingModal(sourceIndex){
+  if(sourceIndex==null||!Array.isArray(S.holdingsRawRows)||!S.holdingsRawRows[sourceIndex]) return;
+  const row=S.holdingsRawRows[sourceIndex];
+  S._editHoldingIndex=sourceIndex;
+  // Subtitle
+  const sub=document.getElementById('edit_holding_sub');
+  if(sub) sub.textContent=row.schemeName;
+  // Matched fund name
+  const override=S.holdingsOverrides?.[row.schemeName];
+  const matchedFund=override?S.funds[override]:matchHoldingToFund(row.schemeName,null,row._uploadDate);
+  const matchedEl=document.getElementById('edit_holding_matched');
+  if(matchedEl) matchedEl.textContent=matchedFund?.name||'— not matched —';
+  // Pre-fill inputs
+  const uEl=document.getElementById('edit_holding_units');
+  const iEl=document.getElementById('edit_holding_invested');
+  const cEl=document.getElementById('edit_holding_current');
+  const dEl=document.getElementById('edit_holding_date');
+  if(uEl) uEl.value=row.units??'';
+  if(iEl) iEl.value=row.investedValue??'';
+  if(cEl) cEl.value=row.currentValue??'';
+  if(dEl) dEl.value=row._uploadDate||fmtIsoLocalDate(new Date());
+  const warn=document.getElementById('editHoldingWarn');
+  if(warn) warn.style.display='none';
+  show('editHoldingModal',true);
+}
+function closeEditHoldingModal(){
+  hide('editHoldingModal');
+  S._editHoldingIndex=null;
+}
+function editHoldingChangeFund(){
+  const idx=S._editHoldingIndex;
+  if(idx==null||!S.holdingsRawRows?.[idx]) return;
+  const scheme=S.holdingsRawRows[idx].schemeName;
+  closeEditHoldingModal();
+  openPortFundPicker(scheme);
+}
+function saveEditHolding(){
+  const idx=S._editHoldingIndex;
+  if(idx==null||!Array.isArray(S.holdingsRawRows)||!S.holdingsRawRows[idx]) return;
+  const warn=document.getElementById('editHoldingWarn');
+  const unitsRaw=String(document.getElementById('edit_holding_units')?.value||'').trim();
+  const investedRaw=String(document.getElementById('edit_holding_invested')?.value||'').trim();
+  const currentRaw=String(document.getElementById('edit_holding_current')?.value||'').trim();
+  const dateRaw=String(document.getElementById('edit_holding_date')?.value||'').trim();
+  const units=unitsRaw===''?null:parseNav(unitsRaw);
+  const investedValue=investedRaw===''?null:parseNav(investedRaw);
+  const currentValue=currentRaw===''?null:parseNav(currentRaw);
+  if((units==null||!isFinite(units))&&(currentValue==null||!isFinite(currentValue))){
+    if(warn) warn.style.display='block';
+    return;
+  }
+  const row=S.holdingsRawRows[idx];
+  const uploadDate=/^\d{4}-\d{2}-\d{2}$/.test(dateRaw)?dateRaw:(row._uploadDate||fmtIsoLocalDate(new Date()));
+  const updated={...row,units,investedValue,currentValue,_uploadDate:uploadDate};
+  const nextRows=S.holdingsRawRows.map((r,i)=>i===idx?updated:r);
+  closeEditHoldingModal();
+  saveHoldingsRows(nextRows,uploadDate);
+}
+async function searchAddHoldingFund(){
+  const q=String(document.getElementById('add_holding_search')?.value||'').trim();
+  const results=document.getElementById('add_holding_results');
+  if(!results) return;
+  if(q.length<2){
+    results.style.display='block';
+    results.innerHTML=`<div class="mf-search-empty">Type at least 2 letters.</div>`;
+    return;
+  }
+  results.style.display='block';
+  results.innerHTML=`<div class="mf-search-empty">Searching…</div>`;
+  try{
+    const r=await fetch(`https://api.mfapi.in/mf/search?q=${encodeURIComponent(q)}`);
+    const items=await r.json();
+    const list=Array.isArray(items)?items.slice(0,40):[];
+    if(!list.length){ results.innerHTML=`<div class="mf-search-empty">No results.</div>`; return; }
+    results.innerHTML=list.map(it=>`<button type="button" class="mf-search-item" onclick="pickAddHoldingFund('${it.schemeCode}','${String(it.schemeName||'').replace(/'/g,'&#39;')}')"><span class="mf-search-name">${it.schemeName||it.schemeCode}</span><span class="mf-search-code">${it.schemeCode}</span></button>`).join('');
+  }catch(e){
+    results.innerHTML=`<div class="mf-search-empty">Search failed.</div>`;
+  }
+}
+function pickAddHoldingFund(code, name){
+  S._addHoldingSelected={code:String(code), name:String(name||code)};
+  const picked=document.getElementById('add_holding_picked');
+  const nameEl=document.getElementById('add_holding_name');
+  const warn=document.getElementById('addHoldingWarn');
+  if(picked){
+    picked.style.display='block';
+    picked.innerHTML=`Selected: <strong>${esc(name)}</strong> <span style="font-family:'DM Mono',monospace;color:#f8d27a">(${esc(code)})</span>`;
+  }
+  if(nameEl && !String(nameEl.value||'').trim()) nameEl.value=name;
+  if(warn) warn.style.display='none';
+}
+async function saveAddHolding(){
+  const warn=document.getElementById('addHoldingWarn');
+  const selected=S._addHoldingSelected;
+  const schemeName=String(document.getElementById('add_holding_name')?.value||'').trim();
+  const unitsRaw=String(document.getElementById('add_holding_units')?.value||'').trim();
+  const investedRaw=String(document.getElementById('add_holding_invested')?.value||'').trim();
+  const currentRaw=String(document.getElementById('add_holding_current')?.value||'').trim();
+  const units=unitsRaw===''?null:parseNav(unitsRaw);
+  const investedValue=investedRaw===''?null:parseNav(investedRaw);
+  const currentValue=currentRaw===''?null:parseNav(currentRaw);
+  if(!selected || !schemeName || ((units==null||!isFinite(units)) && (currentValue==null||!isFinite(currentValue)))){
+    if(warn) warn.style.display='block';
+    return;
+  }
+  if(warn) warn.style.display='none';
+  const code=normalizeMfCode(selected.code);
+  if(!code){ if(warn){ warn.textContent='Selected fund code is invalid.'; warn.style.display='block'; } return; }
+  const ok=S.funds[`mf_${code}`] ? true : await fetchAndStoreFund(code);
+  if(!ok){
+    if(warn){ warn.textContent='Could not load NAV history for the selected fund.'; warn.style.display='block'; }
+    return;
+  }
+  const dateKey=S.holdingsHistory?.[0]?.date||fmtIsoLocalDate(new Date());
+  const nextRows=[...(S.holdingsRawRows||[]),{schemeName,units,investedValue,currentValue,_uploadDate:dateKey}];
+  S.holdingsOverrides=S.holdingsOverrides||{};
+  S.holdingsOverrides[schemeName]=`mf_${code}`;
+  saveHoldingsRows(nextRows, dateKey);
+  closeAddHoldingModal();
 }
 
 // ─────────────────────────────────────────────────────
@@ -3524,7 +3907,6 @@ function exportPortfolioExcel(){
   sum.push([]);
   sum.push(['Horizon','Scenario','Projected Value (₹)','Portfolio CAGR (%)','Covered Funds']);
   for(const x of h.horizons){
-    const fmt=v=>v==null?'N/A':v;
     sum.push([x.label+' ('+x.yrs+'Y)','Worst (historical min CAGR per fund)',x.worst,x.impliedWorstCagr==null?'N/A':+(x.impliedWorstCagr.toFixed(3)),x.covered+'/'+h.matched.length]);
     sum.push([x.label+' ('+x.yrs+'Y)','Median (historical median CAGR per fund)',x.base,x.impliedBaseCagr==null?'N/A':+(x.impliedBaseCagr.toFixed(3)),x.covered+'/'+h.matched.length]);
     sum.push([x.label+' ('+x.yrs+'Y)','Best (historical max CAGR per fund)',x.best,x.impliedBestCagr==null?'N/A':+(x.impliedBestCagr.toFixed(3)),x.covered+'/'+h.matched.length]);
@@ -3625,7 +4007,52 @@ function exportHoldingsDataSheet(wb){
     XLSX.utils.book_append_sheet(wb,hw,'Upload History');
   }
 }
-async function loadHoldingsFromExcel(file){
+function interceptReimportFile(file){
+  if(!file) return;
+  S._pendingReimportFile=file;
+  const modal=document.getElementById('reimportDateModal');
+  const dateEl=document.getElementById('reimport_date');
+  if(!modal||!dateEl) return;
+  // Try to read date from col 6 of the file first (exported Holdings Data has it there)
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+      const sn=wb.SheetNames[0];
+      const raw=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''});
+      let hi=0;
+      for(let i=0;i<Math.min(raw.length,8);i++){
+        const r=raw[i];
+        if(r&&r[0]&&String(r[0]).trim().toLowerCase().includes('scheme')){hi=i;break;}
+      }
+      const dataRows=raw.slice(hi+1).filter(r=>r[0]&&String(r[0]).trim()&&!String(r[0]).trim().startsWith('MF Analytica'));
+      const fileDate=dataRows.length?String(dataRows[0]?.[6]||'').trim():'';
+      const parsed=fileDate?parseDate(fileDate):null;
+      dateEl.value=(parsed&&!isNaN(parsed))?fmtIsoLocalDate(parsed):fmtIsoLocalDate(new Date());
+    }catch(err){
+      dateEl.value=fmtIsoLocalDate(new Date());
+    }
+    modal.style.display='flex';
+  };
+  reader.onerror=()=>{ dateEl.value=fmtIsoLocalDate(new Date()); modal.style.display='flex'; };
+  reader.readAsArrayBuffer(file);
+}
+function cancelReimportDate(){
+  const modal=document.getElementById('reimportDateModal');
+  if(modal) modal.style.display='none';
+  S._pendingReimportFile=null;
+}
+async function confirmReimportDate(){
+  const modal=document.getElementById('reimportDateModal');
+  const dateEl=document.getElementById('reimport_date');
+  const chosenDate=(dateEl&&dateEl.value&&/^\d{4}-\d{2}-\d{2}$/.test(dateEl.value))
+    ?dateEl.value:fmtIsoLocalDate(new Date());
+  if(modal) modal.style.display='none';
+  const file=S._pendingReimportFile;
+  S._pendingReimportFile=null;
+  if(file) await loadHoldingsFromExcel(file, chosenDate);
+}
+async function loadHoldingsFromExcel(file, overrideDate){
   try{
     const p=await parseFile(file);
     let hi=0;
@@ -3635,12 +4062,19 @@ async function loadHoldingsFromExcel(file){
     }
     const dataRows=p.rows.slice(hi+1).filter(r=>r[0]&&String(r[0]).trim()&&!String(r[0]).trim().startsWith('MF Analytica'));
     if(!dataRows.length){alert('No holdings rows found in file.');return;}
+    // Use caller-supplied date (from date picker) if present; otherwise read from col 6 of file; else today
+    const fileDate=String(dataRows[0]?.[6]||'').trim();
+    const parsedFileDate=fileDate?(parseDate(fileDate)||null):null;
+    const uploadDate=overrideDate&&/^\d{4}-\d{2}-\d{2}$/.test(overrideDate)
+      ?overrideDate
+      :(parsedFileDate&&!isNaN(parsedFileDate)?fmtIsoLocalDate(parsedFileDate):fmtIsoLocalDate(new Date()));
     const newRows=dataRows.map(r=>({
       schemeName:String(r[0]||'').trim(),
       _matchedSchemeCode:normalizeMfCode(String(r[2]||'').trim()),
       units:parseNav(r[3]),
       investedValue:parseNav(r[4]),
       currentValue:parseNav(r[5]),
+      _uploadDate:uploadDate,
     })).filter(r=>r.schemeName);
 
     // Switch to portfolio page
@@ -3653,13 +4087,14 @@ async function loadHoldingsFromExcel(file){
     const total=withCode.length+withoutCode.length;
     let done=0;
     const failed=[];
+    if(!S.holdingsOverrides) S.holdingsOverrides={};
+    pruneHoldingsOverrides(newRows.map(r=>r.schemeName));
 
     // Phase 1: Load exact scheme codes and register overrides — never fuzzy-match these
     if(withCode.length){
       showPortfolioProgress(0,total,'Loading funds from saved data…');
       await tick();
       // Pre-register overrides BEFORE building scenario so matchHoldingToFund never runs for these
-      if(!S.holdingsOverrides) S.holdingsOverrides={};
       for(const r of withCode){
         S.holdingsOverrides[r.schemeName]=`mf_${r._matchedSchemeCode}`;
       }
@@ -3680,8 +4115,7 @@ async function loadHoldingsFromExcel(file){
       failed.push(...f2);
     }
 
-    const uploadDate=String(dataRows[0]?.[6]||'').trim()||new Date().toISOString().slice(0,10);
-    const cleanRows=newRows.map(r=>({schemeName:r.schemeName,units:r.units,investedValue:r.investedValue,currentValue:r.currentValue}));
+    const cleanRows=newRows.map(r=>({schemeName:r.schemeName,units:r.units,investedValue:r.investedValue,currentValue:r.currentValue,_uploadDate:r._uploadDate}));
     mergeHoldingsSnapshot(cleanRows,uploadDate);
     persistHoldings();
     rebuildHoldingsFromStorage();
