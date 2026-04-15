@@ -179,7 +179,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .tab-pane.active{display:block}
 
 .nav-stats{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--br)}
-.ts-slice-bar{display:flex;gap:5px;margin-bottom:16px;align-items:center;flex-wrap:wrap}
+.ts-slice-bar{display:flex;gap:5px;margin-bottom:16px;align-items:center;flex-wrap:wrap;position:sticky;top:92px;z-index:24;padding:10px 0 12px;background:linear-gradient(180deg,rgba(7,9,15,.98),rgba(7,9,15,.94));border-bottom:1px solid rgba(30,46,70,.9);backdrop-filter:blur(8px)}
 .ts-slice-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);margin-right:4px;font-family:'DM Mono',monospace}
 .ts-slice-btn{padding:4px 13px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;border:1px solid var(--br);border-radius:20px;background:transparent;color:var(--td);cursor:pointer;transition:all .15s;line-height:1.6}
 .ts-slice-btn:hover{border-color:var(--br2);color:var(--tx)}
@@ -411,8 +411,8 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .port-rec-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
 .port-rec-section-title{font-size:15px;font-weight:800;color:var(--tx)}
 .port-rec-section-sub{font-size:10px;color:var(--td);font-family:'DM Mono',monospace;letter-spacing:.4px;text-transform:uppercase}
-.port-rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;grid-auto-rows:1fr}
-.port-rec-card{position:relative;display:flex;flex-direction:column;gap:10px;padding:14px 15px;border-radius:14px;border:1px solid var(--br);background:linear-gradient(180deg,#0d1322 0%,#0a0f1b 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.port-rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),420px));gap:14px;justify-content:flex-start;align-items:stretch}
+.port-rec-card{position:relative;display:flex;flex-direction:column;gap:10px;padding:14px 15px;border-radius:14px;border:1px solid var(--br);background:linear-gradient(180deg,#0d1322 0%,#0a0f1b 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.03);min-height:100%;width:100%;max-width:420px}
 .port-rec-card.is-high{border-color:rgba(248,113,113,.34);box-shadow:inset 3px 0 0 rgba(248,113,113,.92), inset 0 1px 0 rgba(255,255,255,.03)}
 .port-rec-card.is-medium{border-color:rgba(251,191,36,.34);box-shadow:inset 3px 0 0 rgba(251,191,36,.9), inset 0 1px 0 rgba(255,255,255,.03)}
 .port-rec-card.is-low{border-color:rgba(96,165,250,.34);box-shadow:inset 3px 0 0 rgba(96,165,250,.88), inset 0 1px 0 rgba(255,255,255,.03)}
@@ -437,14 +437,12 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .port-rec-action-text{margin-top:4px;font-size:11px;line-height:1.5;color:#eef5ff}
 .port-rec-note{margin-top:5px;font-size:9px;line-height:1.45;color:var(--td);font-family:'DM Mono',monospace}
 .port-rec-empty{padding:18px;border:1px dashed rgba(96,165,250,.26);border-radius:14px;background:rgba(17,26,46,.45);font-size:12px;color:var(--tm)}
-.port-rec-bundles{display:grid;gap:12px}
-.port-rec-bundle{border:1px solid var(--br);border-radius:16px;background:linear-gradient(180deg,#0d1322 0%,#0a0f1b 100%);overflow:hidden}
-.port-rec-bundle.is-high{border-color:rgba(248,113,113,.34);box-shadow:inset 3px 0 0 rgba(248,113,113,.92), inset 0 1px 0 rgba(255,255,255,.03)}
-.port-rec-bundle.is-medium{border-color:rgba(251,191,36,.34);box-shadow:inset 3px 0 0 rgba(251,191,36,.9), inset 0 1px 0 rgba(255,255,255,.03)}
-.port-rec-bundle.is-low{border-color:rgba(96,165,250,.34);box-shadow:inset 3px 0 0 rgba(96,165,250,.88), inset 0 1px 0 rgba(255,255,255,.03)}
-.port-rec-bundle summary{list-style:none;cursor:pointer;padding:14px 15px}
-.port-rec-bundle summary::-webkit-details-marker{display:none}
-.port-rec-bundle-summary{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.port-rec-bundles{display:grid;gap:18px}
+.port-rec-bundle{display:grid;gap:12px}
+.port-rec-bundle-summary{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 15px;border:1px solid var(--br);border-radius:16px;background:linear-gradient(180deg,#0d1322 0%,#0a0f1b 100%)}
+.port-rec-bundle.is-high .port-rec-bundle-summary{border-color:rgba(248,113,113,.34);box-shadow:inset 3px 0 0 rgba(248,113,113,.92), inset 0 1px 0 rgba(255,255,255,.03)}
+.port-rec-bundle.is-medium .port-rec-bundle-summary{border-color:rgba(251,191,36,.34);box-shadow:inset 3px 0 0 rgba(251,191,36,.9), inset 0 1px 0 rgba(255,255,255,.03)}
+.port-rec-bundle.is-low .port-rec-bundle-summary{border-color:rgba(96,165,250,.34);box-shadow:inset 3px 0 0 rgba(96,165,250,.88), inset 0 1px 0 rgba(255,255,255,.03)}
 .port-rec-bundle-copy{min-width:0;flex:1}
 .port-rec-bundle-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .port-rec-bundle-kicker{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
@@ -456,9 +454,10 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .port-rec-bundle-metric-value.pos{color:var(--pos)}
 .port-rec-bundle-metric-value.neg{color:var(--neg)}
 .port-rec-bundle-metric-label{margin-top:4px;font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
-.port-rec-bundle-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(73,97,135,.24);font-size:10px;color:var(--td);font-family:'DM Mono',monospace}
+.port-rec-bundle-foot{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(73,97,135,.24);font-size:10px;color:var(--td);font-family:'DM Mono',monospace}
 .port-rec-bundle-toggle{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;border:1px solid rgba(96,165,250,.24);background:rgba(96,165,250,.08);color:#bfdbfe;font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
-.port-rec-bundle-body{padding:0 14px 14px}
+.port-rec-bundle-body{padding:0}
+.port-rec-count{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.22);background:rgba(148,163,184,.08);color:#dbeafe;font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;font-family:'DM Mono',monospace}
 .proj-tbl{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace}
 .fwd-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .fwd-chip{padding:6px 10px;border:1px solid var(--br);border-radius:999px;background:var(--sf3);color:var(--tm);font-size:11px;font-weight:700;font-family:'DM Mono',monospace;cursor:pointer}
@@ -4667,28 +4666,26 @@ function renderPortfolioLoaded(){
         const priorityClass=`is-${bundle.priority}`;
         const priorityLabel=bundle.priority==='high'?'High Priority':(bundle.priority==='medium'?'Medium Priority':'Low Priority');
         const sortedItems=[...bundle.items].sort((a,b)=>(b.score||0)-(a.score||0));
-        return `<details class="port-rec-bundle ${priorityClass}"${bundle.priority==='high'?' open':''}>
-          <summary>
-            <div class="port-rec-bundle-summary">
-              <div class="port-rec-bundle-copy">
-                <div class="port-rec-bundle-top">
-                  <div class="port-rec-bundle-kicker">${bundle.kicker}</div>
-                  <div class="port-rec-priority ${priorityClass}">${priorityLabel}</div>
-                </div>
-                <div class="port-rec-bundle-title">${bundle.title}</div>
-                <div class="port-rec-bundle-sub">${bundle.subtitle||bundle.blurb}</div>
-                <div class="port-rec-bundle-foot">
-                  <span>${sortedItems.length} item${sortedItems.length===1?'':'s'} &middot; click for fund-wise detail and next steps</span>
-                  <span class="port-rec-bundle-toggle">Open Details</span>
-                </div>
+        return `<section class="port-rec-bundle ${priorityClass}">
+          <div class="port-rec-bundle-summary">
+            <div class="port-rec-bundle-copy">
+              <div class="port-rec-bundle-top">
+                <div class="port-rec-bundle-kicker">${bundle.kicker}</div>
+                <div class="port-rec-priority ${priorityClass}">${priorityLabel}</div>
               </div>
-              <div class="port-rec-bundle-metrics">${bundle.metrics.join('')}</div>
+              <div class="port-rec-bundle-title">${bundle.title}</div>
+              <div class="port-rec-bundle-sub">${bundle.subtitle||bundle.blurb}</div>
+              <div class="port-rec-bundle-foot">
+                <span class="port-rec-count">${sortedItems.length} item${sortedItems.length===1?'':'s'}</span>
+                <span>Fund-wise details and next steps</span>
+              </div>
             </div>
-          </summary>
+            <div class="port-rec-bundle-metrics">${bundle.metrics.join('')}</div>
+          </div>
           <div class="port-rec-bundle-body">
             <div class="port-rec-grid">${sortedItems.map(renderRecommendationCard).join('')}</div>
           </div>
-        </details>`;
+        </section>`;
       }).join('')}</div>`:`<div class="port-rec-empty">No recommendations match the active priority filters right now.</div>`}
     </div>`:`<div class="port-rec-wrap"><div class="port-rec-head"><div class="port-rec-titlebar"><div class="port-rec-titlemain"> Recommendations</div></div><div class="port-rec-headline"></div></div><div class="port-rec-empty">No actionable recommendations yet. As the portfolio develops more concentration, cost, or rolling-return signals, this section will start surfacing them here.</div></div>`;
 
