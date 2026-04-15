@@ -4442,13 +4442,14 @@ function renderPortfolioLoaded(){
   };
   const buildRecommendationBundles=(items)=>Array.from(items.reduce((map,rec)=>{
     const meta=recommendationBundleMeta(rec.type);
-    if(!map.has(meta.id)) map.set(meta.id,{...meta,items:[]});
-    map.get(meta.id).items.push(rec);
+    const priority=rec.priority||'low';
+    const bucketKey=`${meta.id}__${priority}`;
+    if(!map.has(bucketKey)) map.set(bucketKey,{...meta,priority,items:[]});
+    map.get(bucketKey).items.push(rec);
     return map;
   },new Map()).values()).map(bundle=>{
-    const priority=[...bundle.items].sort((a,b)=>(PORT_REC_PRIORITY_RANK[a.priority]??9)-(PORT_REC_PRIORITY_RANK[b.priority]??9))[0]?.priority||'low';
     const maxScore=Math.max(...bundle.items.map(item=>item.score||0),0);
-    return {...bundle,priority,maxScore,...summarizeRecommendationBundle(bundle)};
+    return {...bundle,maxScore,...summarizeRecommendationBundle(bundle)};
   }).sort((a,b)=>{
     const pr=(PORT_REC_PRIORITY_RANK[a.priority]??9)-(PORT_REC_PRIORITY_RANK[b.priority]??9);
     if(pr!==0) return pr;
