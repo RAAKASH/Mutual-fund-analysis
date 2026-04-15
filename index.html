@@ -437,6 +437,28 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .port-rec-action-text{margin-top:4px;font-size:11px;line-height:1.5;color:#eef5ff}
 .port-rec-note{margin-top:5px;font-size:9px;line-height:1.45;color:var(--td);font-family:'DM Mono',monospace}
 .port-rec-empty{padding:18px;border:1px dashed rgba(96,165,250,.26);border-radius:14px;background:rgba(17,26,46,.45);font-size:12px;color:var(--tm)}
+.port-rec-bundles{display:grid;gap:12px}
+.port-rec-bundle{border:1px solid var(--br);border-radius:16px;background:linear-gradient(180deg,#0d1322 0%,#0a0f1b 100%);overflow:hidden}
+.port-rec-bundle.is-high{border-color:rgba(248,113,113,.34);box-shadow:inset 3px 0 0 rgba(248,113,113,.92), inset 0 1px 0 rgba(255,255,255,.03)}
+.port-rec-bundle.is-medium{border-color:rgba(251,191,36,.34);box-shadow:inset 3px 0 0 rgba(251,191,36,.9), inset 0 1px 0 rgba(255,255,255,.03)}
+.port-rec-bundle.is-low{border-color:rgba(96,165,250,.34);box-shadow:inset 3px 0 0 rgba(96,165,250,.88), inset 0 1px 0 rgba(255,255,255,.03)}
+.port-rec-bundle summary{list-style:none;cursor:pointer;padding:14px 15px}
+.port-rec-bundle summary::-webkit-details-marker{display:none}
+.port-rec-bundle-summary{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.port-rec-bundle-copy{min-width:0;flex:1}
+.port-rec-bundle-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.port-rec-bundle-kicker{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
+.port-rec-bundle-title{margin-top:6px;font-size:15px;font-weight:800;color:var(--tx);line-height:1.2}
+.port-rec-bundle-sub{margin-top:5px;font-size:11px;line-height:1.55;color:var(--tm)}
+.port-rec-bundle-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;min-width:min(100%,420px)}
+.port-rec-bundle-metric{padding:10px 11px;border:1px solid rgba(73,97,135,.34);border-radius:12px;background:rgba(17,26,46,.82)}
+.port-rec-bundle-metric-value{font-size:16px;font-weight:800;color:var(--tx);font-family:'DM Mono',monospace;line-height:1.05}
+.port-rec-bundle-metric-value.pos{color:var(--pos)}
+.port-rec-bundle-metric-value.neg{color:var(--neg)}
+.port-rec-bundle-metric-label{margin-top:4px;font-size:9px;letter-spacing:.4px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace}
+.port-rec-bundle-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(73,97,135,.24);font-size:10px;color:var(--td);font-family:'DM Mono',monospace}
+.port-rec-bundle-toggle{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;border:1px solid rgba(96,165,250,.24);background:rgba(96,165,250,.08);color:#bfdbfe;font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+.port-rec-bundle-body{padding:0 14px 14px}
 .proj-tbl{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace}
 .fwd-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .fwd-chip{padding:6px 10px;border:1px solid var(--br);border-radius:999px;background:var(--sf3);color:var(--tm);font-size:11px;font-weight:700;font-family:'DM Mono',monospace;cursor:pointer}
@@ -577,7 +599,13 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 
 /* Empty state */
 .port-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;min-height:65vh}
-.port-empty-icon{font-size:56px;opacity:.35;margin-bottom:20px}
+.port-empty-icon{display:inline-flex;align-items:flex-end;justify-content:center;gap:7px;width:118px;height:118px;margin-bottom:20px;border-radius:28px;border:1px solid rgba(251,191,36,.18);background:
+  radial-gradient(circle at 50% 35%,rgba(251,191,36,.22),rgba(251,191,36,0) 58%),
+  linear-gradient(180deg,rgba(20,31,54,.96),rgba(11,17,31,.98));box-shadow:0 18px 44px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.04)}
+.port-empty-bar{width:14px;border-radius:999px 999px 6px 6px;box-shadow:0 0 0 1px rgba(255,255,255,.05),0 8px 18px rgba(0,0,0,.22)}
+.port-empty-bar.is-a{height:36px;background:linear-gradient(180deg,#60a5fa,#2563eb)}
+.port-empty-bar.is-b{height:56px;background:linear-gradient(180deg,#fbbf24,#f59e0b)}
+.port-empty-bar.is-c{height:76px;background:linear-gradient(180deg,#34d399,#059669)}
 .port-empty-title{font-size:26px;font-weight:800;color:var(--tx);margin-bottom:10px;letter-spacing:-.5px}
 .port-empty-sub{font-size:14px;color:var(--tm);max-width:400px;line-height:1.75;margin-bottom:32px}
 .port-import-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--acc);color:#000;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(251,191,36,.3)}
@@ -585,7 +613,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .port-steps{display:flex;gap:16px;margin-top:48px;flex-wrap:wrap;justify-content:center}
 .port-step{background:var(--sf);border:1px solid var(--br);border-radius:12px;padding:20px 22px;width:196px;text-align:left;transition:border-color .15s}
 .port-step:hover{border-color:var(--br2)}
-.port-step-n{font-size:20px;margin-bottom:10px}
+.port-step-n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;margin-bottom:10px;border-radius:999px;border:1px solid rgba(251,191,36,.26);background:rgba(251,191,36,.10);color:#f8d27a;font-size:11px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;font-family:'DM Mono',monospace}
 .port-step-t{font-size:13px;font-weight:800;color:var(--tx);margin-bottom:5px}
 .port-step-s{font-size:11px;color:var(--td);font-family:'DM Mono',monospace;line-height:1.6}
 
@@ -1712,9 +1740,22 @@ function getPairwiseOverlapStats(itemA,itemB,key,minPoints=5){
   if(!a||!b) return null;
   return {start:overlap.start,end:overlap.end,a,b};
 }
-function buildRollingWinRateSummary(metricKey, fds, minPoints=5){
+function getBestOverlapSummary(items, primaryKey='cagr5y', fallbackKey='cagr3y', minPoints=5){
+  const primary=getOverlapMetricStats(items,primaryKey,minPoints);
+  const fallback=!primary?getOverlapMetricStats(items,fallbackKey,minPoints):null;
+  const summary=primary||fallback;
+  if(!summary) return null;
+  return {
+    ...summary,
+    metricKey:primary?primaryKey:fallbackKey,
+    horizon:primary?'5Y':'3Y',
+    rowMap:new Map(summary.rows.map(row=>[row.item.fund?.id||row.item.schemeName,row]))
+  };
+}
+function buildRollingWinRateSummary(metricKey, fds, minPoints=5, respectSlice=true){
   const prepared=(fds||[]).map((fund,idx)=>{
-    const series=filterMetricSeries(fund?.computed?.[metricKey]||[]).filter(pt=>isFinite(pt?.value));
+    const sourceSeries=respectSlice?filterMetricSeries(fund?.computed?.[metricKey]||[]):(fund?.computed?.[metricKey]||[]);
+    const series=(sourceSeries||[]).filter(pt=>isFinite(pt?.value));
     const byDay=new Map();
     for(const pt of series){
       const date=metricPointDate(pt);
@@ -1818,6 +1859,7 @@ function recommendationTypeMeta(type){
     category_underperformer:{group:'Performance', icon:'\u{1F4C9}', label:'Performance'},
     momentum_decay:{group:'Performance', icon:'\u26A1', label:'Momentum Alert'},
     active_vs_passive:{group:'Strategy', icon:'\u2696\uFE0F', label:'Active vs Passive'},
+    win_rate_laggard:{group:'Performance', icon:'\u{1F3C1}', label:'Win Rate'},
     fragmentation:{group:'Portfolio Hygiene', icon:'\u{1F9F9}', label:'Portfolio Hygiene'},
     conditional_fragility:{group:'Outlook', icon:'\u{1F50D}', label:'Outlook'},
     strongest_holding:{group:'Core Holding', icon:'\u2705', label:'Core Holding'},
@@ -1876,6 +1918,23 @@ function buildPortfolioRecommendations(h){
     if(!groupMap.has(item.category)) groupMap.set(item.category,[]);
     groupMap.get(item.category).push(item);
   });
+  const categoryOverlapSummaries=new Map();
+  const categoryWinRateSummaries=new Map();
+  for(const [category,rows] of groupMap.entries()){
+    const overlapSummary=getBestOverlapSummary(rows,'cagr5y','cagr3y',5);
+    if(overlapSummary) categoryOverlapSummaries.set(category,overlapSummary);
+    const funds=rows.map(item=>item.fund).filter(Boolean);
+    const win5=buildRollingWinRateSummary('cagr5y', funds, 8, false);
+    const win3=!win5?buildRollingWinRateSummary('cagr3y', funds, 8, false):null;
+    const summary=win5||win3;
+    if(summary){
+      categoryWinRateSummaries.set(category,{
+        ...summary,
+        horizon:win5?'5Y':'3Y',
+        rowMap:new Map(summary.rows.map(row=>[row.fund.id,row]))
+      });
+    }
+  }
 
   const terGapDefault=0.9;
   for(const item of matched){
@@ -1954,15 +2013,16 @@ function buildPortfolioRecommendations(h){
       });
     }
 
-    const overlap5=getOverlapMetricStats(rows,'cagr5y',5);
-    const overlap3=!overlap5?getOverlapMetricStats(rows,'cagr3y',5):null;
-    const overlap=overlap5||overlap3;
+    const overlap=categoryOverlapSummaries.get(category)||null;
+    const winSummary=categoryWinRateSummaries.get(category)||null;
     if(overlap){
       const sorted=[...overlap.rows].sort((a,b)=>(a.stats?.median??-999)-(b.stats?.median??-999));
       const worst=sorted[0];
       const best=sorted[sorted.length-1];
       const worstMed=worst.stats?.median??null;
       const bestMed=best.stats?.median??null;
+      const worstWin=winSummary?.rowMap?.get(worst.item.fund?.id||'')||null;
+      const bestWin=winSummary?.rowMap?.get(best.item.fund?.id||'')||null;
       const gap=(bestMed!=null&&worstMed!=null)?(bestMed-worstMed):0;
       if(gap>=1.5){
         recs.push({
@@ -1979,8 +2039,34 @@ function buildPortfolioRecommendations(h){
           currentValue:worst.item.currentValue,
           compareStart:overlap.start,
           compareEnd:overlap.end,
-          compareHorizon:overlap5?'5Y':'3Y',
-          opportunityCost:estimateRateGapValue(worst.item.currentValue,worstMed,bestMed,overlap5?5:3)
+          compareHorizon:overlap.horizon,
+          opportunityCost:estimateRateGapValue(worst.item.currentValue,worstMed,bestMed,overlap.horizon==='5Y'?5:3),
+          weakWinPct:worstWin?.winPct??null,
+          bestWinPct:bestWin?.winPct??null,
+          winRateWindows:winSummary?.total??null,
+          winRateStart:winSummary?.start??null,
+          winRateEnd:winSummary?.end??null,
+          winRateHorizon:winSummary?.horizon||null
+        });
+      }
+      const winGap=(bestWin?.winPct!=null&&worstWin?.winPct!=null)?(bestWin.winPct-worstWin.winPct):0;
+      const zeroWinRedFlag=(worstWin?.winPct===0)&&((winSummary?.total??0)>=8);
+      if((winGap>=25&&worst.item.currentWeight>=4&&(gap<1.5))||zeroWinRedFlag){
+        recs.push({
+          type:'win_rate_laggard',
+          priority:(zeroWinRedFlag||winGap>=40)?'high':'medium',
+          score:(zeroWinRedFlag?1000:0)+(winGap*10)+worst.item.currentWeight,
+          category,
+          fundName:worst.item.schemeName,
+          leaderName:best.item.schemeName,
+          fundWeight:worst.item.currentWeight,
+          laggardWinPct:worstWin?.winPct??null,
+          leaderWinPct:bestWin?.winPct??null,
+          redFlag:zeroWinRedFlag,
+          overlapWindows:winSummary?.total??null,
+          compareStart:winSummary?.start??null,
+          compareEnd:winSummary?.end??null,
+          compareHorizon:winSummary?.horizon||null
         });
       }
     }
@@ -1990,13 +2076,28 @@ function buildPortfolioRecommendations(h){
     const activeRows=rows.filter(item=>!isPassiveFundName(item.fund?.name||item.matchedFund||item.schemeName));
     const passiveRows=rows.filter(item=>isPassiveFundName(item.fund?.name||item.matchedFund||item.schemeName));
     if(!activeRows.length||!passiveRows.length) continue;
-    const bestPassiveCandidate=[...passiveRows].sort((a,b)=>(b.fiveYearMedian??-999)-(a.fiveYearMedian??-999))[0]||null;
-    if(!bestPassiveCandidate) continue;
     for(const active of activeRows){
-      const pair5=getPairwiseOverlapStats(active,bestPassiveCandidate,'cagr5y',5);
-      const pair3=!pair5?getPairwiseOverlapStats(active,bestPassiveCandidate,'cagr3y',5):null;
-      const pair=pair5||pair3;
-      if(!pair) continue;
+      const passiveComparisons=passiveRows.map(passive=>{
+        const pair5=getPairwiseOverlapStats(active,passive,'cagr5y',5);
+        const pair3=!pair5?getPairwiseOverlapStats(active,passive,'cagr3y',5):null;
+        const pair=pair5||pair3;
+        if(!pair) return null;
+        return {
+          passive,
+          pair,
+          metricKey:pair5?'cagr5y':'cagr3y',
+          horizon:pair5?'5Y':'3Y',
+          gap:(pair.b.stats?.median??0)-(pair.a.stats?.median??0),
+          passiveMedian:pair.b.stats?.median??null,
+          overlapCount:Math.min(pair.a.count||0,pair.b.count||0)
+        };
+      }).filter(Boolean).sort((a,b)=>(b.gap??-999)-(a.gap??-999) || (b.passiveMedian??-999)-(a.passiveMedian??-999) || (b.overlapCount||0)-(a.overlapCount||0));
+      const bestPassiveComparison=passiveComparisons[0]||null;
+      if(!bestPassiveComparison) continue;
+      const pair=bestPassiveComparison.pair;
+      const pairWin=buildRollingWinRateSummary(bestPassiveComparison.metricKey,[active.fund,bestPassiveComparison.passive.fund],8,false);
+      const activeWin=pairWin?.rows?.find(row=>row.fund.id===active.fund?.id)||null;
+      const passiveWin=pairWin?.rows?.find(row=>row.fund.id===bestPassiveComparison.passive.fund?.id)||null;
       const gap=(pair.b.stats?.median??0)-(pair.a.stats?.median??0);
       if(gap<1) continue;
       recs.push({
@@ -2007,12 +2108,15 @@ function buildPortfolioRecommendations(h){
         fundName:active.schemeName,
         currentWeight:active.currentWeight,
         activeMedian:pair.a.stats?.median??null,
-        passiveFundName:bestPassiveCandidate.schemeName,
+        passiveFundName:bestPassiveComparison.passive.schemeName,
         passiveMedian:pair.b.stats?.median??null,
         compareStart:pair.start,
         compareEnd:pair.end,
-        compareHorizon:pair5?'5Y':'3Y',
-        gap
+        compareHorizon:bestPassiveComparison.horizon,
+        gap,
+        activeWinPct:activeWin?.winPct??null,
+        passiveWinPct:passiveWin?.winPct??null,
+        overlapWindows:pairWin?.total??null
       });
     }
   }
@@ -2023,9 +2127,13 @@ function buildPortfolioRecommendations(h){
     if(!s1||!s5||s1.latest==null||s5.median==null) continue;
     const shortfall=s5.median-s1.latest;
     if(shortfall<5) continue;
-    const peerBest=(groupMap.get(item.category)||[])
-      .filter(peer=>peer.schemeName!==item.schemeName)
-      .sort((a,b)=>(b.fiveYearMedian??-999)-(a.fiveYearMedian??-999))[0]||null;
+    const categoryOverlap=categoryOverlapSummaries.get(item.category)||null;
+    const peerBest=categoryOverlap
+      ? [...categoryOverlap.rows]
+          .sort((a,b)=>(b.stats?.median??-999)-(a.stats?.median??-999))
+          .find(row=>row.item.schemeName!==item.schemeName)?.item||null
+      : null;
+    const peerBestStats=peerBest&&categoryOverlap?categoryOverlap.rowMap.get(peerBest.fund?.id||peerBest.schemeName)||null:null;
     recs.push({
       type:'momentum_decay',
       priority:shortfall>10?'high':'medium',
@@ -2037,7 +2145,10 @@ function buildPortfolioRecommendations(h){
       fiveYearMedian:s5.median,
       shortfall,
       peerName:peerBest?.schemeName||null,
-      peerMedian:peerBest?.fiveYearMedian??null
+      peerMedian:peerBestStats?.stats?.median??null,
+      compareStart:categoryOverlap?.start??null,
+      compareEnd:categoryOverlap?.end??null,
+      compareHorizon:categoryOverlap?.horizon||null
     });
   }
 
@@ -2078,20 +2189,30 @@ function buildPortfolioRecommendations(h){
   }
   for(const [amc,rows] of Object.entries(amcGroups)){
     if(rows.length<2) continue;
-    const withSameCat=rows.filter((r,i,arr)=>arr.some((r2,j)=>j!==i&&r.category===r2.category));
-    if(withSameCat.length<2) continue;
+    const duplicateClusters=[...new Set(rows.map(r=>r.category))].map(category=>{
+      const funds=rows.filter(r=>r.category===category);
+      return {category, funds};
+    }).filter(cluster=>cluster.funds.length>=2).sort((a,b)=>b.funds.length-a.funds.length || b.funds.reduce((sum,item)=>sum+item.currentValue,0)-a.funds.reduce((sum,item)=>sum+item.currentValue,0));
+    const targetCluster=duplicateClusters[0]||null;
+    if(!targetCluster) continue;
+    const withSameCat=targetCluster.funds;
     const amcValue=rows.reduce((sum,item)=>sum+item.currentValue,0);
+    const duplicateOverlap=getBestOverlapSummary(withSameCat,'cagr5y','cagr3y',5);
+    const rankedOverlap=duplicateOverlap?[...duplicateOverlap.rows].sort((a,b)=>(b.stats?.median??-999)-(a.stats?.median??-999)):null;
     recs.push({
       type:'duplicate_exposure',
       priority:'low',
       score:amcValue,
-      category:withSameCat[0]?.category||'Mixed',
-      fundCount:rows.length,
+      category:targetCluster.category||'Mixed',
+      fundCount:withSameCat.length,
       currentWeight:(amcValue/h.currentTotal)*100,
       currentValue:amcValue,
       names:withSameCat.map(item=>item.schemeName),
-      strongestFund:[...withSameCat].sort((a,b)=>(b.fiveYearMedian??-999)-(a.fiveYearMedian??-999))[0]?.schemeName||null,
-      weakestFund:[...withSameCat].sort((a,b)=>(a.fiveYearMedian??999)-(b.fiveYearMedian??999))[0]?.schemeName||null,
+      strongestFund:rankedOverlap?.[0]?.item?.schemeName||[...withSameCat].sort((a,b)=>(b.fiveYearMedian??-999)-(a.fiveYearMedian??-999))[0]?.schemeName||null,
+      weakestFund:rankedOverlap?.[rankedOverlap.length-1]?.item?.schemeName||[...withSameCat].sort((a,b)=>(a.fiveYearMedian??999)-(b.fiveYearMedian??999))[0]?.schemeName||null,
+      compareStart:duplicateOverlap?.start??null,
+      compareEnd:duplicateOverlap?.end??null,
+      compareHorizon:duplicateOverlap?.horizon||null,
       amc:amc.toUpperCase()
     });
   }
@@ -2126,16 +2247,41 @@ function buildPortfolioRecommendations(h){
     });
   }
 
-  const strongest=[...matched].filter(item=>item.fiveYearMedian!=null).sort((a,b)=>b.fiveYearMedian-a.fiveYearMedian)[0]||null;
+  const strongestCandidates=[...categoryOverlapSummaries.entries()].map(([category,summary])=>{
+    const leader=[...summary.rows].sort((a,b)=>(b.stats?.median??-999)-(a.stats?.median??-999))[0]||null;
+    if(!leader||leader.stats?.median==null) return null;
+    const winSummary=categoryWinRateSummaries.get(category)||null;
+    const leaderWin=winSummary?.rowMap?.get(leader.item.fund?.id||leader.item.schemeName)||null;
+    return {
+      item:leader.item,
+      category,
+      median:leader.stats.median,
+      compareStart:summary.start,
+      compareEnd:summary.end,
+      compareHorizon:summary.horizon,
+      categoryWinPct:leaderWin?.winPct??null,
+      winRateWindows:winSummary?.total??null,
+      winRateHorizon:winSummary?.horizon||summary.horizon,
+      horizonRank:summary.horizon==='5Y'?1:0
+    };
+  }).filter(Boolean).filter(candidate=>(candidate.categoryWinPct??0)>=50)
+    .sort((a,b)=>b.horizonRank-a.horizonRank || (b.categoryWinPct??-1)-(a.categoryWinPct??-1) || (b.median??-999)-(a.median??-999) || (b.item.currentWeight??0)-(a.item.currentWeight??0));
+  const strongest=strongestCandidates[0]||null;
   if(strongest){
     recs.push({
       type:'strongest_holding',
       priority:'low',
-      score:strongest.fiveYearMedian,
-      fundName:strongest.schemeName,
+      score:(strongest.categoryWinPct??0)+(strongest.median??0),
+      fundName:strongest.item.schemeName,
       category:strongest.category,
-      currentWeight:strongest.currentWeight,
-      fiveYearMedian:strongest.fiveYearMedian
+      currentWeight:strongest.item.currentWeight,
+      rollingMedian:strongest.median,
+      compareStart:strongest.compareStart,
+      compareEnd:strongest.compareEnd,
+      compareHorizon:strongest.compareHorizon,
+      categoryWinPct:strongest.categoryWinPct,
+      winRateWindows:strongest.winRateWindows,
+      winRateHorizon:strongest.winRateHorizon||null
     });
   }
 
@@ -3400,16 +3546,16 @@ function renderPortfolioPage(){
   const el=document.getElementById('portBody');
   if(!el) return;
   if(!S.holdings){
-    el.innerHTML=`
+  el.innerHTML=`
       <div class="port-empty">
-        <div class="port-empty-icon">Chart</div>
+        <div class="port-empty-icon" aria-hidden="true"><span class="port-empty-bar is-a"></span><span class="port-empty-bar is-b"></span><span class="port-empty-bar is-c"></span></div>
         <div class="port-empty-title">Portfolio Scenario Analysis</div>
         <div class="port-empty-sub">Import your mutual fund statement and see where your portfolio could go &mdash; worst, median, and best case across 1-10 years.</div>
         <button class="port-import-btn" onclick="triggerHoldingsUpload()">&#8593; Import Portfolio Statement</button>
         <div class="port-steps">
-          <div class="port-step"><div class="port-step-n"></div><div class="port-step-t">Import holdings</div><div class="port-step-s">CAMS &middot; Kuvera &middot; Zerodha &middot; any Excel with scheme names</div></div>
-          <div class="port-step"><div class="port-step-n"></div><div class="port-step-t">NAV auto-fetched</div><div class="port-step-s">We search MF API for each fund and pull full history</div></div>
-          <div class="port-step"><div class="port-step-n"></div><div class="port-step-t">See your scenarios</div><div class="port-step-s">Worst &middot; Median &middot; Best across 1Y &middot; 3Y &middot; 5Y &middot; 10Y</div></div>
+          <div class="port-step"><div class="port-step-n">01</div><div class="port-step-t">Import holdings</div><div class="port-step-s">CAMS &middot; Kuvera &middot; Zerodha &middot; any Excel with scheme names</div></div>
+          <div class="port-step"><div class="port-step-n">02</div><div class="port-step-t">NAV auto-fetched</div><div class="port-step-s">We search MF API for each fund and pull full history</div></div>
+          <div class="port-step"><div class="port-step-n">03</div><div class="port-step-t">See your scenarios</div><div class="port-step-s">Worst &middot; Median &middot; Best across 1Y &middot; 3Y &middot; 5Y &middot; 10Y</div></div>
         </div>
       </div>`;
     return;
@@ -4190,6 +4336,124 @@ function renderPortfolioLoaded(){
   };
   const visibleRecommendations=recommendations.filter(rec=>recoFilters[rec.priority]!==false);
   const renderRecMetric=(label,value,tone='')=>`<div class="port-rec-metric"><div class="port-rec-metric-value ${tone}">${value}</div><div class="port-rec-metric-label">${label}</div></div>`;
+  const renderBundleMetric=(label,value,tone='')=>`<div class="port-rec-bundle-metric"><div class="port-rec-bundle-metric-value ${tone}">${value}</div><div class="port-rec-bundle-metric-label">${label}</div></div>`;
+  const recommendationBundleMeta=(type)=>{
+    const map={
+      regular_direct:{id:'cost_structure', title:'Cost & Structure Upgrades', kicker:'Cost / Strategy', blurb:'Direct-plan leaks and active-vs-passive review candidates that can improve compounding efficiency.'},
+      active_vs_passive:{id:'cost_structure', title:'Cost & Structure Upgrades', kicker:'Cost / Strategy', blurb:'Direct-plan leaks and active-vs-passive review candidates that can improve compounding efficiency.'},
+      tax_loss:{id:'tax_positioning', title:'Tax Positioning', kicker:'Tax', blurb:'Tax-loss harvesting and unused exemption opportunities that can improve after-tax compounding.'},
+      ltcg_headroom:{id:'tax_positioning', title:'Tax Positioning', kicker:'Tax', blurb:'Tax-loss harvesting and unused exemption opportunities that can improve after-tax compounding.'},
+      fund_concentration:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
+      category_concentration:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
+      duplicate_exposure:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
+      fragmentation:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
+      category_underperformer:{id:'performance_winrate', title:'Performance & Win Rate Review', kicker:'Performance / Win Rate', blurb:'Persistent laggards, weak peer-beating frequency, and stronger internal benchmarks to use when consolidating holdings.'},
+      momentum_decay:{id:'performance_winrate', title:'Performance & Win Rate Review', kicker:'Performance / Win Rate', blurb:'Persistent laggards, weak peer-beating frequency, and stronger internal benchmarks to use when consolidating holdings.'},
+      win_rate_laggard:{id:'performance_winrate', title:'Performance & Win Rate Review', kicker:'Performance / Win Rate', blurb:'Persistent laggards, weak peer-beating frequency, and stronger internal benchmarks to use when consolidating holdings.'},
+      strongest_holding:{id:'performance_winrate', title:'Performance & Win Rate Review', kicker:'Performance / Win Rate', blurb:'Persistent laggards, weak peer-beating frequency, and stronger internal benchmarks to use when consolidating holdings.'},
+      conditional_fragility:{id:'outlook_coverage', title:'Projection Reliability', kicker:'Outlook', blurb:'How much of the conditional outlook is supported by real bucket-matched history versus fallback ranges.'},
+      well_balanced:{id:'portfolio_strength', title:'Portfolio Strengths', kicker:'Keep / Monitor', blurb:'Signals that the current structure is doing something right and can be used as a benchmark.'}
+    };
+    return map[type]||{id:'portfolio_misc', title:'Portfolio Review', kicker:'Portfolio', blurb:'Additional review items surfaced from your portfolio analytics.'};
+  };
+  const summarizeRecommendationBundle=(bundle)=>{
+    if(bundle.id==='cost_structure'){
+      const directs=bundle.items.filter(item=>item.type==='regular_direct');
+      const activePassive=bundle.items.filter(item=>item.type==='active_vs_passive');
+      const savings5=directs.reduce((sum,item)=>sum+(item.savings5||0),0);
+      const savings10=directs.reduce((sum,item)=>sum+(item.savings10||0),0);
+      const reviewedWeight=activePassive.reduce((sum,item)=>sum+(item.currentWeight||0),0);
+      return {
+        subtitle:`${directs.length} direct-plan leak${directs.length===1?'':'s'} and ${activePassive.length} active/passive review candidate${activePassive.length===1?'':'s'}.`,
+        metrics:[
+          renderBundleMetric('Funds', String(bundle.items.length)),
+          renderBundleMetric('5Y savings', fmtAmtShort(savings5), savings5>0?'pos':''),
+          renderBundleMetric('10Y savings', fmtAmtShort(savings10), savings10>0?'pos':''),
+          renderBundleMetric('Reviewed weight', reviewedWeight?fmtPctAbs(reviewedWeight):'-')
+        ]
+      };
+    }
+    if(bundle.id==='performance_winrate'){
+      const exposedWeight=bundle.items.reduce((sum,item)=>sum+(item.fundWeight||item.currentWeight||0),0);
+      const maxWinGap=Math.max(...bundle.items.map(item=>{
+        if(item.type==='win_rate_laggard') return (item.leaderWinPct||0)-(item.laggardWinPct||0);
+        if(item.type==='category_underperformer') return ((item.bestWinPct??0)-(item.weakWinPct??0));
+        if(item.type==='active_vs_passive') return ((item.passiveWinPct??0)-(item.activeWinPct??0));
+        return 0;
+      }),0);
+      return {
+        subtitle:`Use peer-beating frequency and rolling medians together before adding more money to weaker holdings.`,
+        metrics:[
+          renderBundleMetric('Funds to review', String(bundle.items.filter(item=>item.type!=='strongest_holding'&&item.type!=='well_balanced').length||bundle.items.length)),
+          renderBundleMetric('Affected weight', exposedWeight?fmtPctAbs(exposedWeight):'-'),
+          renderBundleMetric('Max win-gap', maxWinGap?`${maxWinGap.toFixed(1)}%`:'-'),
+          renderBundleMetric('Benchmarks', String(bundle.items.filter(item=>item.type==='strongest_holding').length))
+        ]
+      };
+    }
+    if(bundle.id==='risk_overlap'){
+      const exposedWeight=bundle.items.reduce((sum,item)=>sum+(item.currentWeight||item.combinedWeight||0),0);
+      const maxSingle=Math.max(...bundle.items.map(item=>item.currentWeight||0),0);
+      return {
+        subtitle:`Control concentration, clean overlap, and simplify tail positions before they become harder to unwind.`,
+        metrics:[
+          renderBundleMetric('Review items', String(bundle.items.length)),
+          renderBundleMetric('Affected weight', exposedWeight?fmtPctAbs(exposedWeight):'-'),
+          renderBundleMetric('Max concentration', maxSingle?fmtPctAbs(maxSingle):'-'),
+          renderBundleMetric('Tail positions', String(bundle.items.filter(item=>item.type==='fragmentation').reduce((sum,item)=>sum+(item.holdingCount||0),0)||0))
+        ]
+      };
+    }
+    if(bundle.id==='tax_positioning'){
+      const totalLoss=bundle.items.reduce((sum,item)=>sum+(item.totalLoss||0),0);
+      const totalShield=bundle.items.reduce((sum,item)=>sum+(item.estLtcgShield||0),0);
+      const headroom=bundle.items.reduce((sum,item)=>sum+(item.unusedExemption||0),0);
+      return {
+        subtitle:`Use tax-loss harvesting and unused exemption capacity to improve after-tax compounding.`,
+        metrics:[
+          renderBundleMetric('Tax ideas', String(bundle.items.length)),
+          renderBundleMetric('Bookable losses', totalLoss?fmtAmtShort(totalLoss):'-', totalLoss>0?'neg':''),
+          renderBundleMetric('Est. shield', totalShield?fmtAmtShort(totalShield):'-', totalShield>0?'pos':''),
+          renderBundleMetric('Unused headroom', headroom?fmtAmtShort(headroom):'-', headroom>0?'pos':'')
+        ]
+      };
+    }
+    if(bundle.id==='outlook_coverage'){
+      const weakest=bundle.items[0]||null;
+      return {
+        subtitle:`Some conditional projections rely more on fallback history than on true bucket-matched analogues.`,
+        metrics:[
+          renderBundleMetric('Items', String(bundle.items.length)),
+          renderBundleMetric('Weakest horizon', weakest?.horizon||'-'),
+          renderBundleMetric('Coverage', weakest?fmtPctAbs((weakest.ratio||0)*100):'-'),
+          renderBundleMetric('Bucket matched', weakest?`${weakest.covered}/${weakest.total}`:'-')
+        ]
+      };
+    }
+    return {
+      subtitle:`Keep these positive signals in mind as your benchmark when reviewing weaker holdings.`,
+      metrics:[
+        renderBundleMetric('Items', String(bundle.items.length)),
+        renderBundleMetric('Categories', String(bundle.items.find(item=>item.categories)?.categories||'-')),
+        renderBundleMetric('Max single', bundle.items.find(item=>item.maxSingleWeight!=null)?fmtPctAbs(bundle.items.find(item=>item.maxSingleWeight!=null).maxSingleWeight):'-'),
+        renderBundleMetric('Status', 'Healthy', 'pos')
+      ]
+    };
+  };
+  const buildRecommendationBundles=(items)=>Array.from(items.reduce((map,rec)=>{
+    const meta=recommendationBundleMeta(rec.type);
+    if(!map.has(meta.id)) map.set(meta.id,{...meta,items:[]});
+    map.get(meta.id).items.push(rec);
+    return map;
+  },new Map()).values()).map(bundle=>{
+    const priority=[...bundle.items].sort((a,b)=>(PORT_REC_PRIORITY_RANK[a.priority]??9)-(PORT_REC_PRIORITY_RANK[b.priority]??9))[0]?.priority||'low';
+    const maxScore=Math.max(...bundle.items.map(item=>item.score||0),0);
+    return {...bundle,priority,maxScore,...summarizeRecommendationBundle(bundle)};
+  }).sort((a,b)=>{
+    const pr=(PORT_REC_PRIORITY_RANK[a.priority]??9)-(PORT_REC_PRIORITY_RANK[b.priority]??9);
+    if(pr!==0) return pr;
+    return (b.maxScore||0)-(a.maxScore||0);
+  });
   const renderRecommendationCard=(rec)=>{
     const priorityClass=`is-${rec.priority}`;
     const priorityLabel=rec.priority==='high'?'High Priority':(rec.priority==='medium'?'Medium Priority':'Low Priority');
@@ -4238,29 +4502,45 @@ function renderPortfolioLoaded(){
     }else if(rec.type==='duplicate_exposure'){
       domain='Diversification';
       title=`Overlap in ${esc(rec.category)}: review ${rec.fundCount} similar funds`;
-      body=`You hold <strong>${rec.fundCount}</strong> ${rec.amc?`funds from <strong>${esc(rec.amc)}</strong>`:'funds'} with same-category exposure in <strong>${esc(rec.category)}</strong>. The current basket is <strong>${listPreview(rec.names,4)}</strong>. <strong>${esc(rec.strongestFund||'The strongest fund')}</strong> is the better reference point, while <strong>${esc(rec.weakestFund||'the weakest fund')}</strong> looks least compelling.`;
+      body=`You hold <strong>${rec.fundCount}</strong> ${rec.amc?`funds from <strong>${esc(rec.amc)}</strong>`:'funds'} with same-category exposure in <strong>${esc(rec.category)}</strong>. The current basket is <strong>${listPreview(rec.names,4)}</strong>. <strong>${esc(rec.strongestFund||'The strongest fund')}</strong> is the better reference point, while <strong>${esc(rec.weakestFund||'the weakest fund')}</strong> looks least compelling${rec.compareHorizon&&rec.compareStart&&rec.compareEnd?`, based on overlapping ${rec.compareHorizon} rolling history from ${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)}`:''}.`;
       action='Check whether these funds are truly diversifying each other or whether one or two can be consolidated.';
       metrics=[
         renderRecMetric('Bucket weight', fmtPctAbs(rec.currentWeight)),
         renderRecMetric('Funds in bucket', String(rec.fundCount)),
         renderRecMetric('Current value', fmtAmtShort(rec.currentValue)),
-        renderRecMetric('Lead fund', esc(rec.strongestFund||'Review'))
+        renderRecMetric('Lead fund', esc(rec.strongestFund||'Review')),
+        ...(rec.compareHorizon?[renderRecMetric('Comparison basis', `${rec.compareHorizon} overlap`)]:[])
       ];
     }else if(rec.type==='category_underperformer'){
       domain='Performance';
       title=`Weakest ${esc(rec.category)} fund: ${esc(rec.fundName)}`;
-      body=`Within your <strong>${esc(rec.category)}</strong> bucket, <strong>${esc(rec.fundName)}</strong> has a ${rec.compareHorizon||'rolling'} median CAGR of ${fmtPct(rec.weakMedian)} versus <strong>${esc(rec.bestFundName)}</strong> at ${fmtPct(rec.bestMedian)}. That is a ${fmtPts(rec.gap)} gap on ${fmtPctAbs(rec.fundWeight)} of the portfolio, measured only over the shared history window${rec.compareStart&&rec.compareEnd?` (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`:''}.`;
+      body=`Within your <strong>${esc(rec.category)}</strong> bucket, <strong>${esc(rec.fundName)}</strong> has a ${rec.compareHorizon||'rolling'} median CAGR of ${fmtPct(rec.weakMedian)} versus <strong>${esc(rec.bestFundName)}</strong> at ${fmtPct(rec.bestMedian)}. That is a ${fmtPts(rec.gap)} gap on ${fmtPctAbs(rec.fundWeight)} of the portfolio, measured only over the shared history window${rec.compareStart&&rec.compareEnd?` (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`:''}.${rec.weakWinPct!=null&&rec.bestWinPct!=null?` It also wins only <strong>${fmtPctAbs(rec.weakWinPct)}</strong> of overlapping ${rec.winRateHorizon||rec.compareHorizon||''} windows versus <strong>${esc(rec.bestFundName)}</strong> at <strong>${fmtPctAbs(rec.bestWinPct)}</strong>${rec.winRateWindows?` across ${rec.winRateWindows} windows`:''}.`:''}`;
       action=`Review whether this allocation should stay in ${esc(rec.fundName)} or be consolidated into ${esc(rec.bestFundName)} after checking mandate overlap and tax cost.`;
       metrics=[
-        renderRecMetric('Weak 5Y median', fmtPct(rec.weakMedian), 'neg'),
-        renderRecMetric('Best peer 5Y median', fmtPct(rec.bestMedian), 'pos'),
+        renderRecMetric(`Weak ${rec.compareHorizon||'Rolling'} median`, fmtPct(rec.weakMedian), 'neg'),
+        renderRecMetric(`Best peer ${rec.compareHorizon||'Rolling'} median`, fmtPct(rec.bestMedian), 'pos'),
         renderRecMetric('Gap', fmtPts(rec.gap)),
-        renderRecMetric('5Y opportunity cost', fmtAmtShort(rec.opportunityCost))
+        renderRecMetric(`${rec.compareHorizon||'Rolling'} opportunity cost`, fmtAmtShort(rec.opportunityCost)),
+        ...(rec.weakWinPct!=null&&rec.bestWinPct!=null?[renderRecMetric('Weak win rate', fmtPctAbs(rec.weakWinPct), 'neg'),renderRecMetric('Peer win rate', fmtPctAbs(rec.bestWinPct), 'pos')]:[])
+      ];
+    }else if(rec.type==='win_rate_laggard'){
+      domain='Win Rate';
+      title=`${rec.redFlag?'Zero':'Low'} peer win-rate: ${esc(rec.fundName)}`;
+      body=`Inside <strong>${esc(rec.category)}</strong>, <strong>${esc(rec.fundName)}</strong> wins only <strong>${fmtPctAbs(rec.laggardWinPct)}</strong> of overlapping ${rec.compareHorizon||''} rolling windows, while <strong>${esc(rec.leaderName)}</strong> wins <strong>${fmtPctAbs(rec.leaderWinPct)}</strong>${rec.overlapWindows?` across ${rec.overlapWindows} comparable windows`:''}${rec.compareStart&&rec.compareEnd?` (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`:''}.${rec.redFlag?' A 0% win rate is a red flag because the fund has not led even once across the comparable rolling periods.':' That is a persistence signal worth respecting even before looking at trailing point returns.'}`;
+      action=rec.redFlag
+        ? `Pause fresh money into ${esc(rec.fundName)} and treat ${esc(rec.leaderName)} as the immediate benchmark until this fund proves itself again on comparable rolling periods.`
+        : `Treat ${esc(rec.leaderName)} as the benchmark in this category and review whether new money should still go into ${esc(rec.fundName)}.`;
+      metrics=[
+        renderRecMetric('Lagging fund win rate', fmtPctAbs(rec.laggardWinPct), 'neg'),
+        renderRecMetric('Leader win rate', fmtPctAbs(rec.leaderWinPct), 'pos'),
+        renderRecMetric('Portfolio weight', fmtPctAbs(rec.fundWeight)),
+        renderRecMetric('Overlapping windows', rec.overlapWindows!=null?String(rec.overlapWindows):'-'),
+        ...(rec.redFlag?[renderRecMetric('Status', 'Red flag', 'neg')]:[])
       ];
     }else if(rec.type==='momentum_decay'){
       domain='Momentum Alert';
       title=`Recent underperformance: ${esc(rec.fundName)}`;
-      body=`<strong>${esc(rec.fundName)}</strong> is currently running below its own history. Latest 1Y CAGR is ${fmtPct(rec.latestOneYear)} versus its 5Y rolling median of ${fmtPct(rec.fiveYearMedian)}.${rec.peerName?` In the same <strong>${esc(rec.category)}</strong> bucket, <strong>${esc(rec.peerName)}</strong> remains the stronger peer at ${fmtPct(rec.peerMedian)}.`:''}`;
+      body=`<strong>${esc(rec.fundName)}</strong> is currently running below its own history. Latest 1Y CAGR is ${fmtPct(rec.latestOneYear)} versus its 5Y rolling median of ${fmtPct(rec.fiveYearMedian)}.${rec.peerName?` In the same <strong>${esc(rec.category)}</strong> bucket, <strong>${esc(rec.peerName)}</strong> remains the stronger peer at ${fmtPct(rec.peerMedian)} on the overlapping ${rec.compareHorizon||'rolling'} comparison window${rec.compareStart&&rec.compareEnd?` (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`:''}.`:''}`;
       action='Monitor for the next 2-3 review cycles; if the gap persists, trim this fund before adding new money here.';
       metrics=[
         renderRecMetric('Latest 1Y CAGR', fmtPct(rec.latestOneYear), 'neg'),
@@ -4317,24 +4597,26 @@ function renderPortfolioLoaded(){
     }else if(rec.type==='active_vs_passive'){
       domain='Strategy';
       title=`Active vs passive: ${esc(rec.fundName)} vs ${esc(rec.passiveFundName)}`;
-      body=`In <strong>${esc(rec.category)}</strong>, your active holding <strong>${esc(rec.fundName)}</strong> has a ${rec.compareHorizon||'rolling'} median CAGR of ${fmtPct(rec.activeMedian)} versus passive peer <strong>${esc(rec.passiveFundName)}</strong> at ${fmtPct(rec.passiveMedian)}. That means the passive option is ahead by ${fmtPts(rec.gap)} on this category exposure, measured over the shared history window${rec.compareStart&&rec.compareEnd?` (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`:''}.`;
+      body=`In <strong>${esc(rec.category)}</strong>, your active holding <strong>${esc(rec.fundName)}</strong> has a ${rec.compareHorizon||'rolling'} median CAGR of ${fmtPct(rec.activeMedian)} versus passive peer <strong>${esc(rec.passiveFundName)}</strong> at ${fmtPct(rec.passiveMedian)}. That means the passive option is ahead by ${fmtPts(rec.gap)} on this category exposure, measured over the shared history window${rec.compareStart&&rec.compareEnd?` (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`:''}.${rec.activeWinPct!=null&&rec.passiveWinPct!=null?` On overlapping ${rec.compareHorizon||''} windows, the passive fund also wins <strong>${fmtPctAbs(rec.passiveWinPct)}</strong> of the time versus the active fund at <strong>${fmtPctAbs(rec.activeWinPct)}</strong>${rec.overlapWindows?` across ${rec.overlapWindows} windows`:''}.`:''}`;
       action=`Review whether ${esc(rec.fundName)} is earning its active-management fee versus ${esc(rec.passiveFundName)}.`;
       metrics=[
-        renderRecMetric('Active 5Y median', fmtPct(rec.activeMedian), 'neg'),
-        renderRecMetric('Passive 5Y median', fmtPct(rec.passiveMedian), 'pos'),
+        renderRecMetric(`Active ${rec.compareHorizon||'Rolling'} median`, fmtPct(rec.activeMedian), 'neg'),
+        renderRecMetric(`Passive ${rec.compareHorizon||'Rolling'} median`, fmtPct(rec.passiveMedian), 'pos'),
         renderRecMetric('Gap', fmtPts(rec.gap)),
-        renderRecMetric('Portfolio weight', fmtPctAbs(rec.currentWeight))
+        renderRecMetric('Portfolio weight', fmtPctAbs(rec.currentWeight)),
+        ...(rec.activeWinPct!=null&&rec.passiveWinPct!=null?[renderRecMetric('Active win rate', fmtPctAbs(rec.activeWinPct), 'neg'),renderRecMetric('Passive win rate', fmtPctAbs(rec.passiveWinPct), 'pos')]:[])
       ];
     }else if(rec.type==='strongest_holding'){
       domain='Core Holding';
-      title=`Strongest 5Y leader: ${esc(rec.fundName)}`;
-      body=`<strong>${esc(rec.fundName)}</strong> is currently your strongest long-term holding on a 5Y rolling median CAGR basis at ${fmtPct(rec.fiveYearMedian)}. It sits in the <strong>${esc(rec.category)}</strong> bucket and can act as the benchmark when you review weaker peers.`;
+      title=`Core holding candidate: ${esc(rec.fundName)}`;
+      body=`<strong>${esc(rec.fundName)}</strong> is currently your strongest peer-qualified holding inside <strong>${esc(rec.category)}</strong>. On overlapping ${rec.compareHorizon||'rolling'} history${rec.compareStart&&rec.compareEnd?` (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`:''}, it has the best rolling median at ${fmtPct(rec.rollingMedian)}.${rec.categoryWinPct!=null?` It also beats category peers in <strong>${fmtPctAbs(rec.categoryWinPct)}</strong> of overlapping ${rec.winRateHorizon||rec.compareHorizon||'rolling'} windows${rec.winRateWindows?` across ${rec.winRateWindows} windows`:''}.`:''} That makes it a better benchmark than a fund chosen only on raw full-history returns.`;
       action='Use this fund as the reference point before replacing or adding to other funds in the same category.';
       metrics=[
-        renderRecMetric('5Y rolling median', fmtPct(rec.fiveYearMedian), 'pos'),
+        renderRecMetric(`${rec.compareHorizon||'Rolling'} median`, fmtPct(rec.rollingMedian), 'pos'),
         renderRecMetric('Portfolio weight', fmtPctAbs(rec.currentWeight)),
         renderRecMetric('Category', esc(rec.category)),
-        renderRecMetric('Status', 'Keep as benchmark')
+        renderRecMetric('Status', 'Keep as benchmark'),
+        ...(rec.categoryWinPct!=null?[renderRecMetric('Category win rate', fmtPctAbs(rec.categoryWinPct), 'pos')]:[])
       ];
     }else if(rec.type==='well_balanced'){
       domain='Portfolio Health';
@@ -4364,6 +4646,7 @@ function renderPortfolioLoaded(){
       </div>
     </article>`;
   };
+  const recommendationBundles=buildRecommendationBundles(visibleRecommendations);
   const recommendationsHtml=recommendations.length?`
     <div class="port-rec-wrap">
       <div class="port-rec-head">
@@ -4379,30 +4662,33 @@ function renderPortfolioLoaded(){
         <button class="port-rec-summary-chip is-medium ${recoFilters.medium?'':'is-off'}" onclick="togglePortfolioRecoPriority('medium')"><span>&#9710; ${recCounts.medium} Medium</span></button>
         <button class="port-rec-summary-chip is-low ${recoFilters.low?'':'is-off'}" onclick="togglePortfolioRecoPriority('low')"><span>&#9675; ${recCounts.low} Low</span></button>
       </div>
-      ${['high','medium','low'].map(priority=>{
-        const items=visibleRecommendations.filter(rec=>rec.priority===priority);
-        if(!items.length) return '';
-        const label=priority==='high'?'High Priority':(priority==='medium'?'Medium Priority':'Low Priority');
-        const sub=priority==='high'
-          ? 'Act first on clear cost leaks, concentration, or persistent laggards'
-          : priority==='medium'
-            ? 'Good review candidates that may need context before acting'
-            : 'Monitor or use as supporting context in future reviews';
-        const sortedItems=[...items].sort((a,b)=>{
-          const ga=recommendationTypeMeta(a.type).group;
-          const gb=recommendationTypeMeta(b.type).group;
-          const groupCmp=ga.localeCompare(gb);
-          if(groupCmp!==0) return groupCmp;
-          return (b.score||0)-(a.score||0);
-        });
-        return `<div class="port-rec-section">
-          <div class="port-rec-section-head">
-            <div class="port-rec-section-title">${label}</div>
-            <div class="port-rec-section-sub">${sub}</div>
+      ${recommendationBundles.length?`<div class="port-rec-bundles">${recommendationBundles.map(bundle=>{
+        const priorityClass=`is-${bundle.priority}`;
+        const priorityLabel=bundle.priority==='high'?'High Priority':(bundle.priority==='medium'?'Medium Priority':'Low Priority');
+        const sortedItems=[...bundle.items].sort((a,b)=>(b.score||0)-(a.score||0));
+        return `<details class="port-rec-bundle ${priorityClass}"${bundle.priority==='high'?' open':''}>
+          <summary>
+            <div class="port-rec-bundle-summary">
+              <div class="port-rec-bundle-copy">
+                <div class="port-rec-bundle-top">
+                  <div class="port-rec-bundle-kicker">${bundle.kicker}</div>
+                  <div class="port-rec-priority ${priorityClass}">${priorityLabel}</div>
+                </div>
+                <div class="port-rec-bundle-title">${bundle.title}</div>
+                <div class="port-rec-bundle-sub">${bundle.subtitle||bundle.blurb}</div>
+                <div class="port-rec-bundle-foot">
+                  <span>${sortedItems.length} item${sortedItems.length===1?'':'s'} &middot; click for fund-wise detail and next steps</span>
+                  <span class="port-rec-bundle-toggle">Open Details</span>
+                </div>
+              </div>
+              <div class="port-rec-bundle-metrics">${bundle.metrics.join('')}</div>
+            </div>
+          </summary>
+          <div class="port-rec-bundle-body">
+            <div class="port-rec-grid">${sortedItems.map(renderRecommendationCard).join('')}</div>
           </div>
-          <div class="port-rec-grid">${sortedItems.map(renderRecommendationCard).join('')}</div>
-        </div>`;
-      }).join('')}
+        </details>`;
+      }).join('')}</div>`:`<div class="port-rec-empty">No recommendations match the active priority filters right now.</div>`}
     </div>`:`<div class="port-rec-wrap"><div class="port-rec-head"><div class="port-rec-titlebar"><div class="port-rec-titlemain"> Recommendations</div></div><div class="port-rec-headline"></div></div><div class="port-rec-empty">No actionable recommendations yet. As the portfolio develops more concentration, cost, or rolling-return signals, this section will start surfacing them here.</div></div>`;
 
   const horizonHeaderCells=h.horizons.map(hz=>`<th style="text-align:center;border-left:1px solid var(--br)">
