@@ -200,6 +200,82 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .nav-date-btn:hover{border-color:var(--br2);color:var(--tx)}
 .nav-date-btn.is-on{background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.45);color:#f8d27a}
 .nav-hover-note{font-size:10px;font-family:'DM Mono',monospace;color:var(--td)}
+.risk-shell{display:flex;flex-direction:column;gap:12px}
+.risk-topline{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:12px 14px;background:rgba(10,16,29,.84);border:1px solid var(--br);border-radius:14px}
+.risk-kicker{font-size:12px;font-weight:900;letter-spacing:2.8px;text-transform:uppercase;color:var(--tx);font-family:'DM Mono',monospace;margin-bottom:5px}
+.risk-desc{font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.55;max-width:880px}
+.risk-pill-row{display:flex;flex-wrap:wrap;gap:8px}
+.risk-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(125,211,252,.22);border-radius:999px;background:rgba(14,23,39,.74);font-size:10px;font-weight:850;color:#dbeafe;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.45px}
+.risk-pill-dot{width:8px;height:8px;border-radius:99px;background:#fbbf24;box-shadow:0 0 16px rgba(251,191,36,.65)}
+.risk-metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:10px}
+.risk-metric-card{min-height:92px;padding:12px 14px;border:1px solid rgba(55,80,118,.68);border-radius:13px;background:rgba(7,12,23,.74)}
+.risk-metric-label{font-size:9px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace;margin-bottom:7px}
+.risk-metric-value{font-size:14px;font-weight:850;color:var(--tx);line-height:1.35;font-family:'DM Mono',monospace;white-space:normal;overflow-wrap:anywhere}
+.risk-metric-number{margin-top:8px;font-size:18px;font-weight:950;line-height:1;font-family:'DM Mono',monospace}
+.risk-metric-number.pos{color:var(--pos)}
+.risk-metric-number.neg{color:var(--neg)}
+.risk-metric-number.info{color:#7dd3fc}
+.risk-metric-number.warn{color:#f8d27a}
+.risk-metric-note{margin-top:7px;font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.45}
+.risk-chart-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(13,19,34,.98),rgba(8,13,24,.98));border:1px solid rgba(55,80,118,.78);border-radius:16px;box-shadow:0 18px 42px rgba(0,0,0,.24);padding:16px}
+.risk-chart-card:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 8% 0%,rgba(56,189,248,.12),transparent 28%),radial-gradient(circle at 92% 4%,rgba(251,191,36,.10),transparent 30%);pointer-events:none}
+.risk-chart-card>*{position:relative}
+.risk-chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.risk-chart-title{font-size:14px;font-weight:900;color:var(--tx);letter-spacing:1.3px;text-transform:uppercase;font-family:'DM Mono',monospace}
+.risk-chart-sub{font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.65;margin-top:5px;max-width:820px}
+.risk-chart-badge{display:inline-flex;align-items:center;justify-content:center;padding:7px 11px;border-radius:999px;border:1px solid rgba(52,211,153,.32);background:rgba(52,211,153,.12);font-size:10px;font-weight:900;color:#bbf7d0;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.7px}
+.risk-chart-card .cw{height:480px}
+.risk-frontier-note{margin-top:10px;font-size:10px;color:var(--td);font-family:'DM Mono',monospace;line-height:1.6}
+.risk-table-wrap{overflow:auto;border:1px solid var(--br);border-radius:var(--r);background:var(--sf);margin-top:0}
+.risk-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;min-width:780px}
+.risk-table th,.risk-table td{padding:10px 12px;border-bottom:1px solid var(--br);white-space:nowrap;text-align:right;font-size:12px}
+.risk-table th{background:var(--sf2);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--td)}
+.risk-table th:first-child,.risk-table td:first-child{text-align:left}
+.risk-table tbody tr:last-child td{border-bottom:none}
+.risk-table-dot{display:inline-block;width:9px;height:9px;border-radius:999px;margin-right:8px;vertical-align:middle}
+.risk-table .pos{color:var(--pos);font-weight:900}
+.risk-table .neg{color:var(--neg);font-weight:900}
+.risk-table .info{color:#7dd3fc;font-weight:900}
+.div-shell{display:flex;flex-direction:column;gap:12px}
+.div-topline{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:12px 14px;background:rgba(10,16,29,.84);border:1px solid var(--br);border-radius:14px}
+.div-kicker{font-size:12px;font-weight:900;letter-spacing:2.8px;text-transform:uppercase;color:var(--tx);font-family:'DM Mono',monospace;margin-bottom:5px}
+.div-desc{font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.55;max-width:900px}
+.div-toggle{display:flex;gap:6px;flex-wrap:wrap}
+.div-toggle-btn{padding:7px 12px;border:1px solid var(--br);border-radius:999px;background:rgba(14,23,39,.74);color:var(--td);font-size:10px;font-weight:900;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.6px;cursor:pointer}
+.div-toggle-btn.active{background:var(--acc);border-color:var(--acc);color:#000}
+.div-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px}
+.div-summary-card{padding:12px 14px;min-height:82px;border:1px solid rgba(55,80,118,.68);border-radius:13px;background:rgba(7,12,23,.74)}
+.div-summary-label{font-size:9px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace;margin-bottom:7px}
+.div-summary-value{font-size:17px;font-weight:950;color:var(--tx);font-family:'DM Mono',monospace;line-height:1.2}
+.div-summary-value.neg{color:var(--neg)}
+.div-summary-value.warn{color:#f8d27a}
+.div-summary-value.info{color:#7dd3fc}
+.div-summary-note{font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;margin-top:7px;line-height:1.45}
+.div-heat-card{background:linear-gradient(145deg,rgba(13,19,34,.98),rgba(8,13,24,.98));border:1px solid rgba(55,80,118,.78);border-radius:16px;box-shadow:0 18px 42px rgba(0,0,0,.24);padding:14px;overflow:hidden}
+.div-heat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.div-heat-title{font-size:14px;font-weight:900;color:var(--tx);letter-spacing:1.3px;text-transform:uppercase;font-family:'DM Mono',monospace}
+.div-heat-sub{font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.6;margin-top:5px}
+.div-legend{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10px;color:var(--td)}
+.div-legend-swatch{width:34px;height:9px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
+.div-heat-wrap{overflow:auto;border:1px solid var(--br);border-radius:13px;max-height:70vh;background:rgba(5,10,19,.64)}
+.corr-matrix{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font-family:'DM Mono',monospace}
+.corr-matrix th,.corr-matrix td{border-right:1px solid rgba(30,46,70,.88);border-bottom:1px solid rgba(30,46,70,.88)}
+.corr-matrix th{position:sticky;top:0;z-index:2;background:#0d1728;color:#cbd5e1;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;padding:9px;vertical-align:bottom}
+.corr-matrix th:first-child{left:0;z-index:4;min-width:220px;text-align:left}
+.corr-matrix .corr-row-h{position:sticky;left:0;z-index:3;background:#0d1728;color:var(--tx);font-size:11px;font-weight:900;text-align:left;padding:9px;min-width:220px;max-width:260px;white-space:normal;line-height:1.35}
+.corr-col-name{writing-mode:vertical-rl;transform:rotate(180deg);max-height:190px;white-space:nowrap}
+.corr-cell{min-width:86px;height:64px;text-align:center;color:#04111f;font-weight:950;font-size:16px;position:relative}
+.corr-cell .corr-n{display:block;margin-top:5px;font-size:9px;font-weight:900;opacity:.78}
+.corr-cell.na{background:#0a1220!important;color:var(--td);font-size:11px}
+.corr-cell.diag{background:#132037!important;color:#64748b}
+.div-pair-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:10px}
+.div-pair-card{border:1px solid var(--br);border-radius:13px;background:rgba(7,12,23,.74);padding:12px}
+.div-pair-score{font-size:22px;font-weight:950;font-family:'DM Mono',monospace;line-height:1;color:var(--tx)}
+.div-pair-title{font-size:11px;font-weight:900;color:var(--tx);font-family:'DM Mono',monospace;line-height:1.45;margin-top:8px}
+.div-pair-note{font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.45;margin-top:7px}
+@media(max-width:980px){.risk-chart-card .cw{height:420px}}
+@media(max-width:980px){.risk-metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.risk-metrics-grid{grid-template-columns:1fr}.risk-chart-card{border-radius:14px}}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center}
 .modal{background:var(--sf2);border:1px solid var(--br2);border-radius:12px;width:540px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 28px 70px rgba(0,0,0,.8)}
@@ -469,6 +545,41 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .fwd-note{font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;margin:-4px 0 12px}
 .fwd-stats{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 10px;font-size:10px;color:var(--tm);font-family:'DM Mono',monospace}
 .fwd-legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:-4px 0 14px;font-size:11px;color:var(--tm);font-family:'DM Mono',monospace}
+.sipls-shell{display:flex;flex-direction:column;gap:12px}
+.sipls-topline{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:12px 14px;background:rgba(10,16,29,.84);border:1px solid var(--br);border-radius:14px}
+.sipls-kicker{font-size:12px;font-weight:900;letter-spacing:2.8px;text-transform:uppercase;color:var(--tx);font-family:'DM Mono',monospace;margin-bottom:5px}
+.sipls-desc{font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.55;max-width:920px}
+.sipls-pill-row{display:flex;flex-wrap:wrap;gap:8px}
+.sipls-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(96,165,250,.24);border-radius:999px;background:rgba(14,23,39,.74);font-size:10px;font-weight:850;color:#dbeafe;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.45px}
+.sipls-pill-dot{width:8px;height:8px;border-radius:999px;background:#34d399;box-shadow:0 0 14px rgba(52,211,153,.55)}
+.sipls-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.sipls-field{padding:12px 13px;border:1px solid rgba(55,80,118,.68);border-radius:13px;background:rgba(7,12,23,.74)}
+.sipls-label{font-size:9px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace;margin-bottom:7px}
+.sipls-sub{font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.45;margin-top:6px}
+.sipls-input{width:100%;padding:8px 10px;background:var(--sf3);border:1px solid var(--br);border-radius:8px;color:var(--tx);font-size:12px;font-weight:600;font-family:'DM Mono',monospace;outline:none}
+.sipls-input:focus{border-color:var(--acc)}
+.sipls-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.sipls-fund-card{width:100%;padding:14px;border:1px solid var(--br);border-radius:14px;background:rgba(10,16,29,.84);cursor:pointer;transition:border-color .15s,transform .15s;text-align:left;appearance:none}
+.sipls-fund-card:hover{border-color:var(--br2);transform:translateY(-1px)}
+.sipls-fund-card.is-active{border-color:rgba(251,191,36,.42);box-shadow:inset 0 0 0 1px rgba(251,191,36,.16)}
+.sipls-fund-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.sipls-fund-name{font-size:14px;font-weight:800;color:var(--tx);line-height:1.25}
+.sipls-fund-meta{font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;margin-top:5px}
+.sipls-mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.sipls-mini-stat{padding:9px 10px;border:1px solid rgba(73,97,135,.32);border-radius:10px;background:rgba(9,15,28,.55)}
+.sipls-mini-value{font-size:15px;font-weight:850;color:var(--tx);font-family:'DM Mono',monospace;line-height:1.1}
+.sipls-mini-value.pos{color:var(--pos)}
+.sipls-mini-value.neg{color:var(--neg)}
+.sipls-mini-label{margin-top:4px;font-size:9px;color:var(--td);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.45px}
+.sipls-detail-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:12px}
+.sipls-note{font-size:10px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.55}
+.sipls-table-wrap{overflow:auto;border:1px solid var(--br);border-radius:12px}
+.sipls-table{width:100%;border-collapse:collapse;font-size:12px}
+.sipls-table th,.sipls-table td{padding:10px 12px;border-bottom:1px solid rgba(30,46,70,.92);text-align:right;white-space:nowrap}
+.sipls-table th:first-child,.sipls-table td:first-child{text-align:left}
+.sipls-table th{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--td);font-family:'DM Mono',monospace;background:rgba(9,15,28,.92);position:sticky;top:0}
+.sipls-table tr:last-child td{border-bottom:none}
+.sipls-empty{padding:22px;border:1px dashed var(--br2);border-radius:14px;background:rgba(10,16,29,.45);font-size:11px;color:var(--tm);font-family:'DM Mono',monospace;line-height:1.6}
 .fwd-legend-item{display:inline-flex;align-items:center;gap:7px}
 .fwd-legend-box{width:11px;height:11px;border-radius:2px;border:1px solid rgba(251,191,36,.6);background:rgba(251,191,36,.08)}
 .fwd-legend-pos{color:var(--pos);font-weight:700}
@@ -529,7 +640,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
 .proj-tbl .freeze-col::after{content:'';position:absolute;top:0;right:-1px;width:1px;height:100%;background:var(--br2)}
 .proj-tbl .freeze-col.total-cell{background:var(--sf3)}
 
-@media(max-width:860px){.tiles-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
+@media(max-width:860px){.tiles-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.sipls-detail-grid{grid-template-columns:1fr}}
 
 @media(max-width:600px){
   .snap-tbl th,.snap-tbl td{padding:8px 10px;font-size:11px}
@@ -732,7 +843,10 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
             <div class="tab active" data-tab="snapshot" onclick="switchTab('snapshot')">Snapshot</div>
             <div class="tab" data-tab="distributions" onclick="switchTab('distributions')">Rolling Returns</div>
             <div class="tab" data-tab="timeseries" onclick="switchTab('timeseries')">Time Series</div>
+            <div class="tab" data-tab="riskreturn" onclick="switchTab('riskreturn')">Risk vs Return</div>
+            <div class="tab" data-tab="diversification" onclick="switchTab('diversification')">Diversification</div>
             <div class="tab" data-tab="forwardmap" onclick="switchTab('forwardmap')">Conditional Returns</div>
+            <div class="tab" data-tab="sipls" onclick="switchTab('sipls')">SIP vs Lumpsum</div>
             <button class="export-btn" id="exportBtn" onclick="exportToExcel()" title="Download validation workbook">&#11015; Export Excel</button>
           </div>
           <div class="content">
@@ -740,7 +854,10 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-heig
             <div class="tab-pane active" id="pane-snapshot"><div id="snapshotContent"></div></div>
             <div class="tab-pane" id="pane-distributions"><div id="distContent"></div></div>
             <div class="tab-pane" id="pane-timeseries"><div id="tsContent"></div></div>
+            <div class="tab-pane" id="pane-riskreturn"><div id="riskReturnContent"></div></div>
+            <div class="tab-pane" id="pane-diversification"><div id="diversificationContent"></div></div>
             <div class="tab-pane" id="pane-forwardmap"><div id="forwardMapContent"></div></div>
+            <div class="tab-pane" id="pane-sipls"><div id="sipLsContent"></div></div>
           </div>
         </div>
       </main>
@@ -1146,7 +1263,7 @@ const TS_SLICES = [
   {key:'full',lbl:'Full', ms: null},
 ];
 
-const S = { funds:{}, favs:[], selected:[], charts:{}, page:'portfolio', tab:'snapshot', pending:null, holdingsPending:null, holdings:null, holdingsRawRows:null, holdingsOverrides:{}, holdingsHistory:[], tsSlice:'full', groupCollapsed:{}, portfolioGroupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', useCustom:false, from:'', to:'' }, forwardView:{ metric:'cagr', past:'1y', future:'1y' }, portfolioView:{ showMatchedFund:true, sortKey:'holding', sortDir:1, outlookMode:'table', breakdownMode:'table', groupByCategory:false, columns:{ invested:false, current:true, pl:true, daily:true, monthly:true } } };
+const S = { funds:{}, favs:[], selected:[], charts:{}, page:'portfolio', tab:'snapshot', pending:null, holdingsPending:null, holdings:null, holdingsRawRows:null, holdingsOverrides:{}, holdingsHistory:[], tsSlice:'full', groupCollapsed:{}, portfolioGroupCollapsed:{}, hiddenFunds:{}, navView:{ mode:'absolute', timeline:'shared', useCustom:false, from:'', to:'' }, forwardView:{ metric:'cagr', past:'1y', future:'1y' }, divView:{ freq:'weekly' }, sipLsView:{ amount:100000, sipMonths:12, cashRate:6.5, focusFundId:'' }, portfolioView:{ showMatchedFund:true, sortKey:'holding', sortDir:1, outlookMode:'table', breakdownMode:'table', groupByCategory:false, recoExpanded:{}, columns:{ invested:false, current:true, pl:true, daily:true, monthly:true } } };
 const LS_MF_FAVS = 'mf_favs_v1';
 const LS_SB_COLLAPSED = 'mf_sidebar_collapsed_v1';
 const LS_GROUP_COLLAPSED = 'mf_group_collapsed_v1';
@@ -1672,9 +1789,12 @@ function metricPointDate(pt){
 function filterMetricSeries(points){
   const arr=(points||[]).filter(Boolean);
   if(!arr.length) return arr;
-  if(S.navView?.useCustom){
-    const fromDt=S.navView.from?parseIsoLocalDate(S.navView.from):null;
-    const toDt=S.navView.to?parseIsoLocalDate(S.navView.to):null;
+  const forceShared=getVisibleFunds().length>1&&useSharedTimeline();
+  if(S.navView?.useCustom || forceShared){
+    const bounds=S.navView?.useCustom?{from:S.navView.from||'',to:S.navView.to||''}:getPresetDateBounds();
+    if(!S.navView?.useCustom&&forceShared&&(!bounds.from||!bounds.to)) return [];
+    const fromDt=bounds.from?parseIsoLocalDate(bounds.from):null;
+    const toDt=bounds.to?parseIsoLocalDate(bounds.to):null;
     const fromMs=fromDt?new Date(fromDt.getFullYear(),fromDt.getMonth(),fromDt.getDate(),0,0,0,0).getTime():null;
     const toMs=toDt?new Date(toDt.getFullYear(),toDt.getMonth(),toDt.getDate(),23,59,59,999).getTime():null;
     const sliced=arr.filter(pt=>{
@@ -1686,6 +1806,7 @@ function filterMetricSeries(points){
       return true;
     });
     if(sliced.length>=2) return sliced;
+    if(forceShared) return [];
   }
   const ms=getSliceMs?.();
   if(!ms) return arr;
@@ -1858,6 +1979,8 @@ function recommendationTypeMeta(type){
     fund_concentration:{group:'Risk', icon:'\u{1F3AF}', label:'Concentration Risk'},
     category_concentration:{group:'Diversification', icon:'\u{1F9E9}', label:'Diversification'},
     duplicate_exposure:{group:'Diversification', icon:'\u{1F504}', label:'Overlap'},
+    correlation_overlap:{group:'Diversification', icon:'\u{1F517}', label:'Correlation Overlap'},
+    risk_efficiency:{group:'Risk', icon:'\u{1F4C8}', label:'Risk Efficiency'},
     category_underperformer:{group:'Performance', icon:'\u{1F4C9}', label:'Performance'},
     momentum_decay:{group:'Performance', icon:'\u26A1', label:'Momentum Alert'},
     active_vs_passive:{group:'Strategy', icon:'\u2696\uFE0F', label:'Active vs Passive'},
@@ -1880,6 +2003,220 @@ function estimateRateGapValue(currentValue, lowerPct, higherPct, years){
   const lowRate=Math.max(-0.95,(isFinite(lowerPct)?lowerPct:0)/100);
   const highRate=Math.max(-0.95,(isFinite(higherPct)?higherPct:0)/100);
   return Math.max(0,(currentValue*Math.pow(1+highRate,years))-(currentValue*Math.pow(1+lowRate,years)));
+}
+function sliceTrailingRawData(data,years=3,minPoints=60){
+  const arr=(data||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+  if(!arr.length) return [];
+  const maxT=arr[arr.length-1].date.getTime();
+  const sliced=arr.filter(p=>p.date.getTime()>=maxT-years*MS_YEAR);
+  return sliced.length>=minPoints?sliced:arr;
+}
+function computeRiskStatsFromRawData(data){
+  const arr=(data||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+  if(arr.length<12) return null;
+  const first=arr[0], last=arr[arr.length-1];
+  const years=(last.date-first.date)/MS_YEAR;
+  if(years<0.25) return null;
+  const periodReturns=[];
+  for(let i=1;i<arr.length;i++){
+    const prev=arr[i-1], curr=arr[i];
+    if(prev.nav>0&&curr.nav>0){
+      const r=(curr.nav/prev.nav)-1;
+      if(isFinite(r)) periodReturns.push(r);
+    }
+  }
+  if(periodReturns.length<8) return null;
+  const stats=calcReturnStats(periodReturns,RISK_RETURN_PERIODS_PER_YEAR);
+  if(!stats) return null;
+  return {
+    returnPct:(Math.pow(last.nav/first.nav,1/years)-1)*100,
+    volatility:stats.volatility,
+    sharpe:stats.sharpe,
+    maxDrawdown:calcMaxDrawdownPct(arr),
+    points:arr.length,
+    years,
+    start:first.date,
+    end:last.date
+  };
+}
+function commonRiskStatsForFunds(fundA,fundB){
+  const toMap=fund=>{
+    const arr=(sliceData(fund?.rawData||[])||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+    const map=new Map();
+    for(const p of arr) map.set(isoDateKey(p.date),p);
+    return map;
+  };
+  const mapA=toMap(fundA), mapB=toMap(fundB);
+  if(mapA.size<12||mapB.size<12) return null;
+  const keys=[...mapA.keys()].filter(k=>mapB.has(k)).sort();
+  if(keys.length<40) return null;
+  const dataA=keys.map(k=>mapA.get(k)).filter(Boolean);
+  const dataB=keys.map(k=>mapB.get(k)).filter(Boolean);
+  if(dataA.length!==dataB.length||dataA.length<40) return null;
+  const statsA=computeRiskStatsFromRawData(dataA);
+  const statsB=computeRiskStatsFromRawData(dataB);
+  if(!statsA||!statsB) return null;
+  return {
+    a:statsA,
+    b:statsB,
+    points:keys.length,
+    start:statsA.start,
+    end:statsA.end
+  };
+}
+function buildReturnMapFromData(data,freq='weekly'){
+  const arr=(data||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+  if(arr.length<3) return new Map();
+  if(freq==='weekly'){
+    const weekEnds=new Map();
+    for(const p of arr) weekEnds.set(weekStartKey(p.date),p);
+    const weeks=[...weekEnds.keys()].sort();
+    const out=new Map();
+    for(let i=1;i<weeks.length;i++){
+      const prev=weekEnds.get(weeks[i-1]);
+      const curr=weekEnds.get(weeks[i]);
+      if(prev?.nav>0&&curr?.nav>0){
+        const r=(curr.nav/prev.nav)-1;
+        if(isFinite(r)) out.set(weeks[i],r);
+      }
+    }
+    return out;
+  }
+  const out=new Map();
+  for(let i=1;i<arr.length;i++){
+    const prev=arr[i-1], curr=arr[i];
+    if(prev?.nav>0&&curr?.nav>0){
+      const r=(curr.nav/prev.nav)-1;
+      if(isFinite(r)) out.set(isoDateKey(curr.date),r);
+    }
+  }
+  return out;
+}
+function buildPortfolioRiskActions(matched,h){
+  const rows=(matched||[]).map(item=>{
+    const stats=computeFundRiskReturn(item.fund);
+    return stats?{item,stats}:null;
+  }).filter(Boolean);
+  if(rows.length<2) return [];
+  const sharpes=rows.map(r=>r.stats.sharpe).filter(v=>v!=null&&isFinite(v)).sort((a,b)=>a-b);
+  const vols=rows.map(r=>r.stats.volatility).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  if(sharpes.length<2||vols.length<2) return [];
+  const medianSharpe=medianOfSorted(sharpes);
+  const medianVol=medianOfSorted(vols);
+  const topSharpe=[...rows].filter(r=>r.stats.sharpe!=null).sort((a,b)=>(b.stats.sharpe??-999)-(a.stats.sharpe??-999))[0]||null;
+  const materialReturnGap=2;
+  const sameRiskTolerance=0.5;
+  return rows.map(row=>{
+    const dominators=rows.map(peer=>{
+      if(peer===row) return false;
+      const pairStats=commonRiskStatsForFunds(row.item.fund,peer.item.fund);
+      if(!pairStats) return null;
+      const ownStats=pairStats.a;
+      const peerStats=pairStats.b;
+      const returnGap=peerStats.returnPct-ownStats.returnPct;
+      const comparableRisk=peerStats.volatility<=ownStats.volatility+sameRiskTolerance;
+      if(!isFinite(returnGap)||returnGap<materialReturnGap||!comparableRisk) return null;
+      return {
+        peer,
+        pairStats,
+        ownStats,
+        peerStats,
+        returnGap,
+        riskGap:ownStats.volatility-peerStats.volatility,
+        sharpeGap:(peerStats.sharpe??-999)-(ownStats.sharpe??-999)
+      };
+    }).filter(Boolean).sort((a,b)=>
+      b.returnGap-a.returnGap ||
+      b.riskGap-a.riskGap ||
+      b.sharpeGap-a.sharpeGap ||
+      (b.peer.item.currentWeight||0)-(a.peer.item.currentWeight||0)
+    );
+    const bestDominator=dominators[0]||null;
+    const sharpeGap=medianSharpe-(row.stats.sharpe??medianSharpe);
+    const lowAbsoluteSharpe=row.stats.sharpe!=null&&row.stats.sharpe<0.25;
+    const lowPeerSharpe=row.stats.sharpe!=null&&row.stats.sharpe<Math.max(0,medianSharpe-0.35);
+    const lowSharpe=lowAbsoluteSharpe||lowPeerSharpe;
+    if(!bestDominator&&!lowSharpe) return null;
+    const redFlag=!!bestDominator;
+    const benchmark=bestDominator?.peer||topSharpe;
+    const fundStats=bestDominator?.ownStats||row.stats;
+    const benchmarkStats=bestDominator?.peerStats||benchmark?.stats||null;
+    const returnGap=bestDominator?.returnGap??((benchmarkStats?.returnPct??fundStats.returnPct)-fundStats.returnPct);
+    const riskGap=bestDominator?.riskGap??(fundStats.volatility-(benchmarkStats?.volatility??fundStats.volatility));
+    const outputLowAbsoluteSharpe=fundStats.sharpe!=null&&fundStats.sharpe<0.25;
+    const outputLowPeerSharpe=fundStats.sharpe!=null&&fundStats.sharpe<Math.max(0,medianSharpe-0.35);
+    const outputLowSharpe=outputLowAbsoluteSharpe||outputLowPeerSharpe;
+    const severeDominance=redFlag&&(returnGap>=4||riskGap>=2);
+    const priority=redFlag
+      ? ((row.item.currentWeight>=3&&(severeDominance||returnGap>=materialReturnGap))?'high':'medium')
+      : (row.item.currentWeight>=4?'medium':'low');
+    const reason=redFlag&&outputLowSharpe?'both':redFlag?'dominated_risk_return':'low_sharpe';
+    return {
+      type:'risk_efficiency',
+      priority,
+      score:(redFlag?1000:0)+(Math.max(0,returnGap)*120)+(Math.max(0,riskGap)*20)+(Math.max(0,sharpeGap)*80)+row.item.currentWeight,
+      fundName:row.item.schemeName,
+      category:row.item.category,
+      currentWeight:row.item.currentWeight,
+      currentValue:row.item.currentValue,
+      reason,
+      redFlag,
+      lowSharpe:outputLowSharpe,
+      lowAbsoluteSharpe:outputLowAbsoluteSharpe,
+      lowPeerSharpe:outputLowPeerSharpe,
+      sharpe:fundStats.sharpe,
+      medianSharpe,
+      volatility:fundStats.volatility,
+      medianVolatility:medianVol,
+      returnPct:fundStats.returnPct,
+      maxDrawdown:fundStats.maxDrawdown,
+      returnGap,
+      riskGap,
+      sameRiskTolerance,
+      compareStart:bestDominator?.pairStats?.start||fundStats.start,
+      compareEnd:bestDominator?.pairStats?.end||fundStats.end,
+      comparisonPoints:bestDominator?.pairStats?.points||fundStats.points,
+      comparisonBasis:redFlag?'overlapping shared NAV dates':'selected fund NAV window',
+      benchmarkFundName:benchmark?.item?.schemeName||null,
+      benchmarkSharpe:benchmarkStats?.sharpe??null,
+      benchmarkReturnPct:benchmarkStats?.returnPct??null,
+      benchmarkVolatility:benchmarkStats?.volatility??null
+    };
+  }).filter(Boolean);
+}
+function buildPortfolioCorrelationActions(matched,h){
+  const rows=(matched||[]).map(item=>{
+    const data=sliceTrailingRawData(item.fund?.rawData,3,80);
+    const map=buildReturnMapFromData(data,'weekly');
+    return {item,map};
+  }).filter(x=>x.map.size>=26);
+  if(rows.length<2) return [];
+  const pairs=[];
+  for(let i=0;i<rows.length;i++){
+    for(let j=i+1;j<rows.length;j++){
+      const p=computeCorrelationPair(rows[i].map,rows[j].map,26);
+      if(p.corr==null||!isFinite(p.corr)) continue;
+      const combinedWeight=(rows[i].item.currentWeight||0)+(rows[j].item.currentWeight||0);
+      if(p.corr<0.9||combinedWeight<4) continue;
+      pairs.push({i,j,...p,combinedWeight,combinedValue:(rows[i].item.currentValue||0)+(rows[j].item.currentValue||0)});
+    }
+  }
+  return pairs.sort((a,b)=>b.corr-a.corr||b.combinedWeight-a.combinedWeight).slice(0,5).map(pair=>({
+    type:'correlation_overlap',
+    priority:'low',
+    score:pair.corr*100+pair.combinedWeight,
+    fundA:rows[pair.i].item.schemeName,
+    fundB:rows[pair.j].item.schemeName,
+    categoryA:rows[pair.i].item.category,
+    categoryB:rows[pair.j].item.category,
+    weightA:rows[pair.i].item.currentWeight,
+    weightB:rows[pair.j].item.currentWeight,
+    combinedWeight:pair.combinedWeight,
+    combinedValue:pair.combinedValue,
+    corr:pair.corr,
+    observations:pair.n,
+    basis:'3Y weekly NAV returns'
+  }));
 }
 function findDirectPlanAlternative(name,currentFundId,currentGroup){
   const key=comparablePlanKey(name);
@@ -2166,6 +2503,9 @@ function buildPortfolioRecommendations(h){
       currentWeight:item.currentWeight
     });
   }
+
+  recs.push(...buildPortfolioCorrelationActions(matched,h));
+  recs.push(...buildPortfolioRiskActions(matched,h));
 
   const tailHoldings=matched.filter(item=>item.currentWeight<2);
   if(tailHoldings.length>=3){
@@ -2746,6 +3086,12 @@ function updateExportButton(){
   if(S.tab==='distributions'){
     btn.title='Download rolling returns workbook';
     btn.innerHTML='&#11015; Export Rolling Returns';
+  }else if(S.tab==='riskreturn'){
+    btn.title='Download Sharpe and risk validation workbook';
+    btn.innerHTML='&#11015; Export Sharpe Validation';
+  }else if(S.tab==='sipls'){
+    btn.title='Download SIP vs Lumpsum backup workbook';
+    btn.innerHTML='&#11015; Export SIP vs Lumpsum';
   }else if(S.tab==='forwardmap'){
     btn.title='Download conditional returns workbook';
     btn.innerHTML='&#11015; Export Conditional Returns';
@@ -3382,6 +3728,9 @@ function renderCurrentPane(){
   updateExportButton();
   if(S.tab==='snapshot') renderSnapshot();
   else if(S.tab==='distributions') renderDistributions();
+  else if(S.tab==='riskreturn') renderRiskReturn();
+  else if(S.tab==='diversification') renderDiversification();
+  else if(S.tab==='sipls') renderSipVsLumpsum();
   else if(S.tab==='forwardmap') renderForwardMap();
   else renderTimeSeries();
 }
@@ -3441,6 +3790,12 @@ function switchPage(p){
   document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+p));
   if(p==='portfolio') renderPortfolioPage();
   else renderDashboard();
+}
+
+function setPortfolioRecoBundleOpen(key,isOpen){
+  S.portfolioView=S.portfolioView||{};
+  S.portfolioView.recoExpanded=S.portfolioView.recoExpanded||{};
+  S.portfolioView.recoExpanded[key]=!!isOpen;
 }
 
 // -----------------------------------------------------
@@ -3681,8 +4036,9 @@ function renderPortfolioLoaded(){
   const h=S.holdings;
   if(!h){ renderPortfolioPage(); return; }
 
-  S.portfolioView=S.portfolioView||{showMatchedFund:true,sortKey:'holding',sortDir:1,outlookMode:'table',breakdownMode:'table',projectionBasis:'historical',projectionScenario:'all',groupByCategory:false,columns:{ invested:false, current:true, pl:true, daily:true, monthly:true }};
+  S.portfolioView=S.portfolioView||{showMatchedFund:true,sortKey:'holding',sortDir:1,outlookMode:'table',breakdownMode:'table',projectionBasis:'historical',projectionScenario:'all',groupByCategory:false,recoExpanded:{},columns:{ invested:false, current:true, pl:true, daily:true, monthly:true }};
   S.portfolioView.recoFilters=S.portfolioView.recoFilters||{high:true,medium:true,low:true};
+  S.portfolioView.recoExpanded=S.portfolioView.recoExpanded||{};
   const showMatchedFund=S.portfolioView.showMatchedFund!==false;
   const outlookMode=S.portfolioView.outlookMode==='chart'?'chart':'table';
   const breakdownMode=(S.portfolioView.breakdownMode==='pie'||S.portfolioView.breakdownMode==='donut')?'pie':'table';
@@ -4348,6 +4704,8 @@ function renderPortfolioLoaded(){
       fund_concentration:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
       category_concentration:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
       duplicate_exposure:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
+      correlation_overlap:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
+      risk_efficiency:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
       fragmentation:{id:'risk_overlap', title:'Risk & Overlap Control', kicker:'Risk / Diversification', blurb:'Single-fund concentration, bucket concentration, overlap, and tail-position cleanup ideas.'},
       category_underperformer:{id:'performance_winrate', title:'Performance & Win Rate Review', kicker:'Performance / Win Rate', blurb:'Persistent laggards, weak peer-beating frequency, and stronger internal benchmarks to use when consolidating holdings.'},
       momentum_decay:{id:'performance_winrate', title:'Performance & Win Rate Review', kicker:'Performance / Win Rate', blurb:'Persistent laggards, weak peer-beating frequency, and stronger internal benchmarks to use when consolidating holdings.'},
@@ -4398,11 +4756,19 @@ function renderPortfolioLoaded(){
     if(bundle.id==='risk_overlap'){
       const exposedWeight=bundle.items.reduce((sum,item)=>sum+(item.currentWeight||item.combinedWeight||0),0);
       const maxSingle=Math.max(...bundle.items.map(item=>item.currentWeight||0),0);
+      const riskFlags=bundle.items.filter(item=>item.type==='risk_efficiency'&&item.redFlag);
+      const lowSharpe=bundle.items.filter(item=>item.type==='risk_efficiency'&&!item.redFlag);
+      const corrPairs=bundle.items.filter(item=>item.type==='correlation_overlap');
       return {
-        subtitle:`Control concentration, clean overlap, and simplify tail positions before they become harder to unwind.`,
+        subtitle:riskFlags.length
+          ? `${riskFlags.length} fund${riskFlags.length===1?'':'s'} show lower return for same-or-higher risk. Treat these as the first review queue.`
+          : `Control concentration, clean overlap, and simplify tail positions before they become harder to unwind.`,
         metrics:[
           renderBundleMetric('Review items', String(bundle.items.length)),
           renderBundleMetric('Affected weight', exposedWeight?fmtPctAbs(exposedWeight):'-'),
+          renderBundleMetric('Risk red flags', String(riskFlags.length), riskFlags.length?'neg':''),
+          renderBundleMetric('Low Sharpe', String(lowSharpe.length), lowSharpe.length?'neg':''),
+          renderBundleMetric('Correlation nudges', String(corrPairs.length)),
           renderBundleMetric('Max concentration', maxSingle?fmtPctAbs(maxSingle):'-'),
           renderBundleMetric('Tail positions', String(bundle.items.filter(item=>item.type==='fragmentation').reduce((sum,item)=>sum+(item.holdingCount||0),0)||0))
         ]
@@ -4448,7 +4814,7 @@ function renderPortfolioLoaded(){
     const meta=recommendationBundleMeta(rec.type);
     const priority=rec.priority||'low';
     const bucketKey=`${meta.id}__${priority}`;
-    if(!map.has(bucketKey)) map.set(bucketKey,{...meta,priority,items:[]});
+    if(!map.has(bucketKey)) map.set(bucketKey,{...meta,key:bucketKey,priority,items:[]});
     map.get(bucketKey).items.push(rec);
     return map;
   },new Map()).values()).map(bundle=>{
@@ -4515,6 +4881,61 @@ function renderPortfolioLoaded(){
         renderRecMetric('Current value', fmtAmtShort(rec.currentValue)),
         renderRecMetric('Lead fund', esc(rec.strongestFund||'Review')),
         ...(rec.compareHorizon?[renderRecMetric('Comparison basis', `${rec.compareHorizon} overlap`)]:[])
+      ];
+    }else if(rec.type==='correlation_overlap'){
+      domain='Diversification';
+      title=`High correlation: ${esc(rec.fundA)} vs ${esc(rec.fundB)}`;
+      body=`<strong>${esc(rec.fundA)}</strong> and <strong>${esc(rec.fundB)}</strong> have a <strong>${rec.corr.toFixed(2)}</strong> correlation on ${rec.basis}. Together they are ${fmtPctAbs(rec.combinedWeight)} of the portfolio, so this pair may look like two holdings but behave like one exposure.`;
+      action='Use the Diversification tab to inspect the full matrix, then decide whether both funds deserve fresh money or whether one should become the category benchmark.';
+      note='Correlation uses overlapping weekly NAV returns, not raw NAV levels. High correlation does not automatically mean sell, but it does challenge the diversification benefit.';
+      metrics=[
+        renderRecMetric('Correlation', rec.corr.toFixed(2), rec.corr>=0.95?'neg':''),
+        renderRecMetric('Combined weight', fmtPctAbs(rec.combinedWeight)),
+        renderRecMetric('Combined value', fmtAmtShort(rec.combinedValue)),
+        renderRecMetric('Overlap points', String(rec.observations)),
+        renderRecMetric('Fund A weight', fmtPctAbs(rec.weightA)),
+        renderRecMetric('Fund B weight', fmtPctAbs(rec.weightB))
+      ];
+    }else if(rec.type==='risk_efficiency'){
+      domain='Risk Efficiency';
+      const benchmarkName=rec.benchmarkFundName||'the stronger risk-return peer';
+      const overlapNote=rec.compareStart&&rec.compareEnd
+        ? ` over the overlapping shared NAV window (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)}${rec.comparisonPoints?`, ${rec.comparisonPoints} shared NAV dates`:''})`
+        : ' over the overlapping shared NAV window';
+      const fundWindowNote=rec.compareStart&&rec.compareEnd
+        ? ` over the selected fund NAV window (${fmtFullDate(rec.compareStart)} to ${fmtFullDate(rec.compareEnd)})`
+        : ' over the selected fund NAV window';
+      const riskPhrase=rec.riskGap>=0
+        ? `while taking <strong>${fmtPts(rec.riskGap)}</strong> more annualized risk`
+        : `with broadly similar annualized risk (within the ${fmtPts(rec.sameRiskTolerance)} tolerance)`;
+      if(rec.redFlag){
+        title=`Red flag: lower return for same/higher risk - ${esc(rec.fundName)}`;
+        body=`<strong>${esc(rec.fundName)}</strong> delivered <strong>${fmtPct(rec.returnPct)}</strong> versus <strong>${esc(benchmarkName)}</strong> at <strong>${fmtPct(rec.benchmarkReturnPct)}</strong>, a <strong>${fmtPts(rec.returnGap)}</strong> return gap, ${riskPhrase}. That is a red flag because the extra risk is not being paid for${overlapNote}.`;
+        action=`Pause fresh investments into ${esc(rec.fundName)}. In the Risk vs Return tab, set the custom range to this overlap window before comparing it against ${esc(benchmarkName)}; then consider consolidating only after checking tax impact, exit load, and whether the mandates are truly comparable.`;
+        note=rec.lowSharpe?'It is also weak on Sharpe, so this is both a return-for-risk problem and a risk-adjusted return problem.':'This is a risk-return dominance flag, not an automatic sell instruction.';
+      }else{
+        title=`Problematic risk-adjusted profile: ${esc(rec.fundName)}`;
+        body=`<strong>${esc(rec.fundName)}</strong> has a Sharpe ratio of <strong>${rec.sharpe==null?'-':rec.sharpe.toFixed(2)}</strong> versus the portfolio peer median of <strong>${rec.medianSharpe.toFixed(2)}</strong>. The fund is not strictly dominated on return versus risk, but its reward per unit of volatility is weak${fundWindowNote}.`;
+        action=`Keep ${esc(rec.fundName)} on a watchlist and avoid adding fresh money until its Sharpe profile improves versus peers in the Risk vs Return tab.`;
+        note=rec.lowAbsoluteSharpe?'The absolute Sharpe is below 0.25, which is a poor risk-adjusted payoff in this framework.':'The Sharpe is materially below the portfolio peer median.';
+      }
+      metrics=rec.redFlag?[
+        renderRecMetric('Fund return', fmtPct(rec.returnPct), rec.returnPct>=0?'pos':'neg'),
+        renderRecMetric('Peer return', rec.benchmarkReturnPct==null?'-':fmtPct(rec.benchmarkReturnPct), rec.benchmarkReturnPct!=null&&rec.benchmarkReturnPct>=rec.returnPct?'pos':''),
+        renderRecMetric('Return gap', rec.returnGap==null?'-':fmtPts(rec.returnGap), 'neg'),
+        renderRecMetric('Fund risk', fmtPctAbs(rec.volatility), 'neg'),
+        renderRecMetric('Peer risk', rec.benchmarkVolatility==null?'-':fmtPctAbs(rec.benchmarkVolatility)),
+        renderRecMetric('Risk gap', rec.riskGap==null?'-':fmtPts(rec.riskGap), rec.riskGap!=null&&rec.riskGap>=0?'neg':''),
+        renderRecMetric('Shared NAV dates', rec.comparisonPoints?String(rec.comparisonPoints):'-'),
+        renderRecMetric('Sharpe ratio', rec.sharpe==null?'-':rec.sharpe.toFixed(2), rec.lowSharpe?'neg':'')
+      ]:[
+        renderRecMetric('Fund return', fmtPct(rec.returnPct), rec.returnPct>=0?'pos':'neg'),
+        renderRecMetric('Annualized risk', fmtPctAbs(rec.volatility), rec.volatility>rec.medianVolatility?'neg':''),
+        renderRecMetric('Peer median risk', fmtPctAbs(rec.medianVolatility)),
+        renderRecMetric('Sharpe ratio', rec.sharpe==null?'-':rec.sharpe.toFixed(2), 'neg'),
+        renderRecMetric('Peer median Sharpe', rec.medianSharpe.toFixed(2)),
+        renderRecMetric('NAV dates', rec.comparisonPoints?String(rec.comparisonPoints):'-'),
+        renderRecMetric('Max drawdown', fmtPct(rec.maxDrawdown), 'neg')
       ];
     }else if(rec.type==='category_underperformer'){
       domain='Performance';
@@ -4661,7 +5082,7 @@ function renderPortfolioLoaded(){
         </div>
         <div class="port-rec-headline"></div>
       </div>
-      <div class="port-rec-intro">Generated from your portfolio&apos;s rolling CAGR history, expense structure, category overlap, and conditional coverage. Not financial advice &mdash; use as a starting point for research.</div>
+<div class="port-rec-intro">Generated from rolling CAGR history, expense structure, category overlap, correlation overlap, risk-adjusted return signals, and conditional coverage. Not financial advice &mdash; use as a starting point for research.</div>
       <div class="port-rec-summary">
         <button class="port-rec-summary-chip is-high ${recoFilters.high?'':'is-off'}" onclick="togglePortfolioRecoPriority('high')"><span>&#9888; ${recCounts.high} High Priority</span></button>
         <button class="port-rec-summary-chip is-medium ${recoFilters.medium?'':'is-off'}" onclick="togglePortfolioRecoPriority('medium')"><span>&#9710; ${recCounts.medium} Medium</span></button>
@@ -4671,7 +5092,9 @@ function renderPortfolioLoaded(){
         const priorityClass=`is-${bundle.priority}`;
         const priorityLabel=bundle.priority==='high'?'High Priority':(bundle.priority==='medium'?'Medium Priority':'Low Priority');
         const sortedItems=[...bundle.items].sort((a,b)=>(b.score||0)-(a.score||0));
-        return `<details class="port-rec-bundle ${priorityClass}"${bundle.priority==='high'?' open':''}>
+        const expandedState=S.portfolioView.recoExpanded?.[bundle.key];
+        const isOpen=expandedState==null ? bundle.priority==='high' : !!expandedState;
+        return `<details class="port-rec-bundle ${priorityClass}" data-bundle-key="${esc(bundle.key)}" ontoggle="setPortfolioRecoBundleOpen('${bundle.key}', this.open)"${isOpen?' open':''}>
           <summary>
             <div class="port-rec-bundle-summary">
               <div class="port-rec-bundle-copy">
@@ -5224,6 +5647,388 @@ function renderForwardMap(){
     <div class="fwd-grid">${cards}</div>`;
 }
 
+function ensureSipLsView(){
+  S.sipLsView=S.sipLsView||{amount:100000,sipMonths:12,cashRate:6.5,focusFundId:''};
+  return S.sipLsView;
+}
+function setSipLsSetting(key,value){
+  const view=ensureSipLsView();
+  if(key==='focusFundId'){
+    view.focusFundId=String(value||'');
+    renderSipVsLumpsum();
+    return;
+  }
+  const n=+value;
+  if(!isFinite(n)) return;
+  if(key==='amount') view.amount=Math.max(1000,n);
+  else if(key==='sipMonths') view.sipMonths=Math.max(1,Math.round(n));
+  else if(key==='cashRate') view.cashRate=Math.max(0,Math.min(25,n));
+  renderSipVsLumpsum();
+}
+function accrueCashBalance(amount, fromDate, toDate, annualRatePct){
+  if(amount==null||!isFinite(amount)) return 0;
+  if(!(fromDate instanceof Date)||isNaN(fromDate)||!(toDate instanceof Date)||isNaN(toDate)) return amount;
+  const fromMs=new Date(fromDate.getFullYear(),fromDate.getMonth(),fromDate.getDate()).getTime();
+  const toMs=new Date(toDate.getFullYear(),toDate.getMonth(),toDate.getDate()).getTime();
+  const days=Math.max(0,(toMs-fromMs)/86400000);
+  if(days<=0||!(annualRatePct>0)) return amount;
+  return amount*Math.pow(1+annualRatePct/100,days/365);
+}
+function collectMonthlyStartPoints(data){
+  const arr=(data||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+  const out=[];
+  let lastKey='';
+  for(const p of arr){
+    const key=`${p.date.getFullYear()}-${p.date.getMonth()}`;
+    if(key===lastKey) continue;
+    lastKey=key;
+    out.push(p);
+  }
+  return out;
+}
+function annualizedStrategyReturnPct(initialAmount, finalValue, startDate, endDate){
+  if(!(initialAmount>0) || !(finalValue>0) || !(startDate instanceof Date) || !(endDate instanceof Date) || isNaN(startDate) || isNaN(endDate)) return null;
+  const xr=xirr([-initialAmount, finalValue],[startDate,endDate]);
+  if(xr!=null&&isFinite(xr)) return xr*100;
+  const years=(endDate-startDate)/MS_YEAR;
+  if(!(years>0)) return null;
+  const out=(Math.pow(finalValue/initialAmount,1/years)-1)*100;
+  return isFinite(out)?out:null;
+}
+function ordinalSuffix(n){
+  const v=Math.abs(Math.round(+n||0));
+  const mod100=v%100;
+  if(mod100>=11&&mod100<=13) return `${v}th`;
+  const mod10=v%10;
+  if(mod10===1) return `${v}st`;
+  if(mod10===2) return `${v}nd`;
+  if(mod10===3) return `${v}rd`;
+  return `${v}th`;
+}
+function diffDaysNoTime(fromDate,toDate){
+  if(!(fromDate instanceof Date)||isNaN(fromDate)||!(toDate instanceof Date)||isNaN(toDate)) return 0;
+  const fromMs=new Date(fromDate.getFullYear(),fromDate.getMonth(),fromDate.getDate()).getTime();
+  const toMs=new Date(toDate.getFullYear(),toDate.getMonth(),toDate.getDate()).getTime();
+  return Math.max(0,Math.round((toMs-fromMs)/86400000));
+}
+function buildSipLsWindow(data, startPt, amount, sipMonths, cashRate, includeAudit){
+  if(!startPt?.date||!(startPt.nav>0)) return null;
+  const endTarget=shiftMonthClamped(startPt.date,Math.max(0,sipMonths-1));
+  const endPt=resolveSipPoint(data,endTarget);
+  if(!endPt||endPt.date.getTime()<startPt.date.getTime()) return null;
+
+  const lumpUnits=amount/startPt.nav;
+  const lumpFinal=lumpUnits*endPt.nav;
+  const lumpAnnual=annualizedStrategyReturnPct(amount,lumpFinal,startPt.date,endPt.date);
+  const installment=amount/sipMonths;
+  const auditRows=includeAudit?[]:null;
+
+  let cashBalance=amount;
+  let accrualDate=startPt.date;
+  let sipUnits=0;
+  let installmentsDone=0;
+  let principalInvested=0;
+  for(let m=0;m<sipMonths;m++){
+    const target=shiftMonthClamped(startPt.date,m);
+    if(target.getTime()>endPt.date.getTime()) break;
+    const investPt=resolveSipPoint(data,target);
+    if(!investPt||investPt.date.getTime()>endPt.date.getTime()) break;
+    const openingCash=cashBalance;
+    const cashAfterCarry=accrueCashBalance(cashBalance,accrualDate,investPt.date,cashRate);
+    const scheduledPrincipal=(m===sipMonths-1)?(amount-principalInvested):installment;
+    const investAmount=Math.min(scheduledPrincipal,cashAfterCarry);
+    const unitsBought=investAmount>0?(investAmount/investPt.nav):0;
+    if(investAmount>0){
+      sipUnits+=unitsBought;
+      cashBalance=cashAfterCarry-investAmount;
+      principalInvested+=investAmount;
+      installmentsDone++;
+    }else{
+      cashBalance=cashAfterCarry;
+    }
+    if(auditRows){
+      auditRows.push({
+        rowType:'installment',
+        stepNo:m+1,
+        startDate:startPt.date,
+        endDate:endPt.date,
+        targetDate:target,
+        actualDate:investPt.date,
+        carryFromDate:accrualDate,
+        carryToDate:investPt.date,
+        carryDays:diffDaysNoTime(accrualDate,investPt.date),
+        openingCash,
+        cashAfterCarry,
+        scheduledPrincipal,
+        investAmount,
+        nav:investPt.nav,
+        unitsBought,
+        closingCash:cashBalance
+      });
+    }
+    accrualDate=investPt.date;
+  }
+  if(installmentsDone!==sipMonths || principalInvested<(amount-0.01)) return null;
+  const preFinalCash=cashBalance;
+  cashBalance=accrueCashBalance(cashBalance,accrualDate,endPt.date,cashRate);
+  const sipFundValue=sipUnits*endPt.nav;
+  const sipFinal=sipFundValue+cashBalance;
+  const sipAnnual=annualizedStrategyReturnPct(amount,sipFinal,startPt.date,endPt.date);
+  const gapAmount=sipFinal-lumpFinal;
+  const gapPct=lumpFinal>0?(gapAmount/lumpFinal)*100:null;
+  if(auditRows){
+    auditRows.push({
+      rowType:'final_carry',
+      stepNo:installmentsDone,
+      startDate:startPt.date,
+      endDate:endPt.date,
+      targetDate:endPt.date,
+      actualDate:endPt.date,
+      carryFromDate:accrualDate,
+      carryToDate:endPt.date,
+      carryDays:diffDaysNoTime(accrualDate,endPt.date),
+      openingCash:preFinalCash,
+      cashAfterCarry:cashBalance,
+      scheduledPrincipal:0,
+      investAmount:0,
+      nav:endPt.nav,
+      unitsBought:0,
+      closingCash:cashBalance,
+      sipUnits,
+      sipFundValue,
+      sipFinal,
+      lumpUnits,
+      lumpFinal,
+      lumpAnnual,
+      sipAnnual,
+      gapAmount,
+      gapPct
+    });
+  }
+  return {
+    startDate:startPt.date,
+    endDate:endPt.date,
+    startNav:startPt.nav,
+    endNav:endPt.nav,
+    lumpUnits,
+    lumpFinal,
+    lumpAnnual,
+    sipFinal,
+    sipAnnual,
+    gapAmount,
+    gapPct,
+    cashResidual:cashBalance,
+    sipFundValue,
+    sipUnits,
+    installmentsDone,
+    principalInvested,
+    auditRows
+  };
+}
+function simulateSipVsLumpsumForFund(f, amount, sipMonths, cashRate){
+  const data=(sliceData(f?.rawData||[])||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+  if(data.length<12) return null;
+  const startPoints=collectMonthlyStartPoints(data);
+  if(!startPoints.length) return null;
+  const rows=[];
+  for(const startPt of startPoints){
+    const row=buildSipLsWindow(data,startPt,amount,sipMonths,cashRate,false);
+    if(row) rows.push(row);
+  }
+  if(!rows.length) return null;
+  const sortedByDate=[...rows].sort((a,b)=>a.startDate-b.startDate);
+  const sortedGap=[...rows].map(r=>r.gapAmount).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  const sortedGapPct=[...rows].map(r=>r.gapPct).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  const sortedLumpFinal=[...rows].map(r=>r.lumpFinal).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  const sortedSipFinal=[...rows].map(r=>r.sipFinal).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  const sortedLumpAnnual=[...rows].map(r=>r.lumpAnnual).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  const sortedSipAnnual=[...rows].map(r=>r.sipAnnual).filter(v=>isFinite(v)).sort((a,b)=>a-b);
+  const sipWins=rows.filter(r=>(r.gapAmount||0)>1e-6).length;
+  const lumpWins=rows.filter(r=>(r.gapAmount||0)<-1e-6).length;
+  const ties=rows.length-sipWins-lumpWins;
+  const bestRow=[...rows].sort((a,b)=>(b.gapAmount||-Infinity)-(a.gapAmount||-Infinity))[0]||null;
+  const worstRow=[...rows].sort((a,b)=>(a.gapAmount||Infinity)-(b.gapAmount||Infinity))[0]||null;
+  const latestRow=sortedByDate[sortedByDate.length-1]||null;
+  return {
+    fund:f,
+    rows:sortedByDate,
+    count:sortedByDate.length,
+    start:sortedByDate[0]?.startDate||null,
+    end:sortedByDate[sortedByDate.length-1]?.endDate||null,
+    sipWins,
+    lumpWins,
+    ties,
+    sipWinPct:(sipWins/rows.length)*100,
+    medianGap:medianOfSorted(sortedGap),
+    medianGapPct:medianOfSorted(sortedGapPct),
+    medianLumpFinal:medianOfSorted(sortedLumpFinal),
+    medianSipFinal:medianOfSorted(sortedSipFinal),
+    medianLumpAnnual:medianOfSorted(sortedLumpAnnual),
+    medianSipAnnual:medianOfSorted(sortedSipAnnual),
+    bestRow,
+    worstRow,
+    latestRow
+  };
+}
+function renderSipVsLumpsum(){
+  const el=document.getElementById('sipLsContent');
+  const fds=getVisibleFunds();
+  if(!el) return;
+  if(!fds.length){
+    el.innerHTML=`<div class="cc"><div class="cc-t">SIP vs Lumpsum Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;
+    return;
+  }
+  if(!S.navView.useCustom) syncNavCustomInputsToPreset();
+  const view=ensureSipLsView();
+  const amount=Math.max(1000,+view.amount||100000);
+  const sipMonths=Math.max(1,Math.round(+view.sipMonths||12));
+  const cashRate=Math.max(0,Math.min(25,+view.cashRate||6.5));
+  const sims=fds.map(f=>simulateSipVsLumpsumForFund(f,amount,sipMonths,cashRate)).filter(Boolean);
+  if(!sims.length){
+    el.innerHTML=`${buildAnalysisRangeBar()}<div class="sipls-empty">No valid historical backtest windows are available for the current fund selection, date range, and SIP length. Extend the range, reduce SIP months, or switch timeline basis.</div>`;
+    return;
+  }
+  const focusFundId=fds.some(f=>f.id===view.focusFundId)?view.focusFundId:(sims[0]?.fund?.id||'');
+  view.focusFundId=focusFundId;
+  const active=sims.find(sim=>sim.fund.id===focusFundId)||sims[0];
+  const amountText=`\u20B9${amount.toLocaleString('en-IN',{maximumFractionDigits:0})}`;
+  const installmentText=`\u20B9${(amount/sipMonths).toLocaleString('en-IN',{maximumFractionDigits:0})}`;
+  const rangeLabel=S.navView.useCustom?'custom range':((TS_SLICES.find(s=>s.key===S.tsSlice)?.lbl)||'full history');
+  const timelineLabel=useSharedTimeline()?'Shared overlap':'Individual full';
+  const fmtAmtPrecise=v=>v==null||!isFinite(v)?'-':`\u20B9${Math.round(v).toLocaleString('en-IN')}`;
+  const fundCards=sims.map(sim=>{
+    const activeClass=sim.fund.id===active.fund.id?' is-active':'';
+    return `<button type="button" class="sipls-fund-card${activeClass}" onclick="setSipLsSetting('focusFundId','${sim.fund.id}')">
+      <div class="sipls-fund-head">
+        <div>
+          <div class="sipls-fund-name" style="color:${sim.fund.color||'var(--tx)'}">${esc(shortN(sim.fund.name,52))}</div>
+          <div class="sipls-fund-meta">${sim.count} monthly start windows &middot; ${sim.start?fmtFullDate(sim.start):'-'} to ${sim.end?fmtFullDate(sim.end):'-'}</div>
+        </div>
+      </div>
+      <div class="sipls-mini-grid">
+        <div class="sipls-mini-stat"><div class="sipls-mini-value">${sim.sipWinPct.toFixed(1)}%</div><div class="sipls-mini-label">SIP Win Rate</div></div>
+        <div class="sipls-mini-stat"><div class="sipls-mini-value ${(sim.medianGap||0)>=0?'pos':'neg'}">${fmtAmtPrecise(sim.medianGap)}</div><div class="sipls-mini-label">Median SIP Gap</div></div>
+        <div class="sipls-mini-stat"><div class="sipls-mini-value">${fmtAmtPrecise(sim.medianLumpFinal)}</div><div class="sipls-mini-label">Median Lumpsum</div></div>
+        <div class="sipls-mini-stat"><div class="sipls-mini-value">${fmtAmtPrecise(sim.medianSipFinal)}</div><div class="sipls-mini-label">Median SIP</div></div>
+        <div class="sipls-mini-stat"><div class="sipls-mini-value">${pctText(sim.medianLumpAnnual,1)}</div><div class="sipls-mini-label">Median Lumpsum XIRR</div></div>
+        <div class="sipls-mini-stat"><div class="sipls-mini-value ${((sim.medianSipAnnual??0)>=(sim.medianLumpAnnual??0))?'pos':'neg'}">${pctText(sim.medianSipAnnual,1)}</div><div class="sipls-mini-label">Median SIP XIRR</div></div>
+      </div>
+    </button>`;
+  }).join('');
+  const detailRows=(active?.rows||[]).slice(-18).reverse().map(row=>`<tr>
+    <td>${fmtFullDate(row.startDate)}</td>
+    <td>${fmtFullDate(row.endDate)}</td>
+    <td>${fmtAmtPrecise(row.lumpFinal)}</td>
+    <td>${fmtAmtPrecise(row.sipFinal)}</td>
+    <td style="color:${(row.gapAmount||0)>=0?'var(--pos)':'var(--neg)'}">${fmtAmtPrecise(row.gapAmount)}</td>
+    <td>${pctText(row.lumpAnnual,2)}</td>
+    <td style="color:${(row.sipAnnual??0)>=(row.lumpAnnual??0)?'var(--pos)':'var(--neg)'}">${pctText(row.sipAnnual,2)}</td>
+  </tr>`).join('');
+  el.innerHTML=`${buildAnalysisRangeBar()}
+    <div class="sipls-shell">
+      <div class="sipls-topline">
+        <div>
+          <div class="sipls-kicker">SIP vs lumpsum</div>
+          <div class="sipls-desc">Historical backtest of deploying the same total capital either as a lumpsum on the first available NAV date, or as an equal monthly SIP starting on that same date. The comparison ends on the SIP completion date. Any undeployed SIP cash earns the configured cash/FD rate until invested.</div>
+        </div>
+        <div class="sipls-pill-row">
+          <span class="sipls-pill"><span class="sipls-pill-dot"></span>${esc(timelineLabel)}</span>
+          <span class="sipls-pill"><span class="sipls-pill-dot" style="background:#fbbf24;box-shadow:0 0 14px rgba(251,191,36,.55)"></span>${esc(rangeLabel)}</span>
+          <span class="sipls-pill"><span class="sipls-pill-dot" style="background:#60a5fa;box-shadow:0 0 14px rgba(96,165,250,.55)"></span>${sipMonths}M SIP completion basis</span>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-t">Simulator Controls</div>
+        <div class="cc-s">The comparison asks one question only: by the date the SIP finishes, was staggered deployment worth it versus investing the full amount on day 1? Investor-level annualized return is computed on the full committed capital.</div>
+        <div class="sipls-controls">
+          <div class="sipls-field"><div class="sipls-label">Total Capital</div><input class="sipls-input" type="number" min="1000" step="1000" value="${amount}" onchange="setSipLsSetting('amount',this.value)"><div class="sipls-sub">Committed upfront: ${amountText}</div></div>
+          <div class="sipls-field"><div class="sipls-label">SIP Months</div><input class="sipls-input" type="number" min="1" max="120" step="1" value="${sipMonths}" onchange="setSipLsSetting('sipMonths',this.value)"><div class="sipls-sub">Equal monthly principal: ${installmentText}</div></div>
+          <div class="sipls-field"><div class="sipls-label">Cash / FD Rate</div><input class="sipls-input" type="number" min="0" max="25" step="0.1" value="${cashRate}" onchange="setSipLsSetting('cashRate',this.value)"><div class="sipls-sub">Annualized carry on undeployed SIP cash</div></div>
+          <div class="sipls-field"><div class="sipls-label">Focus Fund</div><select class="sipls-input" onchange="setSipLsSetting('focusFundId',this.value)">${sims.map(sim=>`<option value="${sim.fund.id}"${sim.fund.id===active.fund.id?' selected':''}>${esc(shortN(sim.fund.name,56))}</option>`).join('')}</select><div class="sipls-sub">Detail chart and table follow this fund</div></div>
+        </div>
+      </div>
+      <div class="sipls-card-grid">${fundCards}</div>
+      <div class="sipls-detail-grid">
+        <div class="cc">
+          <div class="cc-t">Historical Final Corpus - ${esc(shortN(active.fund.name,56))}</div>
+          <div class="cc-s">Each point is one monthly historical start window, valued on the date the ${sipMonths}-month SIP completes. Lumpsum invests fully on day 1. SIP deploys monthly while leftover cash earns ${cashRate.toFixed(1)}%.</div>
+          <div class="cw tall"><canvas id="sipLsCorpusChart"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cc-t">Focused Summary</div>
+          <div class="cc-s">${active.count} historical monthly start windows for this fund.</div>
+          <div class="sipls-mini-grid">
+            <div class="sipls-mini-stat"><div class="sipls-mini-value">${active.sipWinPct.toFixed(1)}%</div><div class="sipls-mini-label">SIP Win Rate</div></div>
+            <div class="sipls-mini-stat"><div class="sipls-mini-value ${(active.medianGap||0)>=0?'pos':'neg'}">${fmtAmtPrecise(active.medianGap)}</div><div class="sipls-mini-label">Median SIP Gap</div></div>
+            <div class="sipls-mini-stat"><div class="sipls-mini-value">${pctText(active.medianLumpAnnual,2)}</div><div class="sipls-mini-label">Median Lumpsum XIRR</div></div>
+            <div class="sipls-mini-stat"><div class="sipls-mini-value ${((active.medianSipAnnual??0)>=(active.medianLumpAnnual??0))?'pos':'neg'}">${pctText(active.medianSipAnnual,2)}</div><div class="sipls-mini-label">Median SIP XIRR</div></div>
+            <div class="sipls-mini-stat"><div class="sipls-mini-value ${(active.bestRow?.gapAmount||0)>=0?'pos':'neg'}">${fmtAmtPrecise(active.bestRow?.gapAmount)}</div><div class="sipls-mini-label">Best SIP Window</div></div>
+            <div class="sipls-mini-stat"><div class="sipls-mini-value ${(active.worstRow?.gapAmount||0)>=0?'pos':'neg'}">${fmtAmtPrecise(active.worstRow?.gapAmount)}</div><div class="sipls-mini-label">Worst SIP Window</div></div>
+            <div class="sipls-mini-stat"><div class="sipls-mini-value">${fmtAmtPrecise(active.latestRow?.lumpFinal)}</div><div class="sipls-mini-label">Latest Lumpsum Final</div></div>
+            <div class="sipls-mini-stat"><div class="sipls-mini-value ${((active.latestRow?.sipFinal??0)>=(active.latestRow?.lumpFinal??0))?'pos':'neg'}">${fmtAmtPrecise(active.latestRow?.sipFinal)}</div><div class="sipls-mini-label">Latest SIP Final</div></div>
+          </div>
+          <div class="sipls-note" style="margin-top:12px">Positive SIP gap means staggered deployment plus cash carry beat immediate lumpsum over that historical start window. Negative gap means time-in-market dominated.</div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-t">Recent Historical Windows - ${esc(shortN(active.fund.name,56))}</div>
+        <div class="cc-s">Latest ${Math.min(18,active.rows.length)} monthly start windows in the current date basis.</div>
+        <div class="sipls-table-wrap">
+          <table class="sipls-table">
+            <thead><tr><th>Start</th><th>End</th><th>Lumpsum Final</th><th>SIP Final</th><th>SIP - Lumpsum</th><th>Lumpsum XIRR</th><th>SIP XIRR</th></tr></thead>
+            <tbody>${detailRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  requestAnimationFrame(()=>{
+    kill('sipLsCorpusChart');
+    const ctx=document.getElementById('sipLsCorpusChart')?.getContext('2d');
+    if(!ctx) return;
+    const datasets=[
+      {
+        type:'line',
+        label:'Lumpsum final corpus',
+        data:sampleForChart(active.rows.map(r=>({x:r.startDate.getTime(),y:r.lumpFinal})),320),
+        borderColor:'#fbbf24',
+        backgroundColor:'rgba(251,191,36,.12)',
+        borderWidth:2.4,
+        pointRadius:0,
+        pointHitRadius:14,
+        pointHoverRadius:5,
+        tension:.18
+      },
+      {
+        type:'line',
+        label:'SIP final corpus',
+        data:sampleForChart(active.rows.map(r=>({x:r.startDate.getTime(),y:r.sipFinal})),320),
+        borderColor:active.fund.color||'#34d399',
+        backgroundColor:'rgba(52,211,153,.12)',
+        borderWidth:2.4,
+        pointRadius:0,
+        pointHitRadius:14,
+        pointHoverRadius:5,
+        tension:.18
+      }
+    ];
+    const xr=xRangeForPoints(datasets.flatMap(ds=>ds.data.map(p=>p.x)));
+    const xScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
+    if(xr){xScale.min=xr.min;xScale.max=xr.max;}
+    S.charts['sipLsCorpusChart']=new Chart(ctx,{type:'line',data:{datasets},options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'nearest',axis:'x',intersect:false},
+      plugins:{legend:{labels:{color:'#dbeafe',font:{family:'DM Mono',size:11,weight:'bold'}}},
+        tooltip:{callbacks:{
+          title:items=>items?.length?`Start ${fmtFullDate(new Date(items[0].parsed.x))}`:'',
+          label:c=>`${c.dataset.label}: ${fmtAmtPrecise(c.parsed.y)}`
+        }}},
+      scales:{
+        x:xScale,
+        y:{grid:{color:'rgba(59,87,128,.32)'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>`\u20B9${Math.round(v).toLocaleString('en-IN')}`}}
+      }
+    }});
+  });
+}
+
 // -----------------------------------------------------
 //  DISTRIBUTIONS
 // -----------------------------------------------------
@@ -5232,12 +6037,10 @@ function renderDistributions(){
   const el=document.getElementById('distContent');
   if(!fds.length){el.innerHTML=`<div class="cc"><div class="cc-t">Rolling Returns Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;return;}
   if(!S.navView.useCustom) syncNavCustomInputsToPreset();
-  const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
-  const rangeTools=`<div class="ts-range-tools"><span class="ts-cal-label">Custom</span><input class="nav-date" type="date" value="${S.navView.from||''}" max="${S.navView.to||''}" onchange="setNavDate('from',this.value)"><input class="nav-date" type="date" value="${S.navView.to||''}" min="${S.navView.from||''}" onchange="setNavDate('to',this.value)"><button class="nav-date-btn" onclick="applyNavCustomRange()">Apply</button><button class="nav-date-btn${S.navView.useCustom?' is-on':''}" onclick="resetNavCustomRange()">Reset</button></div>`;
   const valid=ALL_M.filter(m=>fds.some(f=>f.computed[m.key]&&f.computed[m.key].length>=10));
   if(!valid.length){el.innerHTML=`<div class="center-state" style="min-height:300px"><div style="font-size:32px;opacity:.2">Down</div><div style="font-size:15px;font-weight:800;color:var(--tx);margin-top:8px">Insufficient data</div></div>`;return;}
   const rangeLabel=S.navView.useCustom?'custom date range':((TS_SLICES.find(s=>s.key===S.tsSlice)?.lbl)||'full history');
-  el.innerHTML=`<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}${rangeTools}</div><div class="sec">Rolling Returns <span class="stag">${rangeLabel}</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar now shows the <strong style="color:var(--tx)">percentage of observations</strong> that fall in a return range <strong style="color:var(--tx)">[lower, upper)</strong>, except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
+  el.innerHTML=`${buildAnalysisRangeBar()}<div class="sec">Rolling Returns <span class="stag">${rangeLabel}</span></div><div class="cc-s" style="margin:-6px 0 14px;font-size:11px;color:var(--tm)">Each bar now shows the <strong style="color:var(--tx)">percentage of observations</strong> that fall in a return range <strong style="color:var(--tx)">[lower, upper)</strong>, except the <strong style="color:var(--tx)">last</strong> bar, which includes the sample maximum.</div><div class="grid-2" id="distGrid"></div>`;
   valid.forEach(m=>{
     const metricFds=fds.filter(f=>(filterMetricSeries(f.computed[m.key]||[]).length>=5));
     const fd=metricFds.map(f=>({fund:f,name:shortN(f.name,50),ci:f.ci,vals:filterMetricSeries(f.computed[m.key]||[]).map(p=>p.value)})).filter(d=>d.vals.length>=5);
@@ -5343,20 +6146,37 @@ function fmtInputDate(d){
   const day=String(d.getDate()).padStart(2,'0');
   return `${y}-${m}-${day}`;
 }
+function getFundRawDateBounds(f){
+  const arr=(f?.rawData||[]).filter(p=>p?.date instanceof Date&&!isNaN(p.date)&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+  if(!arr.length) return null;
+  return {start:arr[0].date,end:arr[arr.length-1].date};
+}
+function useSharedTimeline(){
+  return (S.navView?.timeline||'shared')!=='individual';
+}
+function getVisibleOverlapDateBounds(){
+  const bounds=getVisibleFunds().map(getFundRawDateBounds).filter(Boolean);
+  if(!bounds.length) return null;
+  if(bounds.length===1) return {...bounds[0], shared:false, fundCount:1};
+  const startMs=Math.max(...bounds.map(b=>b.start.getTime()));
+  const endMs=Math.min(...bounds.map(b=>b.end.getTime()));
+  if(startMs>=endMs) return null;
+  return {start:new Date(startMs),end:new Date(endMs),shared:true,fundCount:bounds.length};
+}
+function getVisibleUnionDateBounds(){
+  const bounds=getVisibleFunds().map(getFundRawDateBounds).filter(Boolean);
+  if(!bounds.length) return null;
+  const startMs=Math.min(...bounds.map(b=>b.start.getTime()));
+  const endMs=Math.max(...bounds.map(b=>b.end.getTime()));
+  return {start:new Date(startMs),end:new Date(endMs),shared:false,fundCount:bounds.length};
+}
 function getPresetDateBounds(){
-  const vis=getVisibleFunds();
-  const allPts=vis.flatMap(f=>f?.rawData||[]);
-  if(!allPts.length) return {from:'',to:''};
-  let minT=Infinity,maxT=-Infinity;
-  for(const p of allPts){
-    const t=p.date.getTime();
-    if(t<minT) minT=t;
-    if(t>maxT) maxT=t;
-  }
-  const to=new Date(maxT);
+  const bounds=useSharedTimeline()?getVisibleOverlapDateBounds():getVisibleUnionDateBounds();
+  if(!bounds) return {from:'',to:''};
+  const to=new Date(bounds.end);
   const ms=getSliceMs();
-  let from=ms?new Date(maxT-ms):new Date(minT);
-  if(from.getTime()<minT) from=new Date(minT);
+  let from=ms?new Date(bounds.end.getTime()-ms):new Date(bounds.start);
+  if(from.getTime()<bounds.start.getTime()) from=new Date(bounds.start);
   return {from:fmtInputDate(from),to:fmtInputDate(to)};
 }
 function syncNavCustomInputsToPreset(){
@@ -5365,10 +6185,23 @@ function syncNavCustomInputsToPreset(){
   S.navView.to=b.to;
 }
 function setNavMode(mode){ S.navView.mode=mode; renderTimeSeries(); }
+function setTimelineBasis(mode){
+  S.navView.timeline=mode==='individual'?'individual':'shared';
+  S.navView.useCustom=false;
+  syncNavCustomInputsToPreset();
+  renderRangeAwarePane();
+}
 function setNavDate(which,val){
   S.navView[which]=val;
   if(which==='from' && S.navView.to && val && val>S.navView.to) S.navView.to=val;
   if(which==='to' && S.navView.from && val && val<S.navView.from) S.navView.from=val;
+}
+function renderRangeAwarePane(){
+  if(S.tab==='distributions') renderDistributions();
+  else if(S.tab==='riskreturn') renderRiskReturn();
+  else if(S.tab==='diversification') renderDiversification();
+  else if(S.tab==='sipls') renderSipVsLumpsum();
+  else renderTimeSeries();
 }
 function applyNavCustomRange(){
   const from=S.navView.from?new Date(S.navView.from):null;
@@ -5377,20 +6210,21 @@ function applyNavCustomRange(){
   if(to&&isNaN(to)) return;
   if(from&&to&&from.getTime()>to.getTime()) return;
   S.navView.useCustom=!!(S.navView.from||S.navView.to);
-  if(S.tab==='distributions') renderDistributions();
-  else renderTimeSeries();
+  renderRangeAwarePane();
 }
 function resetNavCustomRange(){
   S.navView.useCustom=false;
   syncNavCustomInputsToPreset();
-  if(S.tab==='distributions') renderDistributions();
-  else renderTimeSeries();
+  renderRangeAwarePane();
 }
 function sliceData(data){
   if(!data||!data.length) return data;
-  if(S.navView.useCustom){
-    const fromDt=S.navView.from?parseIsoLocalDate(S.navView.from):null;
-    const toDt=S.navView.to?parseIsoLocalDate(S.navView.to):null;
+  const forceShared=getVisibleFunds().length>1&&useSharedTimeline();
+  if(S.navView.useCustom || forceShared){
+    const bounds=S.navView.useCustom?{from:S.navView.from||'',to:S.navView.to||''}:getPresetDateBounds();
+    if(!S.navView.useCustom&&forceShared&&(!bounds.from||!bounds.to)) return [];
+    const fromDt=bounds.from?parseIsoLocalDate(bounds.from):null;
+    const toDt=bounds.to?parseIsoLocalDate(bounds.to):null;
     const fromMs=fromDt?new Date(fromDt.getFullYear(), fromDt.getMonth(), fromDt.getDate(), 0, 0, 0, 0).getTime():null;
     const toMs=toDt?new Date(toDt.getFullYear(), toDt.getMonth(), toDt.getDate(), 23, 59, 59, 999).getTime():null;
     const sliced=data.filter(p=>{
@@ -5402,6 +6236,7 @@ function sliceData(data){
       return true;
     });
     if(sliced.length>=2) return sliced;
+    if(forceShared) return [];
   }
   const ms=getSliceMs();
   if(!ms) return data;
@@ -5414,8 +6249,7 @@ function setTsSlice(key){
   S.tsSlice=key;
   S.navView.useCustom=false;
   syncNavCustomInputsToPreset();
-  if(S.tab==='distributions') renderDistributions();
-  else renderTimeSeries();
+  renderRangeAwarePane();
 }
 
 // CAGR annualised over the current slice window
@@ -5475,7 +6309,11 @@ function buildNavToolbar(fds){
     {key:'absolute',lbl:'Absolute'},
     {key:'relative',lbl:'Relative'}
   ].map(m=>`<button class="nav-mode-btn${S.navView.mode===m.key?' active':''}" onclick="setNavMode('${m.key}')">${m.lbl}</button>`).join('');
-  return `<div class="nav-mode-bar"><div class="nav-mode-group"><span class="nav-mode-label">View</span>${modeBtns}</div><div class="nav-hover-note">${fds.length} fund${fds.length!==1?'s':''} &middot; hover for guide &middot; press, drag, and release on chart to set range</div></div>`;
+  const overlap=getVisibleOverlapDateBounds();
+  const basis=fds.length>1
+    ? (useSharedTimeline()&&overlap?`shared overlap ${fmtInputDate(overlap.start)} to ${fmtInputDate(overlap.end)}`:'individual fund timelines')
+    : 'selected fund window';
+  return `<div class="nav-mode-bar"><div class="nav-mode-group"><span class="nav-mode-label">View</span>${modeBtns}</div><div class="nav-hover-note">${fds.length} fund${fds.length!==1?'s':''} &middot; ${basis} &middot; hover for guide &middot; press, drag, and release on chart to set range</div></div>`;
 }
 
 function buildNavDatasets(fds){
@@ -5504,6 +6342,14 @@ function buildNavDatasets(fds){
       tension:.18
     };
   }).filter(ds=>ds.data.length>=2);
+}
+
+function commonPointBounds(pointSets){
+  const valid=(pointSets||[]).filter(points=>points&&points.length>=2);
+  if(valid.length<2) return null;
+  const start=Math.max(...valid.map(points=>points[0].x));
+  const end=Math.min(...valid.map(points=>points[points.length-1].x));
+  return start<end?{start,end}:null;
 }
 
 function navYAxisConfig(){
@@ -5550,6 +6396,580 @@ function buildNavStats(fds){
     return `<div class="dsf"><div class="dsf-name" style="color:${f.color}">* ${shortN(f.name,50)}</div><div class="dsrow">${row}</div></div>`;
   }).join('');
 }
+const RISK_FREE_RATE_PCT = 6;
+const FRONTIER_MIN_MONTHS = 36;
+const RISK_RETURN_PERIODS_PER_YEAR = 252;
+function calcReturnStats(periodReturns,periodsPerYear){
+  const arr=(periodReturns||[]).filter(v=>isFinite(v));
+  if(arr.length<2) return null;
+  const mean=arr.reduce((a,b)=>a+b,0)/arr.length;
+  const variance=arr.reduce((sum,r)=>sum+(r-mean)**2,0)/Math.max(1,arr.length-1);
+  const stdev=Math.sqrt(Math.max(0,variance));
+  const rfPerPeriod=Math.pow(1+RISK_FREE_RATE_PCT/100,1/periodsPerYear)-1;
+  return {
+    mean,
+    stdev,
+    rfPerPeriod,
+    volatility:stdev*Math.sqrt(periodsPerYear)*100,
+    sharpe:stdev>0?((mean-rfPerPeriod)/stdev)*Math.sqrt(periodsPerYear):null
+  };
+}
+function pctText(v,d=2){return v==null||!isFinite(v)?'-':`${v>=0?'+':''}${v.toFixed(d)}%`;}
+function plainPctText(v,d=2){return v==null||!isFinite(v)?'-':`${v.toFixed(d)}%`;}
+function calcMaxDrawdownPct(data){
+  let peak=-Infinity, maxDd=0;
+  for(const p of data||[]){
+    const nav=+p?.nav;
+    if(!isFinite(nav)||nav<=0) continue;
+    if(nav>peak) peak=nav;
+    if(peak>0){
+      const dd=(nav/peak-1)*100;
+      if(dd<maxDd) maxDd=dd;
+    }
+  }
+  return maxDd;
+}
+function computeFundRiskReturn(f){
+  const data=(sliceData(f?.rawData||[])||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0);
+  if(data.length<12) return null;
+  const first=data[0], last=data[data.length-1];
+  const years=(last.date-first.date)/MS_YEAR;
+  if(years<0.08) return null;
+  const returnPct=(Math.pow(last.nav/first.nav,1/years)-1)*100;
+  const periodReturns=[];
+  for(let i=1;i<data.length;i++){
+    const prev=data[i-1], curr=data[i];
+    if(!(prev.nav>0&&curr.nav>0)) continue;
+    const r=(curr.nav/prev.nav)-1;
+    if(isFinite(r)) periodReturns.push(r);
+  }
+  if(periodReturns.length<8) return null;
+  const periodsPerYear=RISK_RETURN_PERIODS_PER_YEAR;
+  const riskStats=calcReturnStats(periodReturns,periodsPerYear);
+  if(!riskStats) return null;
+  return {
+    fund:f,
+    name:f.name,
+    color:f.color||getColorAt(f.ci||0),
+    returnPct,
+    volatility:riskStats.volatility,
+    sharpe:riskStats.sharpe,
+    maxDrawdown:calcMaxDrawdownPct(data),
+    points:data.length,
+    periodsPerYear,
+    start:first.date,
+    end:last.date
+  };
+}
+function monthKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
+function monthlyReturnMap(f){
+  const data=(sliceData(f?.rawData||[])||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0);
+  const monthEnds=new Map();
+  for(const p of data) monthEnds.set(monthKey(p.date),p);
+  const months=[...monthEnds.keys()].sort();
+  const out=new Map();
+  for(let i=1;i<months.length;i++){
+    const prev=monthEnds.get(months[i-1]);
+    const curr=monthEnds.get(months[i]);
+    if(prev?.nav>0&&curr?.nav>0){
+      const r=(curr.nav/prev.nav)-1;
+      if(isFinite(r)) out.set(months[i],r);
+    }
+  }
+  return out;
+}
+function pseudoRand(seed){
+  const x=Math.sin(seed)*10000;
+  return x-Math.floor(x);
+}
+function normalizeWeights(raw){
+  const cleaned=(raw||[]).map(v=>isFinite(v)&&v>0?v:0);
+  const total=cleaned.reduce((a,b)=>a+b,0);
+  if(total<=0) return null;
+  return cleaned.map(v=>v/total);
+}
+function calcMonthlyDrawdownPct(returns){
+  let wealth=1, peak=1, maxDd=0;
+  for(const r of returns||[]){
+    if(!isFinite(r) || r<=-1) continue;
+    wealth*=1+r;
+    if(wealth>peak) peak=wealth;
+    const dd=(wealth/peak-1)*100;
+    if(dd<maxDd) maxDd=dd;
+  }
+  return maxDd;
+}
+function calcMonthlySeriesStats(returns){
+  const arr=(returns||[]).filter(r=>isFinite(r)&&r>-1);
+  if(arr.length<3) return null;
+  const product=arr.reduce((acc,r)=>acc*(1+r),1);
+  const riskStats=calcReturnStats(arr,12);
+  if(!riskStats) return null;
+  return {
+    returnPct:(Math.pow(Math.max(0.000001,product),12/arr.length)-1)*100,
+    volatility:riskStats.volatility,
+    sharpe:riskStats.sharpe,
+    maxDrawdown:calcMonthlyDrawdownPct(arr),
+    points:arr.length
+  };
+}
+function calcPortfolioPoint(weights,series){
+  const months=series?.[0]?.length||0;
+  if(!months) return null;
+  const returns=[];
+  for(let k=0;k<months;k++){
+    let r=0;
+    for(let i=0;i<weights.length;i++) r+=weights[i]*(series[i]?.[k]||0);
+    returns.push(r);
+  }
+  const stats=calcMonthlySeriesStats(returns);
+  return stats?{x:stats.volatility,y:stats.returnPct,kind:'frontier'}:null;
+}
+function pushPortfolioCandidate(candidates,weights,series){
+  const w=normalizeWeights(weights);
+  if(!w) return;
+  const point=calcPortfolioPoint(w,series);
+  if(point&&isFinite(point.x)&&isFinite(point.y)&&point.x>=0) candidates.push(point);
+}
+function addPairFrontierCandidates(candidates,n,series,steps=90){
+  for(let i=0;i<n;i++){
+    for(let j=i+1;j<n;j++){
+      for(let s=0;s<=steps;s++){
+        const t=s/steps;
+        const w=Array(n).fill(0);
+        w[i]=1-t;
+        w[j]=t;
+        pushPortfolioCandidate(candidates,w,series);
+      }
+    }
+  }
+}
+function addSmallUniverseGrid(candidates,n,series){
+  if(n===2){
+    addPairFrontierCandidates(candidates,n,series,140);
+    return;
+  }
+  if(n===3){
+    const steps=70;
+    for(let a=0;a<=steps;a++){
+      for(let b=0;b<=steps-a;b++){
+        const c=steps-a-b;
+        pushPortfolioCandidate(candidates,[a,b,c],series);
+      }
+    }
+  }
+}
+function extractEfficientFrontier(candidates){
+  const usable=(candidates||[]).filter(p=>isFinite(p.x)&&isFinite(p.y)&&p.x>=0).sort((a,b)=>a.x-b.x || b.y-a.y);
+  if(!usable.length) return [];
+  const minRisk=usable[0].x;
+  const maxRisk=usable[usable.length-1].x;
+  const binSize=Math.max(0.03,(maxRisk-minRisk)/180);
+  const bins=new Map();
+  for(const p of usable){
+    const key=Math.round((p.x-minRisk)/binSize);
+    const prev=bins.get(key);
+    if(!prev || p.y>prev.y || (Math.abs(p.y-prev.y)<0.0001&&p.x<prev.x)) bins.set(key,p);
+  }
+  const binned=[...bins.values()].sort((a,b)=>a.x-b.x || b.y-a.y);
+  const frontier=[];
+  let bestReturn=-Infinity;
+  for(const p of binned){
+    if(!frontier.length || p.y>bestReturn+0.015){
+      frontier.push(p);
+      bestReturn=Math.max(bestReturn,p.y);
+    }
+  }
+  return frontier;
+}
+function splitFrontierSegments(points){
+  const pts=(points||[]).filter(p=>p&&isFinite(p.x)&&isFinite(p.y)).sort((a,b)=>a.x-b.x);
+  if(pts.length<4) return [];
+  const gaps=[];
+  for(let i=1;i<pts.length;i++) gaps.push(pts[i].x-pts[i-1].x);
+  const sortedGaps=[...gaps].filter(g=>isFinite(g)&&g>=0).sort((a,b)=>a-b);
+  const medianGap=sortedGaps.length?sortedGaps[Math.floor(sortedGaps.length/2)]:0;
+  const maxAllowedGap=Math.max(1.25,medianGap*3.5);
+  const segments=[];
+  let curr=[pts[0]];
+  for(let i=1;i<pts.length;i++){
+    const gap=pts[i].x-pts[i-1].x;
+    if(gap>maxAllowedGap){
+      if(curr.length>=4) segments.push(curr);
+      curr=[pts[i]];
+    }else{
+      curr.push(pts[i]);
+    }
+  }
+  if(curr.length>=4) segments.push(curr);
+  return segments.filter(seg=>{
+    const riskSpan=seg[seg.length-1].x-seg[0].x;
+    const returnSpan=Math.abs(seg[seg.length-1].y-seg[0].y);
+    return riskSpan>=1.5 && returnSpan>=0.5;
+  });
+}
+function buildCommonMonthlyRiskModel(fds){
+  const prepared=(fds||[]).map(f=>({fund:f,returns:monthlyReturnMap(f)})).filter(x=>x.returns.size>=6);
+  if(prepared.length<2) return null;
+  let common=[...prepared[0].returns.keys()];
+  for(const p of prepared.slice(1)){
+    const keys=new Set(p.returns.keys());
+    common=common.filter(k=>keys.has(k));
+  }
+  common.sort();
+  if(common.length<FRONTIER_MIN_MONTHS) return null;
+  const series=prepared.map(p=>common.map(k=>p.returns.get(k)).filter(v=>isFinite(v)));
+  if(series.some(arr=>arr.length!==common.length)) return null;
+  const fundStats=prepared.map((p,i)=>{
+    const st=calcMonthlySeriesStats(series[i]);
+    if(!st) return null;
+    return {
+      fund:p.fund,
+      name:p.fund.name,
+      color:p.fund.color||getColorAt(p.fund.ci||0),
+      returnPct:st.returnPct,
+      volatility:st.volatility,
+      sharpe:st.sharpe,
+      maxDrawdown:st.maxDrawdown,
+      points:st.points,
+      start:common[0],
+      end:common[common.length-1]
+    };
+  }).filter(Boolean);
+  if(fundStats.length<2) return null;
+  return {prepared,series,fundStats,months:common.length,startMonth:common[0],endMonth:common[common.length-1]};
+}
+function buildEfficientFrontier(fds){
+  const model=buildCommonMonthlyRiskModel(fds);
+  if(!model) return null;
+  const {series,fundStats,months,startMonth,endMonth}=model;
+  const n=series.length;
+  const candidates=[];
+  for(let i=0;i<n;i++){
+    const w=Array(n).fill(0); w[i]=1;
+    pushPortfolioCandidate(candidates,w,series);
+  }
+  pushPortfolioCandidate(candidates,Array(n).fill(1/n),series);
+  addSmallUniverseGrid(candidates,n,series);
+  addPairFrontierCandidates(candidates,n,series,80);
+  const invRisk=fundStats.map(s=>1/Math.max(0.01,s.volatility));
+  pushPortfolioCandidate(candidates,invRisk,series);
+  for(let power of [1,2,4]){
+    const tilted=fundStats.map(s=>Math.max(0.000001,1+s.returnPct/100)**power);
+    pushPortfolioCandidate(candidates,tilted,series);
+  }
+  const sampleCount=Math.min(9000,Math.max(1800,n*1200));
+  for(let s=0;s<sampleCount;s++){
+    const raw=Array.from({length:n},(_,i)=>-Math.log(Math.max(0.000001,pseudoRand((s+1)*97+(i+1)*31))));
+    pushPortfolioCandidate(candidates,raw,series);
+  }
+  const frontier=extractEfficientFrontier(candidates);
+  const segments=splitFrontierSegments(frontier).map(seg=>sampleForChart(seg,90));
+  return {points:sampleForChart(frontier,140),segments,months,fundCount:n,fundStats,startMonth,endMonth,hasFrontier:segments.length>0};
+}
+function buildAnalysisRangeBar(){
+  const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
+  const shared=useSharedTimeline();
+  const timelineBtns=`<div class="nav-mode-group"><span class="nav-mode-label">Basis</span><button class="nav-mode-btn${shared?' active':''}" onclick="setTimelineBasis('shared')" title="Clip visible funds to the common overlapping date range for fair comparisons">Shared overlap</button><button class="nav-mode-btn${!shared?' active':''}" onclick="setTimelineBasis('individual')" title="Show each fund over its own available preset/full timeline">Individual full</button></div>`;
+  const rangeTools=`<div class="ts-range-tools"><span class="ts-cal-label">Custom</span><input class="nav-date" type="date" value="${S.navView.from||''}" max="${S.navView.to||''}" onchange="setNavDate('from',this.value)"><input class="nav-date" type="date" value="${S.navView.to||''}" min="${S.navView.from||''}" onchange="setNavDate('to',this.value)"><button class="nav-date-btn" onclick="applyNavCustomRange()">Apply</button><button class="nav-date-btn${S.navView.useCustom?' is-on':''}" onclick="resetNavCustomRange()">Reset</button></div>`;
+  return `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}${timelineBtns}${rangeTools}</div>`;
+}
+function renderRiskReturn(){
+  const fds=getVisibleFunds();
+  const el=document.getElementById('riskReturnContent');
+  if(!el) return;
+  if(!fds.length){el.innerHTML=`<div class="cc"><div class="cc-t">Risk vs Return Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;return;}
+  if(!S.navView.useCustom) syncNavCustomInputsToPreset();
+  const rangeLabel=S.navView.useCustom?'custom date range':((TS_SLICES.find(s=>s.key===S.tsSlice)?.lbl)||'full history');
+  const sharedBasis=useSharedTimeline();
+  const frontier=sharedBasis?buildEfficientFrontier(fds):null;
+  const statsSource=frontier?.fundStats?.length?frontier.fundStats:fds.map(computeFundRiskReturn).filter(Boolean);
+  const stats=statsSource.sort((a,b)=>(b.sharpe??-999)-(a.sharpe??-999));
+  if(!stats.length){
+    el.innerHTML=`${buildAnalysisRangeBar()}<div class="cc"><div class="cc-t">Risk vs Return</div><div class="cc-s">Not enough NAV observations in the selected ${rangeLabel} window to calculate volatility.</div></div>`;
+    return;
+  }
+  const bestSharpe=stats[0]||null;
+  const lowestRisk=[...stats].sort((a,b)=>a.volatility-b.volatility)[0]||null;
+  const highestReturn=[...stats].sort((a,b)=>b.returnPct-a.returnPct)[0]||null;
+  const basisText=frontier?`${frontier.fundCount} funds / ${frontier.months} shared months`:(sharedBasis?`Need ${FRONTIER_MIN_MONTHS}+ shared months`:'Individual timelines');
+  const basisWindow=frontier?`${frontier.startMonth} to ${frontier.endMonth}`:(sharedBasis?'Frontier hidden until overlap is reliable':'Switch to Shared overlap to plot a valid frontier');
+  const frontierMode=frontier?.hasFrontier?'Frontier plotted':(frontier?'Shared monthly dots':(sharedBasis?'Scatter only':'Frontier off'));
+  const riskBasis=frontier?'shared monthly overlap':(sharedBasis?'selected date overlap':'individual fund timelines');
+  const valueClass=v=>v==null||!isFinite(v)?'info':v>=0?'pos':'neg';
+  const metricCard=(label,value,num,numClass,note)=>`<div class="risk-metric-card"><div class="risk-metric-label">${label}</div><div class="risk-metric-value">${value}</div><div class="risk-metric-number ${numClass||'info'}">${num}</div><div class="risk-metric-note">${note}</div></div>`;
+  const statCards=[
+    metricCard('Best risk-adjusted', bestSharpe?esc(bestSharpe.name):'-', bestSharpe&&bestSharpe.sharpe!=null?bestSharpe.sharpe.toFixed(2):'-', bestSharpe&&bestSharpe.sharpe!=null?valueClass(bestSharpe.sharpe):'info', 'Sharpe ratio'),
+    metricCard('Lowest risk', lowestRisk?esc(lowestRisk.name):'-', lowestRisk?plainPctText(lowestRisk.volatility,1):'-', 'info', 'Annualized volatility'),
+    metricCard('Highest return', highestReturn?esc(highestReturn.name):'-', highestReturn?pctText(highestReturn.returnPct,1):'-', highestReturn?valueClass(highestReturn.returnPct):'info', 'Annualized return'),
+    metricCard('Frontier basis', basisText, frontier?`${frontier.months} months`:'Hidden', frontier?'warn':'info', basisWindow)
+  ].join('');
+  const rows=stats.map(s=>{
+    const retCls=valueClass(s.returnPct);
+    const sharpeCls=valueClass(s.sharpe);
+    const ddCls=s.maxDrawdown<0?'neg':'info';
+    return `<tr>
+    <td><span class="risk-table-dot" style="background:${s.color}"></span>${esc(shortN(s.name,48))}</td>
+    <td><span class="${retCls}">${pctText(s.returnPct)}</span></td>
+    <td><span class="info">${plainPctText(s.volatility)}</span></td>
+    <td><span class="${sharpeCls}">${s.sharpe==null?'-':s.sharpe.toFixed(2)}</span></td>
+    <td><span class="${ddCls}">${pctText(s.maxDrawdown)}</span></td>
+    <td>${s.points}</td>
+  </tr>`;
+  }).join('');
+  el.innerHTML=`${buildAnalysisRangeBar()}
+    <div class="risk-shell">
+      <div class="risk-topline">
+        <div>
+          <div class="risk-kicker">Risk vs return</div>
+          <div class="risk-desc">${sharedBasis?'Fund dots and frontier use the same shared overlap where possible.':'Fund dots use each fund\'s own timeline; frontier is off because it requires one shared return window.'}</div>
+        </div>
+        <div class="risk-pill-row">
+          <span class="risk-pill"><span class="risk-pill-dot"></span>${esc(rangeLabel)}</span>
+          <span class="risk-pill"><span class="risk-pill-dot" style="background:#38bdf8"></span>${esc(frontierMode)}</span>
+        </div>
+      </div>
+      <div class="risk-metrics-grid">${statCards}</div>
+      <div class="risk-chart-card">
+        <div class="risk-chart-head">
+          <div>
+            <div class="risk-chart-title">Risk-return map</div>
+            <div class="risk-chart-sub">X-axis is annualized volatility. Y-axis is annualized CAGR. ${frontier?.hasFrontier?'The frontier uses long-only portfolio mixes from the same shared monthly returns as the fund dots.':frontier?'Fund dots are aligned on shared monthly returns; the frontier line is hidden because the available candidate curve is not reliable enough to draw.':sharedBasis?'Frontier is hidden because the shared monthly window is too short for a reliable curve.':'Individual timeline mode intentionally hides the frontier to avoid mixing different return windows.'}</div>
+          </div>
+          <div class="risk-chart-badge">${frontierMode}</div>
+        </div>
+        <div class="cw"><canvas id="riskReturnChart"></canvas></div>
+        <div class="risk-frontier-note">${frontier?`Risk and return cards use ${frontier.months} overlapping monthly returns from ${frontier.startMonth} to ${frontier.endMonth}.`:sharedBasis?'Risk and return cards use the selected overlapping date window.':'Risk and return cards use each fund\'s available selected timeline.'} Frontier is analytical guidance only, not a recommendation to switch or rebalance.</div>
+      </div>
+      <div class="risk-table-wrap"><table class="risk-table"><thead><tr><th>Fund</th><th>Return</th><th>Risk</th><th>Sharpe</th><th>Max DD</th><th>${frontier?'Months':'NAV pts'}</th></tr></thead><tbody>${rows}</tbody></table></div>
+    </div>`;
+  requestAnimationFrame(()=>{
+    kill('riskReturnChart');
+    const ctx=document.getElementById('riskReturnChart')?.getContext('2d');
+    if(!ctx) return;
+    const datasets=[];
+    if(frontier?.hasFrontier&&frontier?.segments?.length){
+      frontier.segments.forEach((seg,idx)=>{
+        datasets.push({
+        type:'line',
+        label:idx===0?'Efficient frontier':'Efficient frontier segment',
+        hideFromLegend:idx>0,
+        data:seg,
+        borderColor:'#38bdf8',
+        backgroundColor:'rgba(56,189,248,.10)',
+        borderWidth:2.5,
+        pointRadius:0,
+        pointBackgroundColor:'#f8d27a',
+        pointBorderColor:'#06111f',
+        pointHitRadius:10,
+        tension:0,
+        fill:false,
+        parsing:false
+      });
+      });
+    }
+    datasets.push({
+      type:'scatter',
+      label:'Funds',
+      data:stats.map(s=>({x:s.volatility,y:s.returnPct,name:s.name,sharpe:s.sharpe,drawdown:s.maxDrawdown,points:s.points})),
+      backgroundColor:stats.map(s=>s.color),
+      borderColor:'#e5f0ff',
+      borderWidth:1.5,
+      pointRadius:7.5,
+      pointHoverRadius:11,
+      pointHitRadius:16
+    });
+    S.charts['riskReturnChart']=new Chart(ctx,{type:'scatter',data:{datasets},options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'nearest',intersect:true},
+      plugins:{legend:{labels:{color:'#dbeafe',font:{family:'DM Mono',size:11,weight:'bold'},usePointStyle:true,filter:item=>!datasets[item.datasetIndex]?.hideFromLegend}},
+        tooltip:{callbacks:{
+          title:items=>items?.[0]?.raw?.name||items?.[0]?.dataset?.label||'',
+          label:c=>{
+            const r=c.raw||{};
+            if(r.kind==='frontier') return `Frontier mix: ${plainPctText(r.x,2)} risk / ${pctText(r.y,2)} return`;
+            return [`CAGR: ${pctText(r.y,2)}`,`Risk: ${plainPctText(r.x,2)}`,`Sharpe: ${r.sharpe==null?'-':r.sharpe.toFixed(2)}`,`Max DD: ${pctText(r.drawdown,2)}`];
+          }
+        }}},
+      scales:{
+        x:{title:{display:true,text:'Risk - annualized volatility',color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'}},grid:{color:'rgba(59,87,128,.32)'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>`${v}%`}},
+        y:{title:{display:true,text:'Return - annualized CAGR',color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'}},grid:{color:'rgba(59,87,128,.32)'},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:11,weight:'bold'},callback:v=>`${v}%`}}
+      }
+    }});
+  });
+}
+function isoDateKey(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function weekStartKey(d){
+  const dt=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  const day=(dt.getDay()+6)%7;
+  dt.setDate(dt.getDate()-day);
+  return isoDateKey(dt);
+}
+function buildReturnMapForCorrelation(f,freq){
+  const data=(sliceData(f?.rawData||[])||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0);
+  if(data.length<3) return new Map();
+  if(freq==='weekly'){
+    const weekEnds=new Map();
+    for(const p of data) weekEnds.set(weekStartKey(p.date),p);
+    const weeks=[...weekEnds.keys()].sort();
+    const out=new Map();
+    for(let i=1;i<weeks.length;i++){
+      const prev=weekEnds.get(weeks[i-1]);
+      const curr=weekEnds.get(weeks[i]);
+      if(prev?.nav>0&&curr?.nav>0){
+        const r=(curr.nav/prev.nav)-1;
+        if(isFinite(r)) out.set(weeks[i],r);
+      }
+    }
+    return out;
+  }
+  const out=new Map();
+  for(let i=1;i<data.length;i++){
+    const prev=data[i-1], curr=data[i];
+    if(prev?.nav>0&&curr?.nav>0){
+      const r=(curr.nav/prev.nav)-1;
+      if(isFinite(r)) out.set(isoDateKey(curr.date),r);
+    }
+  }
+  return out;
+}
+function pearsonCorr(a,b){
+  const n=a.length;
+  if(n<2||n!==b.length) return null;
+  const ma=a.reduce((x,y)=>x+y,0)/n;
+  const mb=b.reduce((x,y)=>x+y,0)/n;
+  let cov=0,va=0,vb=0;
+  for(let i=0;i<n;i++){
+    const da=a[i]-ma, db=b[i]-mb;
+    cov+=da*db; va+=da*da; vb+=db*db;
+  }
+  if(va<=0||vb<=0) return null;
+  return cov/Math.sqrt(va*vb);
+}
+function computeCorrelationPair(mapA,mapB,minObs){
+  const xs=[],ys=[];
+  for(const [k,v] of mapA){
+    if(mapB.has(k)){
+      const b=mapB.get(k);
+      if(isFinite(v)&&isFinite(b)){xs.push(v);ys.push(b);}
+    }
+  }
+  const corr=xs.length>=minObs?pearsonCorr(xs,ys):null;
+  return {corr,n:xs.length};
+}
+function corrColor(corr){
+  if(corr==null||!isFinite(corr)) return '#0a1220';
+  const c=Math.max(-1,Math.min(1,corr));
+  if(c>=.95) return '#ef4444';
+  if(c>=.9) return '#f97316';
+  if(c>=.75) return '#f59e0b';
+  if(c>=.5) return '#facc15';
+  if(c>=.25) return '#84cc16';
+  if(c>=0) return '#22c55e';
+  return '#38bdf8';
+}
+function corrTextColor(corr){
+  if(corr==null||!isFinite(corr)) return 'var(--td)';
+  return corr>=.5?'#06111f':'#04111f';
+}
+function corrRiskLabel(corr){
+  if(corr==null||!isFinite(corr)) return 'Insufficient overlap';
+  if(corr>=.95) return 'Near duplicate';
+  if(corr>=.9) return 'Very high overlap';
+  if(corr>=.75) return 'High overlap';
+  if(corr>=.5) return 'Moderate overlap';
+  if(corr>=.25) return 'Useful diversification';
+  if(corr>=0) return 'Strong diversification';
+  return 'Counter-moving';
+}
+function setDiversificationFreq(freq){
+  S.divView=S.divView||{};
+  S.divView.freq=freq==='daily'?'daily':'weekly';
+  renderDiversification();
+}
+function renderDiversification(){
+  const fds=getVisibleFunds();
+  const el=document.getElementById('diversificationContent');
+  if(!el) return;
+  if(!fds.length){el.innerHTML=`<div class="cc"><div class="cc-t">Diversification Hidden</div><div class="cc-s">Use the chart legend above to show at least one fund.</div></div>`;return;}
+  if(!S.navView.useCustom) syncNavCustomInputsToPreset();
+  const freq=S.divView?.freq==='daily'?'daily':'weekly';
+  const minObs=freq==='daily'?20:8;
+  const rangeLabel=S.navView.useCustom?'custom date range':((TS_SLICES.find(s=>s.key===S.tsSlice)?.lbl)||'full history');
+  if(fds.length<2){
+    el.innerHTML=`${buildAnalysisRangeBar()}<div class="cc"><div class="cc-t">Diversification Needs 2+ Funds</div><div class="cc-s">Select at least two visible funds to build a correlation matrix.</div></div>`;
+    return;
+  }
+  const maps=fds.map(f=>buildReturnMapForCorrelation(f,freq));
+  const matrix=fds.map((fa,i)=>fds.map((fb,j)=>{
+    if(i===j) return {corr:1,n:maps[i].size,diag:true};
+    return computeCorrelationPair(maps[i],maps[j],minObs);
+  }));
+  const pairs=[];
+  for(let i=0;i<fds.length;i++){
+    for(let j=i+1;j<fds.length;j++){
+      const p=matrix[i][j];
+      if(p.corr!=null&&isFinite(p.corr)) pairs.push({i,j,...p});
+    }
+  }
+  pairs.sort((a,b)=>b.corr-a.corr);
+  const highPairs=pairs.filter(p=>p.corr>=.9);
+  const nearDup=pairs.filter(p=>p.corr>=.95);
+  const lowPairs=[...pairs].sort((a,b)=>a.corr-b.corr).slice(0,3);
+  const avgCorr=pairs.length?pairs.reduce((s,p)=>s+p.corr,0)/pairs.length:null;
+  const card=(label,value,note,cls='info')=>`<div class="div-summary-card"><div class="div-summary-label">${label}</div><div class="div-summary-value ${cls}">${value}</div><div class="div-summary-note">${note}</div></div>`;
+  const topPair=pairs[0];
+  const summaryCards=[
+    card('Highest overlap', topPair?topPair.corr.toFixed(2):'-', topPair?`${esc(shortN(fds[topPair.i].name,28))} vs ${esc(shortN(fds[topPair.j].name,28))}`:'Need shared observations', topPair?.corr>=.9?'neg':'info'),
+    card('Near duplicates', String(nearDup.length), 'Pairs with correlation >= 0.95', nearDup.length?'neg':'info'),
+    card('High overlap pairs', String(highPairs.length), 'Pairs with correlation >= 0.90', highPairs.length?'warn':'info'),
+    card('Average pair corr', avgCorr==null?'-':avgCorr.toFixed(2), `${pairs.length} valid fund pairs`, avgCorr>=.75?'warn':'info')
+  ].join('');
+  const headerCells=fds.map(f=>`<th title="${esc(f.name)}"><div class="corr-col-name">${esc(shortN(f.name,34))}</div></th>`).join('');
+  const bodyRows=fds.map((f,i)=>{
+    const cells=fds.map((_,j)=>{
+      const p=matrix[i][j];
+      if(p.diag) return `<td class="corr-cell diag">1.00<span class="corr-n">self</span></td>`;
+      if(p.corr==null||!isFinite(p.corr)) return `<td class="corr-cell na">N/A<span class="corr-n">n=${p.n}</span></td>`;
+      const bg=corrColor(p.corr);
+      const fg=corrTextColor(p.corr);
+      return `<td class="corr-cell" style="background:${bg};color:${fg}" title="${esc(fds[i].name)} vs ${esc(fds[j].name)} | ${corrRiskLabel(p.corr)} | ${p.n} overlapping ${freq} returns">${p.corr.toFixed(2)}<span class="corr-n">n=${p.n}</span></td>`;
+    }).join('');
+    return `<tr><th class="corr-row-h" title="${esc(f.name)}">${esc(shortN(f.name,42))}</th>${cells}</tr>`;
+  }).join('');
+  const pairCards=(highPairs.length?highPairs.slice(0,6):lowPairs).map(p=>{
+    const label=highPairs.length?corrRiskLabel(p.corr):'Lowest overlap';
+    return `<div class="div-pair-card"><div class="div-pair-score" style="color:${corrColor(p.corr)}">${p.corr.toFixed(2)}</div><div class="div-pair-title">${esc(shortN(fds[p.i].name,42))}<br>vs ${esc(shortN(fds[p.j].name,42))}</div><div class="div-pair-note">${label} &middot; ${p.n} overlapping ${freq} returns</div></div>`;
+  }).join('');
+  el.innerHTML=`${buildAnalysisRangeBar()}
+    <div class="div-shell">
+      <div class="div-topline">
+        <div>
+          <div class="div-kicker">Diversification analysis</div>
+          <div class="div-desc">Correlation is calculated on ${freq} NAV returns over the selected ${rangeLabel} window. More than two funds are handled as a full pairwise matrix, so every selected fund is compared against every other visible fund.</div>
+        </div>
+        <div class="div-toggle">
+          <button class="div-toggle-btn${freq==='weekly'?' active':''}" onclick="setDiversificationFreq('weekly')">Weekly</button>
+          <button class="div-toggle-btn${freq==='daily'?' active':''}" onclick="setDiversificationFreq('daily')">Daily</button>
+        </div>
+      </div>
+      <div class="div-summary-grid">${summaryCards}</div>
+      <div class="div-heat-card">
+        <div class="div-heat-head">
+          <div>
+            <div class="div-heat-title">Correlation matrix</div>
+            <div class="div-heat-sub">Dark red/orange cells flag funds that are moving almost together. Green/blue cells indicate better diversification potential. Cell count shows overlapping ${freq} return observations.</div>
+          </div>
+          <div class="div-legend">
+            <span>Low</span><span class="div-legend-swatch" style="background:#22c55e"></span><span class="div-legend-swatch" style="background:#facc15"></span><span class="div-legend-swatch" style="background:#ef4444"></span><span>High</span>
+          </div>
+        </div>
+        <div class="div-heat-wrap"><table class="corr-matrix"><thead><tr><th>Fund</th>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table></div>
+      </div>
+      <div class="div-pair-list">${pairCards||'<div class="div-pair-card"><div class="div-pair-title">No valid pairs yet</div><div class="div-pair-note">Try a longer range or weekly mode to increase overlapping observations.</div></div>'}</div>
+    </div>`;
+}
 function renderRollingWinRateSummary(metric, fds){
   if((fds||[]).length<2) return '';
   const summary=buildRollingWinRateSummary(metric.key, fds, 5);
@@ -5572,10 +6992,8 @@ function renderTimeSeries(){
     return;
   }
   if(!S.navView.useCustom) syncNavCustomInputsToPreset();
-  const sliceBtns=TS_SLICES.map(s=>`<button class="ts-slice-btn${S.tsSlice===s.key?' active':''}" onclick="setTsSlice('${s.key}')">${s.lbl}</button>`).join('');
-  const rangeTools=`<div class="ts-range-tools"><span class="ts-cal-label">Custom</span><input class="nav-date" type="date" value="${S.navView.from||''}" max="${S.navView.to||''}" onchange="setNavDate('from',this.value)"><input class="nav-date" type="date" value="${S.navView.to||''}" min="${S.navView.from||''}" onchange="setNavDate('to',this.value)"><button class="nav-date-btn" onclick="applyNavCustomRange()">Apply</button><button class="nav-date-btn${S.navView.useCustom?' is-on':''}" onclick="resetNavCustomRange()">Reset</button></div>`;
   document.getElementById('tsContent').innerHTML=
-    `<div class="ts-slice-bar"><span class="ts-slice-lbl">Range</span>${sliceBtns}${rangeTools}</div>`+
+    buildAnalysisRangeBar()+
     `<div class="sec">NAV History</div>`+
     `<div class="grid-1" id="navGrid"></div>`+
     `<div class="sec" style="margin-top:4px">Rolling Returns Over Time</div><div class="grid-2" id="tsGrid"></div>`;
@@ -5614,10 +7032,16 @@ function renderTimeSeries(){
     tsGrid.insertAdjacentHTML('beforeend',`<div class="cc"><div class="cc-t">${m.lbl} - Over Time</div><div class="cc-s">Rolling ${m.lbl} (Time-Aligned)</div><div class="cw tall"><canvas id="${cid}"></canvas></div></div>`);
     requestAnimationFrame(()=>{
       kill(cid);const ctx=document.getElementById(cid)?.getContext('2d');if(!ctx) return;
-      const rollDatasets=metricFds.map(f=>({
-        label:shortN(f.name,50),data:sampleForChart(sliceData(f.computed[m.key]),350).map(p=>({x:p.date.getTime(),y:p.value})),
+      const rawRollSets=metricFds.map(f=>({
+        f,
+        points:sliceData(f.computed[m.key]).map(p=>({x:p.date.getTime(),y:p.value})).filter(p=>p.y!=null&&isFinite(p.y))
+      })).filter(row=>row.points.length>=2);
+      const rollBounds=useSharedTimeline()?commonPointBounds(rawRollSets.map(row=>row.points)):null;
+      const rollDatasets=rawRollSets.map(({f,points})=>({
+        label:shortN(f.name,50),data:sampleForChart((rollBounds?points.filter(p=>p.x>=rollBounds.start&&p.x<=rollBounds.end):points),350),
         borderColor:getColorAt(f.ci),borderWidth:2,pointRadius:0,pointHitRadius:20,pointHoverRadius:5,tension:.2
-      }));
+      })).filter(ds=>ds.data.length>=2);
+      if(!rollDatasets.length) return;
       const rollXR=xRangeForPoints(rollDatasets.flatMap(ds=>ds.data.map(p=>p.x)));
       const rollXScale={type:'linear',grid:{display:false},afterBuildTicks:axis=>{if(axis.min!=null&&axis.max!=null)axis.ticks=genUniformDateTicks(axis.min,axis.max);},ticks:{color:'#cbd5e1',font:{family:'DM Mono',size:isMobile?8:10,weight:'bold'},callback:v=>fmtDate(new Date(v)),maxRotation:0}};
       if(rollXR){rollXScale.min=rollXR.min;rollXScale.max=rollXR.max;}
@@ -5651,6 +7075,9 @@ function dateCell(d) {
 function pctCell(v) {
   return { t:'n', v:v/100, z:'0.00%' };
 }
+function pctDecimalCell(v, fmt='0.0000%') {
+  return { t:'n', v, z:fmt };
+}
 function numCell(v, dp=4) {
   return { t:'n', v:+v.toFixed(dp), z:`0.${'0'.repeat(dp)}` };
 }
@@ -5679,6 +7106,152 @@ function aoaToWs(aoa) {
   return ws;
 }
 
+function buildSipLsExportBundle(f, amount, sipMonths, cashRate){
+  const data=(sliceData(f?.rawData||[])||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0).sort((a,b)=>a.date-b.date);
+  if(data.length<12) return null;
+  const startPoints=collectMonthlyStartPoints(data);
+  if(!startPoints.length) return null;
+  const rows=[];
+  const auditRows=[];
+  for(const startPt of startPoints){
+    const row=buildSipLsWindow(data,startPt,amount,sipMonths,cashRate,true);
+    if(!row) continue;
+    rows.push(row);
+    if(Array.isArray(row.auditRows)&&row.auditRows.length) auditRows.push(...row.auditRows);
+  }
+  if(!rows.length) return null;
+  const sim=simulateSipVsLumpsumForFund(f, amount, sipMonths, cashRate);
+  if(!sim) return null;
+  return {fund:f, sim, rows, auditRows};
+}
+
+function exportSipVsLumpsumExcel(fds){
+  const visibleFunds=(fds||[]).filter(Boolean);
+  if(!visibleFunds.length){ alert('Show at least one fund in the SIP vs Lumpsum tab first.'); return; }
+  const view=ensureSipLsView();
+  const amount=Math.max(1000,+view.amount||100000);
+  const sipMonths=Math.max(1,Math.round(+view.sipMonths||12));
+  const cashRate=Math.max(0,Math.min(25,+view.cashRate||6.5));
+  const bundles=visibleFunds.map(f=>buildSipLsExportBundle(f,amount,sipMonths,cashRate)).filter(Boolean);
+  if(!bundles.length){ alert('No valid SIP vs Lumpsum backtest windows are available for the current filters.'); return; }
+
+  const wb=XLSX.utils.book_new();
+  const usedNames=new Set();
+  const ts=new Date().toISOString().slice(0,10);
+  const rangeLabel=S.navView.useCustom?'Custom range':((TS_SLICES.find(s=>s.key===S.tsSlice)?.lbl)||'Full history');
+  const timelineLabel=useSharedTimeline()?'Shared overlap':'Individual full';
+  const summaryRows=[
+    ['MF Analytica - SIP vs Lumpsum Backup'],
+    ['Generated', new Date()],
+    ['Timeline Basis', timelineLabel],
+    ['Range Basis', rangeLabel],
+    ['Total Capital', numCell(amount,2)],
+    ['SIP Months', sipMonths],
+    ['Evaluation Basis', `Value measured on the ${ordinalSuffix(sipMonths)} SIP month completion date`],
+    ['Cash / FD Rate', pctCell(cashRate)],
+    [],
+    ['Fund','Windows','First Start','Last End','SIP Win %','Median SIP Gap','Median Gap %','Median Lumpsum Final','Median SIP Final','Median Lumpsum XIRR','Median SIP XIRR']
+  ];
+  bundles.forEach(({fund,sim})=>{
+    summaryRows.push([
+      fund.name,
+      sim.count,
+      sim.start?dateCell(sim.start):'',
+      sim.end?dateCell(sim.end):'',
+      pctCell(sim.sipWinPct),
+      sim.medianGap==null?'':numCell(sim.medianGap,2),
+      sim.medianGapPct==null?'':pctCell(sim.medianGapPct),
+      sim.medianLumpFinal==null?'':numCell(sim.medianLumpFinal,2),
+      sim.medianSipFinal==null?'':numCell(sim.medianSipFinal,2),
+      sim.medianLumpAnnual==null?'':pctCell(sim.medianLumpAnnual),
+      sim.medianSipAnnual==null?'':pctCell(sim.medianSipAnnual)
+    ]);
+  });
+  const summaryWs=aoaToWs(summaryRows);
+  summaryWs['!cols']=[{wch:40},{wch:10},{wch:14},{wch:14},{wch:11},{wch:15},{wch:12},{wch:18},{wch:18},{wch:16},{wch:16}];
+  XLSX.utils.book_append_sheet(wb, summaryWs, uniqueSheetName('Summary', usedNames));
+
+  bundles.forEach(({fund,sim,rows,auditRows})=>{
+    const detailAoa=[
+      [fund.name],
+      ['Timeline Basis', timelineLabel],
+      ['Range Basis', rangeLabel],
+      ['Total Capital', numCell(amount,2)],
+      ['SIP Months', sipMonths],
+      ['Evaluation Basis', `Value measured on the SIP completion date`],
+      ['Cash / FD Rate', pctCell(cashRate)],
+      [],
+      ['Start Date','End Date','Start NAV','End NAV','Lumpsum Units','Lumpsum Final','Lumpsum XIRR','SIP Installments','SIP Principal Invested','SIP Units','Residual Cash','SIP Fund Value','SIP Final','SIP XIRR','SIP - Lumpsum','Gap %']
+    ];
+    rows.forEach(row=>{
+      detailAoa.push([
+        dateCell(row.startDate),
+        dateCell(row.endDate),
+        numCell(row.startNav,4),
+        numCell(row.endNav,4),
+        numCell(row.lumpUnits,8),
+        numCell(row.lumpFinal,2),
+        row.lumpAnnual==null?'':pctCell(row.lumpAnnual),
+        row.installmentsDone,
+        numCell(row.principalInvested,2),
+        numCell(row.sipUnits,8),
+        numCell(row.cashResidual,2),
+        numCell(row.sipFundValue,2),
+        numCell(row.sipFinal,2),
+        row.sipAnnual==null?'':pctCell(row.sipAnnual),
+        numCell(row.gapAmount,2),
+        row.gapPct==null?'':pctCell(row.gapPct)
+      ]);
+    });
+    const detailWs=aoaToWs(detailAoa);
+    detailWs['!cols']=[{wch:14},{wch:14},{wch:12},{wch:12},{wch:14},{wch:16},{wch:13},{wch:12},{wch:17},{wch:14},{wch:14},{wch:15},{wch:15},{wch:13},{wch:14},{wch:10}];
+    XLSX.utils.book_append_sheet(wb, detailWs, uniqueSheetName(shortN(fund.name,22), usedNames));
+
+    const auditAoa=[
+      [`${fund.name} - Cashflow Audit`],
+      ['Each historical start window is broken into SIP installments plus the final cash-carry leg.'],
+      ['Step Type','installment = monthly deployment row; final_carry = residual cash carried to SIP completion date'],
+      [],
+      ['Start Date','End Date','Step Type','Step #','Carry From','Carry To','Carry Days','Carry Rate %','Target Date','Actual Date','Opening Cash','Cash After Carry','Scheduled Principal','Invested Amount','NAV','Units Bought','Closing Cash','Lumpsum Units','Lumpsum Final','SIP Units Total','SIP Fund Value','SIP Final','Lumpsum XIRR','SIP XIRR','Gap Amount','Gap %']
+    ];
+    auditRows.forEach(row=>{
+      auditAoa.push([
+        dateCell(row.startDate),
+        dateCell(row.endDate),
+        row.rowType,
+        row.stepNo,
+        row.carryFromDate?dateCell(row.carryFromDate):'',
+        row.carryToDate?dateCell(row.carryToDate):'',
+        row.carryDays,
+        pctCell(cashRate),
+        row.targetDate?dateCell(row.targetDate):'',
+        row.actualDate?dateCell(row.actualDate):'',
+        numCell(row.openingCash,2),
+        numCell(row.cashAfterCarry,2),
+        numCell(row.scheduledPrincipal,2),
+        numCell(row.investAmount,2),
+        numCell(row.nav,4),
+        numCell(row.unitsBought||0,8),
+        numCell(row.closingCash,2),
+        row.lumpUnits==null?'':numCell(row.lumpUnits,8),
+        row.lumpFinal==null?'':numCell(row.lumpFinal,2),
+        row.sipUnits==null?'':numCell(row.sipUnits,8),
+        row.sipFundValue==null?'':numCell(row.sipFundValue,2),
+        row.sipFinal==null?'':numCell(row.sipFinal,2),
+        row.lumpAnnual==null?'':pctCell(row.lumpAnnual),
+        row.sipAnnual==null?'':pctCell(row.sipAnnual),
+        row.gapAmount==null?'':numCell(row.gapAmount,2),
+        row.gapPct==null?'':pctCell(row.gapPct)
+      ]);
+    });
+    const auditWs=aoaToWs(auditAoa);
+    auditWs['!cols']=[{wch:14},{wch:14},{wch:12},{wch:8},{wch:12},{wch:12},{wch:9},{wch:11},{wch:12},{wch:12},{wch:14},{wch:15},{wch:16},{wch:14},{wch:10},{wch:12},{wch:13},{wch:13},{wch:15},{wch:14},{wch:15},{wch:15},{wch:13},{wch:13},{wch:14},{wch:10}];
+    XLSX.utils.book_append_sheet(wb, auditWs, uniqueSheetName(shortN(fund.name,18)+' Audit', usedNames));
+  });
+
+  XLSX.writeFile(wb, `MF_Analytica_SIP_vs_Lumpsum_Backup_${ts}.xlsx`);
+}
+
 function exportToExcel() {
   const fds = S.selected.map(id => S.funds[id]);
   if (!fds.length) { alert('Select at least one fund first.'); return; }
@@ -5690,12 +7263,17 @@ function exportToExcel() {
     try {
       if (S.tab === 'distributions') {
         exportDistributionsExcel(fds);
+      } else if (S.tab === 'riskreturn') {
+        exportRiskReturnValidationExcel(getVisibleFunds());
+      } else if (S.tab === 'sipls') {
+        exportSipVsLumpsumExcel(getVisibleFunds());
       } else if (S.tab === 'forwardmap') {
         exportForwardMapExcel(fds);
       } else {
         const wb = XLSX.utils.book_new();
         buildSummarySheet(wb, fds);
         buildCAGRAuditSheet(wb, fds);
+        buildSharpeRiskAuditSheet(wb, fds);
         for (const sipM of SIP_M) buildSIPAuditSheet(wb, fds, sipM);
         XLSX.writeFile(wb, 'MF_Analytica_Validation.xlsx');
       }
@@ -5794,6 +7372,96 @@ function exportDistributionsExcel(fds){
   }
 
   XLSX.writeFile(wb, 'MF_Analytica_Rolling_Returns.xlsx');
+}
+
+function buildSharpeAuditRowsForFund(f){
+  const data=(sliceData(f?.rawData||[])||[]).filter(p=>p?.date instanceof Date&&isFinite(p?.nav)&&p.nav>0);
+  if(data.length<12) return {error:'Not enough NAV observations in the selected range.'};
+  const first=data[0], last=data[data.length-1];
+  const years=(last.date-first.date)/MS_YEAR;
+  if(years<0.08) return {error:'Selected range is too short for annualized risk validation.'};
+  const returns=[];
+  for(let i=1;i<data.length;i++){
+    const prev=data[i-1], curr=data[i];
+    if(!(prev.nav>0&&curr.nav>0)) continue;
+    const r=(curr.nav/prev.nav)-1;
+    if(isFinite(r)) returns.push({date:curr.date,nav:curr.nav,prevDate:prev.date,prevNav:prev.nav,ret:r});
+  }
+  if(returns.length<8) return {error:'Not enough return observations in the selected range.'};
+  const periodsPerYear=RISK_RETURN_PERIODS_PER_YEAR;
+  const stats=calcReturnStats(returns.map(r=>r.ret),periodsPerYear);
+  if(!stats) return {error:'Return volatility is zero or unavailable.'};
+  const returnPct=(Math.pow(last.nav/first.nav,1/years)-1)*100;
+  return {data,returns,first,last,years,periodsPerYear,stats,returnPct,maxDrawdown:calcMaxDrawdownPct(data)};
+}
+
+function buildSharpeRiskAuditSheet(wb, fds){
+  const rows=[
+    ['Sharpe and Risk Validation'],
+    ['Formula','Sharpe = AVERAGE(period return - period risk-free return) / STDEV.S(period return) * SQRT(periods per year)'],
+    ['Risk-free annual hurdle', pctCell(RISK_FREE_RATE_PCT)],
+    ['Return convention','Simple NAV-to-NAV periodic returns, not log returns'],
+    ['Annualization',`Daily fund risk uses a fixed ${RISK_RETURN_PERIODS_PER_YEAR} periods/year basis for comparability`],
+    []
+  ];
+
+  for(const f of fds){
+    const audit=buildSharpeAuditRowsForFund(f);
+    rows.push([`> ${f.name}`]);
+    if(audit.error){
+      rows.push(['Status', audit.error]);
+      rows.push([]);
+      continue;
+    }
+    const {returns,first,last,years,periodsPerYear,stats,returnPct,maxDrawdown}=audit;
+    rows.push(['Selected start', dateCell(first.date), 'Selected end', dateCell(last.date)]);
+    rows.push(['Start NAV', numCell(first.nav,4), 'End NAV', numCell(last.nav,4)]);
+    rows.push(['Years', numCell(years,6), 'Return observations', returns.length]);
+    rows.push(['Periods per year', numCell(periodsPerYear,4), 'Risk-free per period', pctDecimalCell(stats.rfPerPeriod)]);
+    rows.push(['CAGR', pctCell(returnPct), 'Annualized volatility', pctCell(stats.volatility)]);
+    rows.push(['Sharpe ratio', numCell(stats.sharpe,6), 'Max drawdown', pctCell(maxDrawdown)]);
+    rows.push([]);
+
+    const headerRow = rows.length + 1;
+    rows.push(['#','Date','NAV','Previous Date','Previous NAV','Period Return','Risk-free / Period','Excess Return']);
+    const dataStart = headerRow + 1;
+    for(let i=0;i<returns.length;i++){
+      const r=returns[i];
+      const excelRow=dataStart+i;
+      rows.push([
+        i+1,
+        dateCell(r.date),
+        numCell(r.nav,4),
+        dateCell(r.prevDate),
+        numCell(r.prevNav,4),
+        pctDecimalCell(r.ret),
+        pctDecimalCell(stats.rfPerPeriod),
+        {f:`F${excelRow}-G${excelRow}`, z:'0.0000%'}
+      ]);
+    }
+    const dataEnd = dataStart + returns.length - 1;
+    rows.push([]);
+    rows.push(['Excel verification']);
+    rows.push(['Average period return', {f:`AVERAGE(F${dataStart}:F${dataEnd})`, z:'0.0000%'}, 'Tool value', pctDecimalCell(stats.mean)]);
+    rows.push(['STDEV.S period return', {f:`STDEV.S(F${dataStart}:F${dataEnd})`, z:'0.0000%'}, 'Tool value', pctDecimalCell(stats.stdev)]);
+    rows.push(['Average excess return', {f:`AVERAGE(H${dataStart}:H${dataEnd})`, z:'0.0000%'}, 'Tool value', pctDecimalCell(stats.mean-stats.rfPerPeriod)]);
+    rows.push(['Annualized volatility', {f:`STDEV.S(F${dataStart}:F${dataEnd})*SQRT(${periodsPerYear})`, z:'0.00%'}, 'Tool value', pctCell(stats.volatility)]);
+    rows.push(['Sharpe ratio', {f:`AVERAGE(H${dataStart}:H${dataEnd})/STDEV.S(F${dataStart}:F${dataEnd})*SQRT(${periodsPerYear})`, z:'0.000000'}, 'Tool value', numCell(stats.sharpe,6)]);
+    rows.push([]);
+    rows.push([]);
+  }
+
+  const ws=aoaToWs(rows);
+  ws['!cols']=[{wch:12},{wch:16},{wch:14},{wch:16},{wch:14},{wch:16},{wch:18},{wch:18}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Sharpe Risk Audit');
+}
+
+function exportRiskReturnValidationExcel(fds){
+  if(!fds.length){ alert('Show at least one fund in Risk vs Return first.'); return; }
+  const wb=XLSX.utils.book_new();
+  buildSharpeRiskAuditSheet(wb, fds);
+  const ts=new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `MF_Analytica_Sharpe_Risk_Validation_${ts}.xlsx`);
 }
 
 function exportForwardMapExcel(fds){
